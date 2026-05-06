@@ -2,12 +2,14 @@
   "sidebar": {
     "intro": true,
     "showroom": true,
+    "maqueta": true,
     "floors": true,
     "amenities": true,
     "tours": true,
     "video": true,
     "brochure": true,
     "location": true,
+    "avance": true,
     "contact": true,
     "topographic": false
   }

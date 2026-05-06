@@ -1,7 +1,7 @@
 "use client";
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
-import { X, Home, Building2, Layers,  Image, Rotate3D, Video, Download, MapPin, Phone, Facebook, Instagram, Mountain } from 'lucide-react';
+import { X, Home, Building2, Layers,  Image, Rotate3D, Video, Download, MapPin, Phone, Facebook, Instagram, Mountain, Box, Construction } from 'lucide-react';
 import { getAssetUrl } from '@/utils/assets';
 import { useStore } from '@/store/useStore';
 import { preloadImages, preloadVideo } from '@/utils/preload';
@@ -59,6 +59,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const allMenuItems = [
     { id: 'intro', icon: Home, label: 'Intro', path: '/' },
     { id: 'showroom', icon: Building2, label: 'El edificio', path: '/showroom', preloadKey: 'showroom' },
+    { id: 'maqueta', icon: Box, label: 'Maqueta 3D', path: '/maqueta' },
     { id: 'floors', icon: Layers, label: 'Plantas', path: '/plantas', preloadKey: 'floors' }, 
     { id: 'amenities', icon: Image, label: 'Amenidades', path: '/galeria', preloadKey: 'amenities' },
     { id: 'tours', icon: Rotate3D, label: 'Recorridos', path: '/recorridos' },
@@ -66,6 +67,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     { id: 'video', icon: Video, label: 'Video', path: '/video' },
     { id: 'brochure', icon: Download, label: 'Brochure', action: 'brochure' },
     { id: 'location', icon: MapPin, label: 'Ubicación', path: '/ubicacion' },
+    { id: 'avance', icon: Construction, label: 'Avance de obra', path: '/avance-de-obra' },
     { id: 'contact', icon: Phone, label: 'Contacto', path: '/contact' },
   ];
 

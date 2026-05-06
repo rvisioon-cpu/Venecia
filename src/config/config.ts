@@ -22,6 +22,7 @@ export interface ConfigProps {
     buildingAddress: string;
     email: string;
     website: string;
+    maquetaUrl?: string;
     buildingSocials: {
       facebook: string;
       instagram: string;
@@ -68,6 +69,7 @@ const config: ConfigProps = {
     buildingAddress: "Building Address",
     email: "sales@project-domain.com",
     website: "https://project-domain.com/",
+    maquetaUrl: "https://rvisioon.shapespark.com/edificio_santa_fe/",
     buildingSocials: {
       facebook: "https://facebook.com/project",
       instagram: "https://instagram.com/project",
