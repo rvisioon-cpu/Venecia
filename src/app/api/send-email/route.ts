@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     // Send email using Resend
     const { data, error } = await resend.emails.send({
       from: 'Santa Fe 190 <no-reply@kayen.work>', // Updated sender address
-      to: ['ventas@santafe190.com'], // Replace with actual recipient
+      to: ['ventas@kayeninmobiliaria.com'], // Updated recipient
       subject: `Nueva Solicitud: ${nombres} ${apellido}`,
       react: ContactEmail({
         nombres,
