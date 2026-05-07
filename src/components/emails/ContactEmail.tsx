@@ -94,6 +94,8 @@ export const ContactEmail = ({
               <Column style={columnLabel}>Horario:</Column>
               <Column style={columnValue}>{horario}</Column>
             </Row>
+          </Section>
+
           <Hr style={hr} />
 
           <Section style={detailsSection}>
