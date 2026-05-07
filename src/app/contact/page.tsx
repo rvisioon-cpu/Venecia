@@ -45,7 +45,8 @@ const Contact = () => {
     horarioMinuto: '',
     horarioPeriodo: 'AM',
     terms: false,
-    auth: false
+    auth: false,
+    mensaje: ''
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -161,7 +162,8 @@ const Contact = () => {
                     horarioMinuto: '',
                     horarioPeriodo: 'AM',
                     terms: false,
-                    auth: false
+                    auth: false,
+                    mensaje: ''
                 });
             } else {
                 const data = await response.json() as { error?: string };
@@ -578,6 +580,17 @@ const Contact = () => {
                               Autorizo a {config.company?.realStateName} para que realice las actividades de prospección comercial y marketing descritas in las <a href="#" className="underline font-bold text-gray-600 hover:text-brand-primary">Políticas de Privacidad</a>
                           </label>
                       </div>
+                  </div>
+
+                  {/* Mensaje / Comentarios */}
+                  <div className="space-y-1 pt-2">
+                      <textarea 
+                          name="mensaje"
+                          value={formData.mensaje}
+                          onChange={handleChange}
+                          placeholder="Mensaje o comentarios adicionales (opcional)" 
+                          className="w-full border-b border-gray-200 py-2 text-gray-800 text-sm focus:outline-none focus:border-brand-primary transition-colors placeholder:text-gray-400 min-h-[80px] resize-none" 
+                      />
                   </div>
 
                   {/* Submit */}
