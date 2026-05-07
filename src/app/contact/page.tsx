@@ -56,7 +56,7 @@ const Contact = () => {
     return value.replace(/[<>'"/]/g, "");
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     // @ts-expect-error Checked property exists on target
     const checked = e.target.checked;

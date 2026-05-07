@@ -2,11 +2,11 @@ import { Resend } from 'resend';
 import ContactEmail from '@/components/emails/ContactEmail';
 import { NextResponse } from 'next/server';
 
-// Initialize Resend with API Key from environment variables
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(request: Request) {
   try {
+    // Initialize Resend inside the handler to avoid build-time errors
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    
     const body = await request.json();
     const { 
         nombres, 
