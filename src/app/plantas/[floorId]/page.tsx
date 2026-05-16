@@ -33,6 +33,11 @@ const FloorPage = () => {
   const [lastTouchDistance, setLastTouchDistance] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Dev Mode & Path Builder State
+  const [devMode, setDevMode] = useState(false);
+  const [currentPathPoints, setCurrentPathPoints] = useState<{x: number, y: number}[]>([]);
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const floor = floorsData.find(f => f.id === floorId);
 
   useEffect(() => {
@@ -138,15 +143,10 @@ const FloorPage = () => {
     setLastTouchDistance(null);
   };
 
-  const [devMode, setDevMode] = useState(false);
-  const [currentPathPoints, setCurrentPathPoints] = useState<{x: number, y: number}[]>([]);
-
-  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   const getPolyCenter = (path: string | undefined, defaultX: number = 50, defaultY: number = 50) => {
     if (!path) return { x: defaultX, y: defaultY };
     const matches = path.matchAll(/([0-9.]+)[, ]\s*([0-9.]+)/g);
-    let coords = Array.from(matches).map(m => ({ x: parseFloat(m[1]), y: parseFloat(m[2]) }));
+    const coords = Array.from(matches).map(m => ({ x: parseFloat(m[1]), y: parseFloat(m[2]) }));
     
     if (coords.length === 0) return { x: defaultX, y: defaultY };
 

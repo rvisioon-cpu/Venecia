@@ -46,13 +46,13 @@ export interface ConfigProps {
 }
 
 const config: ConfigProps = {
-  appName: "Project Name",
-  appDescription: "Short project description goes here.",
-  domainName: "project-domain.com",
+  appName: "Venecia",
+  appDescription: "Showroom Virtual Venecia",
+  domainName: "venecia-showroom.com",
   resend: {
-    fromNoReply: `Project Name <noreply@project-domain.com>`,
-    fromAdmin: `Admin at Project Name <admin@project-domain.com>`,
-    supportEmail: "support@project-domain.com",
+    fromNoReply: `Venecia <noreply@venecia-showroom.com>`,
+    fromAdmin: `Admin at Venecia <admin@venecia-showroom.com>`,
+    supportEmail: "support@venecia-showroom.com",
   },
   colors: {
     theme: "light",
@@ -63,24 +63,24 @@ const config: ConfigProps = {
     callbackUrl: "/dashboard",
   },
   company: {
-    name: "Company Name",
+    name: "Prince",
     address: "Company Address",
-    buildingName: "Building Name",
+    buildingName: "Venecia",
     buildingAddress: "Building Address",
-    email: "sales@project-domain.com",
-    website: "https://project-domain.com/",
+    email: "sales@venecia-showroom.com",
+    website: "https://venecia-showroom.com/",
     maquetaUrl: "https://rvisioon.shapespark.com/edificio_santa_fe/",
     buildingSocials: {
-      facebook: "https://facebook.com/project",
-      instagram: "https://instagram.com/project",
-      tiktok: "https://tiktok.com/@project"
+      facebook: "https://facebook.com/venecia",
+      instagram: "https://instagram.com/venecia",
+      tiktok: "https://tiktok.com/@venecia"
     },
-    realStateName: "Real Estate Group",
-    realStateSlogan: "Slogan of the real estate company",
+    realStateName: "Prince",
+    realStateSlogan: "Slogan of Prince",
     realStateSocials: {
-      facebook: "https://facebook.com/realestate",
-      instagram: "https://instagram.com/realestate",
-      tiktok: "https://tiktok.com/@realestate"
+      facebook: "https://facebook.com/prince",
+      instagram: "https://instagram.com/prince",
+      tiktok: "https://tiktok.com/@prince"
     },
     developer: "Developer Name",
     developerSlogan: "Slogan of the developer",
