@@ -1,0 +1,139 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/plantas/[floorId]",
+      "regex": "^/plantas/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPfloorId": "nxtPfloorId"
+      },
+      "namedRegex": "^/plantas/(?<nxtPfloorId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/unidad/[id]",
+      "regex": "^/unidad/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/unidad/(?<nxtPid>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/api/send-email",
+      "regex": "^/api/send\\-email(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/send\\-email(?:/)?$"
+    },
+    {
+      "page": "/avance-de-obra",
+      "regex": "^/avance\\-de\\-obra(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/avance\\-de\\-obra(?:/)?$"
+    },
+    {
+      "page": "/contact",
+      "regex": "^/contact(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/contact(?:/)?$"
+    },
+    {
+      "page": "/favicon.ico",
+      "regex": "^/favicon\\.ico(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/galeria",
+      "regex": "^/galeria(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/galeria(?:/)?$"
+    },
+    {
+      "page": "/maqueta",
+      "regex": "^/maqueta(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/maqueta(?:/)?$"
+    },
+    {
+      "page": "/plantas",
+      "regex": "^/plantas(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/plantas(?:/)?$"
+    },
+    {
+      "page": "/recorridos",
+      "regex": "^/recorridos(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/recorridos(?:/)?$"
+    },
+    {
+      "page": "/showroom",
+      "regex": "^/showroom(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/showroom(?:/)?$"
+    },
+    {
+      "page": "/ubicacion",
+      "regex": "^/ubicacion(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/ubicacion(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

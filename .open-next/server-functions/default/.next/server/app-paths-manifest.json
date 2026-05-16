@@ -1,0 +1,17 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/send-email/route": "app-edge-has-no-entrypoint",
+  "/avance-de-obra/page": "app/avance-de-obra/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/galeria/page": "app/galeria/page.js",
+  "/maqueta/page": "app/maqueta/page.js",
+  "/page": "app/page.js",
+  "/plantas/[floorId]/page": "app-edge-has-no-entrypoint",
+  "/plantas/page": "app/plantas/page.js",
+  "/recorridos/page": "app/recorridos/page.js",
+  "/showroom/page": "app/showroom/page.js",
+  "/ubicacion/page": "app/ubicacion/page.js",
+  "/unidad/[id]/page": "app-edge-has-no-entrypoint"
+}

@@ -1,0 +1,17 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/api/send-email/route": "/api/send-email",
+  "/avance-de-obra/page": "/avance-de-obra",
+  "/contact/page": "/contact",
+  "/favicon.ico/route": "/favicon.ico",
+  "/galeria/page": "/galeria",
+  "/maqueta/page": "/maqueta",
+  "/page": "/",
+  "/plantas/[floorId]/page": "/plantas/[floorId]",
+  "/plantas/page": "/plantas",
+  "/recorridos/page": "/recorridos",
+  "/showroom/page": "/showroom",
+  "/ubicacion/page": "/ubicacion",
+  "/unidad/[id]/page": "/unidad/[id]"
+}

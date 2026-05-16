@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "functions": {
+    "/api/send-email": {},
+    "/plantas/[floorId]": {},
+    "/unidad/[id]": {}
+  }
+}
