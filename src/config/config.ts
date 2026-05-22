@@ -66,21 +66,21 @@ const config: ConfigProps = {
     name: "Prince",
     address: "Company Address",
     buildingName: "Venecia",
-    buildingAddress: "Building Address",
-    email: "sales@venecia-showroom.com",
+    buildingAddress: "CALLE VIRREY MANUEL DE GUIRIOR N°705",
+    email: "ventas@cimaprince.com",
     website: "https://venecia-showroom.com/",
     maquetaUrl: "https://rvisioon.shapespark.com/edificio_santa_fe/",
     buildingSocials: {
-      facebook: "https://facebook.com/venecia",
-      instagram: "https://instagram.com/venecia",
-      tiktok: "https://tiktok.com/@venecia"
+      facebook: "https://www.facebook.com/Cimaprince.SAC",
+      instagram: "https://www.instagram.com/cimaprince/",
+      tiktok: "https://www.tiktok.com/@grupo.cima.prince"
     },
     realStateName: "Prince",
     realStateSlogan: "Slogan of Prince",
     realStateSocials: {
-      facebook: "https://facebook.com/prince",
-      instagram: "https://instagram.com/prince",
-      tiktok: "https://tiktok.com/@prince"
+      facebook: "https://www.facebook.com/Cimaprince.SAC",
+      instagram: "https://www.instagram.com/cimaprince/",
+      tiktok: "https://www.tiktok.com/@grupo.cima.prince"
     },
     developer: "Developer Name",
     developerSlogan: "Slogan of the developer",

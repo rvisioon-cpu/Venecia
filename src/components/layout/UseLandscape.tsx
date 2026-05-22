@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { RotateCcw } from 'lucide-react';
 import { useStore } from '../../store/useStore';
+import Logo from '@/components/UI/Logo';
 
 const UseLandscape = () => {
     const [isPortrait, setIsPortrait] = useState(false);
@@ -59,11 +60,7 @@ const UseLandscape = () => {
             {/* Pulsating Logo */}
             <div className="mb-12 relative">
                 <div className="absolute inset-0 bg-brand-orange/20 blur-xl rounded-full animate-pulse" />
-                <img 
-                    src="/identity/identity_logo_ISOTIPO.png" 
-                    alt="Logo" 
-                    className="w-24 h-24 object-contain relative z-10 animate-pulse" // Simple pulse for now
-                />
+                <Logo className="text-5xl relative z-10 animate-pulse" />
             </div>
 
             <div className="flex flex-col items-center gap-6 animate-bounce-slow">

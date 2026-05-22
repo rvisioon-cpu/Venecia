@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-orange: #F59C1D;
-  --color-brand-dark-orange: #D68310;
-  --color-brand-light-orange: #FAB428;
-  --color-brand-yellow: #FAE200;
-  --color-brand-primary: #F59C1D;
+  --color-brand-orange: #0C5A5B;
+  --color-brand-dark-orange: #084243;
+  --color-brand-light-orange: #117C7D;
+  --color-brand-yellow: #159C9E;
+  --color-brand-primary: #0C5A5B;
 
   --font-primary: 'Montserrat', sans-serif;
   --font-secondary: 'Inter', sans-serif;

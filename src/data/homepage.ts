@@ -15,11 +15,11 @@ export interface HomepageData {
 
 export const homepageData: HomepageData = {
   hero: {
-    logo: "/identity/logo_homepage.png",
+    logo: "/identity/logo_venecia_transparent.png",
     button: "Entrar"
   },
   intro: {
-    poster: "/intro.jpg",
+    poster: "/portada_venecia.png",
     video: "/videos/walk.mp4"
   },
   slides: [

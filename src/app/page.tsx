@@ -8,6 +8,7 @@ import { useStore } from '@/store/useStore';
 import { preloadVideo, preloadImages } from '@/utils/preload';
 import Loader from '@/components/UI/Loader';
 import FullScreenToggle from '@/components/UI/FullScreenToggle';
+import Logo from '@/components/UI/Logo';
 import { homepageData } from '@/data/homepage';
 
 const Homepage = () => {
@@ -16,7 +17,7 @@ const Homepage = () => {
   const [isPlayingIntro, setIsPlayingIntro] = useState(false);
 
   // Animation Refs
-  const logoRef = useRef<HTMLImageElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const textRefs = useRef<(HTMLElement | null)[]>([]);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -180,11 +181,9 @@ const Homepage = () => {
              
              {/* Logo & Button Container */}
              <div className="relative z-20 flex flex-col items-center gap-8 landscape:gap-3 lg:gap-12 transition-transform will-change-transform">
-                 <img 
-                   ref={logoRef} // Ref moved to image for independent animation
-                   src={homepageData.hero.logo} 
-                   alt="Logo" 
-                   className="w-[180px] lg:w-full max-w-xl object-contain drop-shadow-2xl opacity-90"
+                 <Logo 
+                   ref={logoRef} 
+                   className="text-[clamp(3rem,10vw,7rem)] w-full max-w-xl opacity-90"
                  />
 
                  {/* Entrar Button - Now inside the container to move with logo */}

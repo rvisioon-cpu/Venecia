@@ -2,7 +2,7 @@
   "sidebar": {
     "intro": true,
     "showroom": true,
-    "maqueta": true,
+    "maqueta": false,
     "floors": true,
     "amenities": true,
     "tours": true,

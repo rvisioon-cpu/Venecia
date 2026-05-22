@@ -287,9 +287,9 @@ export default function MapComponent({ destination, origin, padding, onMarkerCli
                  <div className="relative z-50 group-hover:scale-110 transition-transform duration-300">
                      <div className="w-20 h-20 bg-white rounded-full p-2 shadow-xl border-2 border-brand-orange relative z-10 flex items-center justify-center">
                         <img 
-                            src={getAssetUrl('identity/logo_full_black.png')} 
+                            src={getAssetUrl('identity/logo_venecia_transparent.png')} 
                             className="w-full h-full object-contain" // Use contain to fit logo
-                            alt="Santa Fe Logo"
+                            alt="Venecia Logo"
                         />
                      </div>
                      {/* Triangle pointer */}
