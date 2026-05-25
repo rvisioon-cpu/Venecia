@@ -7,7 +7,7 @@
     "amenities": true,
     "tours": true,
     "video": true,
-    "brochure": true,
+    "brochure": false,
     "location": true,
     "avance": true,
     "contact": true,
