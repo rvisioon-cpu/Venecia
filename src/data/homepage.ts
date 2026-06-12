@@ -26,17 +26,20 @@ export const homepageData: HomepageData = {
   },
   slides: [
     {
-      text: "{{highlight}} es un edificio boutique ubicado estratégicamente en el corazón de Pueblo Libre.",
-      highlight: "Santa Fe 190"
+      text: "{{highlight}} redefine la manera de vivir la ciudad con un diseño moderno y funcional.",
+      highlight: "Venecia"
     },
     {
-      text: "Exclusividad de solo 15 departamentos, con áreas desde 52.90 m² hasta 134.50 m²."
+      text: "Vive en un entorno residencial con fácil acceso a avenidas principales, comercios y servicios."
     },
     {
-      text: "Conectividad total en una zona tranquila, rodeada de parques y cerca de todo lo que necesitas."
+      text: "Arquitectura con líneas limpias y balcones que abren el edificio a la ciudad. Aprovecha el espacio vertical sin sentirse encerrado."
     },
     {
-      text: "Una propuesta moderna de 8 pisos que destaca por su diseño funcional y acabados contemporáneos."
+      text: "Fachada de concreto y vidrio que resalta por simple y atemporal."
+    },
+    {
+      text: "Líneas verticales, terrazas y amplias ventanas que darán iluminación natural a tu nuevo hogar."
     }
   ]
 };
