@@ -63,7 +63,7 @@ const config: ConfigProps = {
     callbackUrl: "/dashboard",
   },
   company: {
-    name: "Prince",
+    name: "Cima Prince",
     address: "Company Address",
     buildingName: "Venecia",
     buildingAddress: "CALLE VIRREY MANUEL DE GUIRIOR N°705",
@@ -75,15 +75,15 @@ const config: ConfigProps = {
       instagram: "https://www.instagram.com/cimaprince/",
       tiktok: "https://www.tiktok.com/@grupo.cima.prince"
     },
-    realStateName: "Prince",
+    realStateName: "Cima Prince",
     realStateSlogan: "Slogan of Prince",
     realStateSocials: {
       facebook: "https://www.facebook.com/Cimaprince.SAC",
       instagram: "https://www.instagram.com/cimaprince/",
       tiktok: "https://www.tiktok.com/@grupo.cima.prince"
     },
-    developer: "Developer Name",
-    developerSlogan: "Slogan of the developer",
+    developer: "RVSIOON",
+    developerSlogan: "Imagina, diseña y visualiza tu proyecto",
     developerSocials: {
       facebook: "https://facebook.com/developer",
       instagram: "https://instagram.com/developer",
