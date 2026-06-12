@@ -42,8 +42,8 @@ export const floorsData: Floor[] = [
     name: "Piso 2",
     floorPlanImage: "plants/floor_2.jpg",
     units: [
-      { id: "201", floorId: "2", price: 0, dimensions: 57.84, status: 'available', subtitle: 'Flat', type: 'apartment' },
-      { id: "202", floorId: "2", price: 0, dimensions: 70.72, status: 'available', subtitle: 'Flat', type: 'apartment' }
+      { id: "201", floorId: "2", price: 0, dimensions: 57.84, bedrooms: 2, bathrooms: 2, status: 'available', subtitle: 'Flat', type: 'apartment' },
+      { id: "202", floorId: "2", price: 0, dimensions: 70.72, bedrooms: 3, bathrooms: 2, status: 'available', subtitle: 'Flat', type: 'apartment' }
     ]
   },
   {
@@ -51,8 +51,8 @@ export const floorsData: Floor[] = [
     name: "Piso 3",
     floorPlanImage: "plants/floor_3.jpg",
     units: [
-      { id: "301", floorId: "3", price: 0, dimensions: 57.84, status: 'available', subtitle: 'Flat', type: 'apartment' },
-      { id: "302", floorId: "3", price: 0, dimensions: 70.72, status: 'available', subtitle: 'Flat', type: 'apartment' }
+      { id: "301", floorId: "3", price: 0, dimensions: 57.84, bedrooms: 2, bathrooms: 2, status: 'available', subtitle: 'Flat', type: 'apartment' },
+      { id: "302", floorId: "3", price: 0, dimensions: 70.72, bedrooms: 3, bathrooms: 2, status: 'available', subtitle: 'Flat', type: 'apartment' }
     ]
   },
   {
@@ -60,8 +60,8 @@ export const floorsData: Floor[] = [
     name: "Piso 4",
     floorPlanImage: "plants/floor_4.jpg",
     units: [
-      { id: "401", floorId: "4", price: 0, dimensions: 57.84, status: 'available', subtitle: 'Flat', type: 'apartment' },
-      { id: "402", floorId: "4", price: 0, dimensions: 70.72, status: 'available', subtitle: 'Flat', type: 'apartment' }
+      { id: "401", floorId: "4", price: 0, dimensions: 57.84, bedrooms: 2, bathrooms: 2, status: 'available', subtitle: 'Flat', type: 'apartment' },
+      { id: "402", floorId: "4", price: 0, dimensions: 70.72, bedrooms: 3, bathrooms: 2, status: 'available', subtitle: 'Flat', type: 'apartment' }
     ]
   },
   {
@@ -69,8 +69,8 @@ export const floorsData: Floor[] = [
     name: "Piso 5",
     floorPlanImage: "plants/floor_5.jpg",
     units: [
-      { id: "501", floorId: "5", price: 0, dimensions: 57.84, status: 'available', subtitle: 'Flat', type: 'apartment' },
-      { id: "502", floorId: "5", price: 0, dimensions: 70.72, status: 'available', subtitle: 'Flat', type: 'apartment' }
+      { id: "501", floorId: "5", price: 0, dimensions: 57.84, bedrooms: 2, bathrooms: 2, status: 'available', subtitle: 'Flat', type: 'apartment' },
+      { id: "502", floorId: "5", price: 0, dimensions: 70.72, bedrooms: 3, bathrooms: 2, status: 'available', subtitle: 'Flat', type: 'apartment' }
     ]
   },
   {
@@ -78,8 +78,8 @@ export const floorsData: Floor[] = [
     name: "Piso 6",
     floorPlanImage: "plants/floor_6.jpg",
     units: [
-      { id: "601", floorId: "6", price: 0, dimensions: 57.84, status: 'available', subtitle: 'Flat', type: 'apartment' },
-      { id: "602", floorId: "6", price: 0, dimensions: 70.72, status: 'available', subtitle: 'Flat', type: 'apartment' }
+      { id: "601", floorId: "6", price: 0, dimensions: 57.84, bedrooms: 2, bathrooms: 2, status: 'available', subtitle: 'Flat', type: 'apartment' },
+      { id: "602", floorId: "6", price: 0, dimensions: 70.72, bedrooms: 3, bathrooms: 2, status: 'available', subtitle: 'Flat', type: 'apartment' }
     ]
   },
   {
@@ -87,8 +87,8 @@ export const floorsData: Floor[] = [
     name: "Piso 7",
     floorPlanImage: "plants/floor_7.jpg",
     units: [
-      { id: "701", floorId: "7", price: 0, dimensions: 57.84, status: 'available', subtitle: 'Flat', type: 'apartment' },
-      { id: "702", floorId: "7", price: 0, dimensions: 70.72, status: 'available', subtitle: 'Flat', type: 'apartment' }
+      { id: "701", floorId: "7", price: 0, dimensions: 57.84, bedrooms: 2, bathrooms: 2, status: 'available', subtitle: 'Flat', type: 'apartment' },
+      { id: "702", floorId: "7", price: 0, dimensions: 70.72, bedrooms: 3, bathrooms: 2, status: 'available', subtitle: 'Flat', type: 'apartment' }
     ]
   },
   {
@@ -96,8 +96,8 @@ export const floorsData: Floor[] = [
     name: "Piso 8",
     floorPlanImage: "plants/floor_8.jpg",
     units: [
-      { id: "801", floorId: "8", price: 0, dimensions: 91.14, status: 'available', subtitle: 'Dúplex', type: 'apartment' },
-      { id: "802", floorId: "8", price: 0, dimensions: 108.41, status: 'available', subtitle: 'Dúplex', type: 'apartment' }
+      { id: "801", floorId: "8", price: 0, dimensions: 91.14, bedrooms: 3, bathrooms: 3, status: 'available', subtitle: 'Dúplex', type: 'apartment' },
+      { id: "802", floorId: "8", price: 0, dimensions: 108.41, bedrooms: 3, bathrooms: 3, status: 'available', subtitle: 'Dúplex', type: 'apartment' }
     ]
   },
   {

@@ -18,7 +18,7 @@ const UnitCard = ({
     unit.status === 'available' ? 'bg-green-500' : 
     unit.status === 'reserved' ? 'bg-amber-500' : 'bg-red-500';
 
-  const isStorage = unit.type === 'storage' || (!unit.bedrooms && !unit.bathrooms);
+  const isStorage = unit.type === 'storage' || (unit.type !== 'apartment' && !unit.bedrooms && !unit.bathrooms);
 
   return (
     <div className="bg-white overflow-hidden w-full">
