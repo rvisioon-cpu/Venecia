@@ -40,7 +40,7 @@ export const floorsData: Floor[] = [
   {
     id: "2",
     name: "Piso 2",
-    floorPlanImage: "/plants/floor_2.png",
+    floorPlanImage: "plants/floor_2.jpg",
     units: [
       { id: "201", floorId: "2", price: 0, dimensions: 57.84, status: 'available', subtitle: 'Flat', type: 'apartment' },
       { id: "202", floorId: "2", price: 0, dimensions: 70.72, status: 'available', subtitle: 'Flat', type: 'apartment' }
@@ -49,7 +49,7 @@ export const floorsData: Floor[] = [
   {
     id: "3",
     name: "Piso 3",
-    floorPlanImage: "/plants/floor_3.png",
+    floorPlanImage: "plants/floor_3.jpg",
     units: [
       { id: "301", floorId: "3", price: 0, dimensions: 57.84, status: 'available', subtitle: 'Flat', type: 'apartment' },
       { id: "302", floorId: "3", price: 0, dimensions: 70.72, status: 'available', subtitle: 'Flat', type: 'apartment' }
@@ -58,7 +58,7 @@ export const floorsData: Floor[] = [
   {
     id: "4",
     name: "Piso 4",
-    floorPlanImage: "/plants/floor_4.png",
+    floorPlanImage: "plants/floor_4.jpg",
     units: [
       { id: "401", floorId: "4", price: 0, dimensions: 57.84, status: 'available', subtitle: 'Flat', type: 'apartment' },
       { id: "402", floorId: "4", price: 0, dimensions: 70.72, status: 'available', subtitle: 'Flat', type: 'apartment' }
@@ -67,7 +67,7 @@ export const floorsData: Floor[] = [
   {
     id: "5",
     name: "Piso 5",
-    floorPlanImage: "/plants/floor_5.png",
+    floorPlanImage: "plants/floor_5.jpg",
     units: [
       { id: "501", floorId: "5", price: 0, dimensions: 57.84, status: 'available', subtitle: 'Flat', type: 'apartment' },
       { id: "502", floorId: "5", price: 0, dimensions: 70.72, status: 'available', subtitle: 'Flat', type: 'apartment' }
@@ -76,7 +76,7 @@ export const floorsData: Floor[] = [
   {
     id: "6",
     name: "Piso 6",
-    floorPlanImage: "/plants/floor_6.png",
+    floorPlanImage: "plants/floor_6.jpg",
     units: [
       { id: "601", floorId: "6", price: 0, dimensions: 57.84, status: 'available', subtitle: 'Flat', type: 'apartment' },
       { id: "602", floorId: "6", price: 0, dimensions: 70.72, status: 'available', subtitle: 'Flat', type: 'apartment' }
@@ -85,7 +85,7 @@ export const floorsData: Floor[] = [
   {
     id: "7",
     name: "Piso 7",
-    floorPlanImage: "/plants/floor_7.png",
+    floorPlanImage: "plants/floor_7.jpg",
     units: [
       { id: "701", floorId: "7", price: 0, dimensions: 57.84, status: 'available', subtitle: 'Flat', type: 'apartment' },
       { id: "702", floorId: "7", price: 0, dimensions: 70.72, status: 'available', subtitle: 'Flat', type: 'apartment' }
@@ -94,16 +94,22 @@ export const floorsData: Floor[] = [
   {
     id: "8",
     name: "Piso 8",
-    floorPlanImage: "/plants/floor_8.png",
+    floorPlanImage: "plants/floor_8.jpg",
     units: [
       { id: "801", floorId: "8", price: 0, dimensions: 91.14, status: 'available', subtitle: 'Dúplex', type: 'apartment' },
       { id: "802", floorId: "8", price: 0, dimensions: 108.41, status: 'available', subtitle: 'Dúplex', type: 'apartment' }
     ]
   },
   {
+    id: "9",
+    name: "Piso 9",
+    floorPlanImage: "plants/floor_9.jpg",
+    units: []
+  },
+  {
     id: "1",
     name: "Piso 1",
-    floorPlanImage: "/plants/floor_s.png",
+    floorPlanImage: "plants/floor_1.jpg",
     units: [
       { id: "101", floorId: "1", price: 0, dimensions: 14.29, status: 'available', subtitle: 'Estacionamiento 1', type: 'storage' },
       { id: "102", floorId: "1", price: 0, dimensions: 14.58, status: 'available', subtitle: 'Estacionamiento 2', type: 'storage' },
