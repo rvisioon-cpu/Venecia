@@ -12,6 +12,7 @@ import MobileFloorNav from '@/components/floor/MobileFloorNav';
 import FullScreenToggle from '@/components/UI/FullScreenToggle';
 import { preloadImages } from '@/utils/preload';
 import { useStore } from '@/store/useStore';
+import { getAssetUrl } from '@/utils/assets';
 
 const FloorPage = () => {
   const params = useParams();
@@ -46,7 +47,7 @@ const FloorPage = () => {
              // 1. High Priority: Current Floor
             useStore.setState({ isLoadingAssets: true });
             try {
-                await preloadImages([floor.floorPlanImage]);
+                await preloadImages([getAssetUrl(floor.floorPlanImage)]);
             } catch(e) { console.warn("Floor mount preload failed", e); }
             useStore.setState({ isLoadingAssets: false });
             
@@ -55,9 +56,9 @@ const FloorPage = () => {
             if (currentIndex !== -1) {
                 const neighbors = [];
                 // Previous floor
-                if (currentIndex > 0) neighbors.push(floorsData[currentIndex - 1].floorPlanImage);
+                if (currentIndex > 0) neighbors.push(getAssetUrl(floorsData[currentIndex - 1].floorPlanImage));
                 // Next floor
-                if (currentIndex < floorsData.length - 1) neighbors.push(floorsData[currentIndex + 1].floorPlanImage);
+                if (currentIndex < floorsData.length - 1) neighbors.push(getAssetUrl(floorsData[currentIndex + 1].floorPlanImage));
                 
                 if (neighbors.length > 0) {
                      preloadImages(neighbors).catch(() => {});
@@ -262,7 +263,7 @@ const FloorPage = () => {
           onClick={handleMapClick}
         >
           <img 
-            src={floor.floorPlanImage} 
+            src={getAssetUrl(floor.floorPlanImage)} 
             alt={floor.name} 
             className="w-full h-auto drop-shadow-2xl grayscale-[0.2] contrast-[1.05]"
             draggable={false}

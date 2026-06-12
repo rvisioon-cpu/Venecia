@@ -86,6 +86,19 @@ export async function getFloorsData() {
           subtitle = 'Duplex';
         }
 
+        let assetId = u.identifier;
+        if (['201', '301', '401', '501', '601', '701'].includes(u.identifier)) {
+          assetId = 'tipo_201';
+        } else if (['202'].includes(u.identifier)) {
+          assetId = 'tipo_202';
+        } else if (['302', '402', '502', '602', '702'].includes(u.identifier)) {
+          assetId = 'tipo_302';
+        } else if (['801'].includes(u.identifier)) {
+          assetId = 'tipo_801';
+        } else if (['802'].includes(u.identifier)) {
+          assetId = 'tipo_802';
+        }
+
         return {
           id: u.id,
           identifier: u.identifier,
@@ -100,6 +113,7 @@ export async function getFloorsData() {
           description: '',
           images: u.gallery ? (u.gallery as string[]) : [],
           tourUrl: u.tourUrl || undefined,
+          assetId,
           x: coords?.x,
           y: coords?.y,
           path: coords?.path,

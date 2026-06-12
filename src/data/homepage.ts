@@ -13,14 +13,16 @@ export interface HomepageData {
   }[];
 }
 
+import { getAssetUrl } from '../utils/assets';
+
 export const homepageData: HomepageData = {
   hero: {
-    logo: "/identity/logo_venecia_transparent.png",
+    logo: getAssetUrl("identity/logo_venecia_transparent.png"),
     button: "Entrar"
   },
   intro: {
-    poster: "/portada_venecia.png",
-    video: "/videos/walk.mp4"
+    poster: getAssetUrl("identity/portada_venecia.png"),
+    video: getAssetUrl("videos/walk.mp4")
   },
   slides: [
     {

@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { buildingFaces, type BuildingFace } from '../data/buildingData';
 import { preloadVideo, preloadImages } from '../utils/preload';
 import { type Floor } from '../data/floors';
+import { getAssetUrl } from '../utils/assets';
 
 interface ShowroomState {
   currentFloor: number | null;
@@ -85,7 +86,7 @@ export const useStore = create<ShowroomState>((set, get) => ({
     if (floor) {
         set({ isLoadingAssets: true });
         try {
-            await preloadImages([floor.floorPlanImage]);
+            await preloadImages([getAssetUrl(floor.floorPlanImage)]);
         } catch(e) { console.warn("Floor preload failed", e); }
         set({ isLoadingAssets: false });
     }
@@ -94,7 +95,7 @@ export const useStore = create<ShowroomState>((set, get) => ({
   },
 
   preloadAllFloors: async () => {
-    const allFloorImages = get().floorsData.map(f => f.floorPlanImage);
+    const allFloorImages = get().floorsData.map(f => getAssetUrl(f.floorPlanImage));
     try {
         // Preload efficiently in background
         await preloadImages(allFloorImages);
