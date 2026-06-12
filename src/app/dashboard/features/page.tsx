@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 
 import { getFeatures } from "@/app/actions/features";
 import FeaturesClient from "@/components/dashboard/features/FeaturesClient";

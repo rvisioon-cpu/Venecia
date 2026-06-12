@@ -30,7 +30,7 @@ async function logAction(
 // ----------------------------------------------------
 
 export async function getFloors() {
-  const db = getDb();
+  const db = await getDb();
   return await db
     .select()
     .from(floors)
@@ -47,7 +47,7 @@ export async function getFloorsData() {
     // Ignore runtime/environment issues during local dev/tests
   }
 
-  const db = getDb();
+  const db = await getDb();
   
   const allFloors = await db
     .select()
@@ -126,7 +126,7 @@ export async function createFloor(data: {
     throw new Error("Unauthorized: Solo el Super Administrador puede crear plantas.");
   }
 
-  const db = getDb();
+  const db = await getDb();
   const [newFloor] = await db
     .insert(floors)
     .values({
@@ -161,7 +161,7 @@ export async function updateFloor(
     throw new Error("Unauthorized: Solo el Super Administrador puede editar plantas.");
   }
 
-  const db = getDb();
+  const db = await getDb();
   
   // Get original floor
   const [original] = await db.select().from(floors).where(eq(floors.id, id));
@@ -194,7 +194,7 @@ export async function deleteFloor(id: string) {
     throw new Error("Unauthorized: Solo el Super Administrador puede eliminar plantas.");
   }
 
-  const db = getDb();
+  const db = await getDb();
 
   // Find units that will be soft-deleted recursively
   const relatedUnits = await db
@@ -234,7 +234,7 @@ export async function deleteFloor(id: string) {
 // ----------------------------------------------------
 
 export async function getUnits() {
-  const db = getDb();
+  const db = await getDb();
   return await db
     .select()
     .from(units)
@@ -261,7 +261,7 @@ export async function createUnit(data: {
     throw new Error("Unauthorized: Solo el Super Administrador puede crear unidades.");
   }
 
-  const db = getDb();
+  const db = await getDb();
   const [newUnit] = await db
     .insert(units)
     .values({
@@ -313,7 +313,7 @@ export async function updateUnit(
     throw new Error("Unauthorized: Solo el Super Administrador puede editar detalles de la unidad.");
   }
 
-  const db = getDb();
+  const db = await getDb();
   
   // Get original unit
   const [original] = await db.select().from(units).where(eq(units.id, id));
@@ -353,7 +353,7 @@ export async function updateUnitState(id: string, newState: string) {
     throw new Error("Unauthorized: Debes iniciar sesión.");
   }
 
-  const db = getDb();
+  const db = await getDb();
   
   // Get original unit
   const [original] = await db.select().from(units).where(eq(units.id, id));
@@ -404,7 +404,7 @@ export async function deleteUnit(id: string) {
     throw new Error("Unauthorized: Solo el Super Administrador puede eliminar unidades.");
   }
 
-  const db = getDb();
+  const db = await getDb();
   const now = new Date();
 
   const [deletedUnit] = await db
@@ -426,7 +426,7 @@ export async function deleteUnit(id: string) {
 // ----------------------------------------------------
 
 export async function getLogs() {
-  const db = getDb();
+  const db = await getDb();
   return await db
     .select()
     .from(logs)

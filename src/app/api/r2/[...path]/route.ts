@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getRequestContext } from "@cloudflare/next-on-pages";
-
-export const runtime = 'edge';
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ path: string[] }> }
 ) {
   try {
-    const env = getRequestContext().env as any;
+    const { env } = await getCloudflareContext({ async: true }) as any;
     if (!env || !env.R2) {
       return new NextResponse("R2 binding not found", { status: 500 });
     }

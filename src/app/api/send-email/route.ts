@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server';
 
 import config from '@/config/config';
 
-export const runtime = 'edge';
 
 export async function POST(request: Request) {
   try {

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
 import { Montserrat, Inter } from "next/font/google"; // Using fonts closer to original (Montserrat/Inter)
 import "./globals.css";
 import config from "@/config/config";

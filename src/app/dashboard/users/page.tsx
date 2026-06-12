@@ -4,7 +4,6 @@ import UserList from "@/components/dashboard/users/UserList";
 import UserFormModal from "@/components/dashboard/users/UserFormModal";
 import { Users } from "lucide-react";
 
-export const runtime = "edge";
 
 export const metadata = {
   title: "Gestión de Usuarios - Dashboard",

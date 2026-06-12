@@ -1,6 +1,6 @@
 "use server";
 
-import { getRequestContext } from "@cloudflare/next-on-pages";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getDb } from "@/lib/db";
 import { buildingFaces } from "@/lib/db/schema";
 import { eq, isNull, asc } from "drizzle-orm";
@@ -124,7 +124,7 @@ const defaultFacesSeed = [
 ];
 
 export async function getBuildingFacesData(): Promise<BuildingFace[]> {
-  const db = getDb();
+  const db = await getDb();
   
   let rows = await db
     .select()
@@ -160,7 +160,7 @@ export async function getRawBuildingFaces() {
     throw new Error("Unauthorized: Solo el Super Administrador puede ver caras del edificio en el panel.");
   }
 
-  const db = getDb();
+  const db = await getDb();
   
   let rows = await db
     .select()
@@ -187,7 +187,7 @@ export async function createBuildingFace(data: any) {
     throw new Error("Unauthorized: Solo el Super Administrador puede crear caras.");
   }
 
-  const db = getDb();
+  const db = await getDb();
 
   // Find max order to assign to the new face
   const existing = await db
@@ -231,7 +231,7 @@ export async function updateBuildingFace(id: number, data: any) {
     throw new Error("Unauthorized: Solo el Super Administrador puede actualizar caras.");
   }
 
-  const db = getDb();
+  const db = await getDb();
 
   const [updatedFace] = await db
     .update(buildingFaces)
@@ -267,7 +267,7 @@ export async function deleteBuildingFace(id: number) {
     throw new Error("Unauthorized: Solo el Super Administrador puede eliminar caras.");
   }
 
-  const db = getDb();
+  const db = await getDb();
   const now = new Date();
 
   // Soft delete the face
@@ -301,7 +301,7 @@ export async function reorderBuildingFaces(orderedIds: number[]) {
     throw new Error("Unauthorized: Solo el Super Administrador puede ordenar las caras.");
   }
 
-  const db = getDb();
+  const db = await getDb();
 
   for (let i = 0; i < orderedIds.length; i++) {
     await db
@@ -331,7 +331,7 @@ export async function uploadBuildingAsset(formData: FormData) {
   let finalUrl = "";
 
   try {
-    const env = getRequestContext().env as any;
+    const { env } = await getCloudflareContext({ async: true }) as any;
     if (env && env.R2) {
       const arrayBuffer = await file.arrayBuffer();
       await env.R2.put(urlPath, arrayBuffer, {

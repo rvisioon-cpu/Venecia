@@ -8,7 +8,7 @@ import { auth } from "@/auth";
 import initialLocations from "@/data/santa_fe_locations.json";
 
 export async function getLocations(includeInactive = false) {
-  const db = getDb();
+  const db = await getDb();
   
   const query = db.select().from(locationsPoi).where(
     includeInactive
@@ -33,7 +33,7 @@ export async function createLocation(
     throw new Error("Unauthorized: Solo el Super Administrador puede agregar ubicaciones.");
   }
   
-  const db = getDb();
+  const db = await getDb();
   
   const [newLocation] = await db
     .insert(locationsPoi)
@@ -66,7 +66,7 @@ export async function updateLocation(
     throw new Error("Unauthorized: Solo el Super Administrador puede actualizar ubicaciones.");
   }
   
-  const db = getDb();
+  const db = await getDb();
   
   const [updatedLocation] = await db
     .update(locationsPoi)
@@ -92,7 +92,7 @@ export async function deleteLocation(id: string) {
     throw new Error("Unauthorized: Solo el Super Administrador puede eliminar ubicaciones.");
   }
   
-  const db = getDb();
+  const db = await getDb();
   
   await db
     .update(locationsPoi)
@@ -105,7 +105,7 @@ export async function deleteLocation(id: string) {
 }
 
 export async function seedLocations() {
-  const db = getDb();
+  const db = await getDb();
   
   // Check if locations already exist
   const existing = await db
