@@ -9,7 +9,7 @@ import { getAssetUrl } from '@/utils/assets';
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || '';
 const MAPBOX_STYLE = 'mapbox://styles/mapbox/light-v11';
 
-// Initial view state centering on Santa Fe 190, Pueblo Libre, Lima
+// Initial view state centering on Venecia, Pueblo Libre, Lima
 const INITIAL_VIEW_STATE = {
   latitude: -12.07592,
   longitude: -77.067632,
@@ -71,14 +71,14 @@ export default function MapComponent({ destination, origin, padding, onMarkerCli
             const modes = ['driving', 'walking', 'cycling'] as const;
             const requests = modes.map(mode => 
                 fetch(`https://api.mapbox.com/directions/v5/mapbox/${mode}/${start[0]},${start[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${MAPBOX_TOKEN}`)
-                .then(res => res.json())
+                .then(res => res.json() as Promise<any>)
             );
 
             const results = await Promise.all(requests);
             const stats: any = {};
             let currentModeData: any = null;
 
-            results.forEach((json, index) => {
+            results.forEach((json: any, index) => {
                 const mode = modes[index];
                 if (json.routes && json.routes.length > 0) {
                     const data = json.routes[0];
@@ -263,7 +263,7 @@ export default function MapComponent({ destination, origin, padding, onMarkerCli
 
         {markers}
 
-        {/* Santa Fe Marker (Main Project) */}
+        {/* Venecia Marker (Main Project) */}
         <Marker longitude={INITIAL_VIEW_STATE.longitude} latitude={INITIAL_VIEW_STATE.latitude} anchor="bottom" style={{ zIndex: 9999 }}>
             <div className="relative flex flex-col items-center group cursor-pointer" style={{ zIndex: 9999 }}>
                  {/* Popup Card - Hover Only */}
@@ -272,14 +272,14 @@ export default function MapComponent({ destination, origin, padding, onMarkerCli
                         <img 
                             src={getAssetUrl('building/photos/face_0_daylight.png')} 
                             className="w-full h-full object-cover"
-                            alt="Santa Fe"
+                            alt="Venecia"
                         />
                         <div className="absolute top-2 left-2 px-2 py-0.5 bg-gray-900/80 backdrop-blur-sm rounded text-[8px] font-bold text-white uppercase tracking-wider">
                             Edificio Boutique
                         </div>
                     </div>
                     <div className="p-2">
-                        <h3 className="text-xs font-bold text-gray-900 leading-tight mb-0.5">Santa Fe 190</h3>
+                        <h3 className="text-xs font-bold text-gray-900 leading-tight mb-0.5">Venecia</h3>
                     </div>
                  </div>
 

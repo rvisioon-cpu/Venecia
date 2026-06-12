@@ -23,6 +23,7 @@ export interface Unit {
   x?: number; // Percentage 0-100
   y?: number; // Percentage 0-100
   path?: string; // SVG Path 'd' attribute for irregular shapes (0-100 coordinate space)
+  identifier?: string; // Optional friendly name (e.g. "101")
 }
 
 export interface Floor {

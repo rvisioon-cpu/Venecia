@@ -1,15 +1,17 @@
 "use client";
 import { useRouter, usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { X, Home, Building2, Layers, Image, Rotate3D, Video, Download, MapPin, Phone, Facebook, Instagram, Mountain, Box, Construction } from 'lucide-react';
 import { getAssetUrl } from '@/utils/assets';
 import { useStore } from '@/store/useStore';
 import { preloadImages, preloadVideo } from '@/utils/preload';
-import { buildingFaces } from '@/data/buildingData';
-import { floorsData } from '@/data/floors';
+import { buildingFaces as staticBuildingFaces } from '@/data/buildingData';
+import { floorsData as staticFloorsData } from '@/data/floors';
 import config from '@/config/config';
-import features from '@/data/features.json';
 import BuildingFacadeSvg from '@/components/UI/BuildingFacadeSvg';
+import { getFeatures } from '@/app/actions/features';
+import ThemeToggle from '@/components/UI/ThemeToggle';
+import defaultFeatures from '@/data/features.json';
 
 interface SidebarProps {
     isOpen: boolean;
@@ -32,48 +34,57 @@ const TikTokIcon = ({ size = 24, className = "" }: { size?: number, className?: 
     </svg>
 );
 
+const IconMap: Record<string, any> = {
+    Home, Building2, Box, Layers, Image, Rotate3D, Mountain, Video, Download, MapPin, Construction, Phone, Facebook, Instagram
+};
+
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     const router = useRouter();
     const pathname = usePathname();
 
-    // Preload triggers (Part 2 of requested strategy)
-    useEffect(() => {
-        if (isOpen) {
-            // "El edificio" (Showroom) Critical Path
-            const face0 = buildingFaces[0];
-            // 1. Intro Video (Transition from Homepage)
-            preloadVideo(getAssetUrl('videos/walks/trans_intro_to_0.mp4')).catch(() => { });
-            // 2. Face 0 Day Background
-            preloadImages([face0.day.background]).catch(() => { });
+    const storeFloorsData = useStore(state => state.floorsData);
+    const storeBuildingFacesData = useStore(state => state.buildingFacesData);
 
-            // "Plantas" (Floors) Critical Path
-            // 1. Central Walk Video (used as transition to floors)
-            if (face0.day.introVideo) preloadVideo(face0.day.introVideo).catch(() => { });
-            // 2. Default Floor 9 Image
+    const floorsData = storeFloorsData && storeFloorsData.length > 0 ? storeFloorsData : staticFloorsData;
+    const buildingFacesData = storeBuildingFacesData && storeBuildingFacesData.length > 0 ? storeBuildingFacesData : staticBuildingFaces;
+
+    const [activeFeatures, setActiveFeatures] = useState<any[]>(defaultFeatures);
+
+    useEffect(() => {
+        getFeatures().then(dbFeatures => {
+            if (dbFeatures) {
+                // If it's a legacy object format, wrap it, but it should be an array.
+                if (Array.isArray(dbFeatures)) {
+                    setActiveFeatures(dbFeatures);
+                }
+            }
+        }).catch(e => console.error("Error fetching features:", e));
+    }, []);
+
+    // Preload triggers
+    useEffect(() => {
+        if (isOpen && buildingFacesData.length > 0) {
+            // "El edificio" (Showroom) Critical Path
+            const face0 = buildingFacesData[0];
+            if (face0) {
+                preloadVideo(getAssetUrl('videos/walks/trans_intro_to_0.mp4')).catch(() => { });
+                if (face0.day?.background) {
+                    preloadImages([face0.day.background]).catch(() => { });
+                }
+                if (face0.day?.introVideo) {
+                    preloadVideo(face0.day.introVideo).catch(() => { });
+                }
+            }
+
+            // Default Floor 9 Image
             const defaultFloor = floorsData.find(f => f.id === '9');
             if (defaultFloor) {
                 preloadImages([defaultFloor.floorPlanImage]).catch(() => { });
             }
         }
-    }, [isOpen]);
+    }, [isOpen, buildingFacesData, floorsData]);
 
-    const allMenuItems = [
-        { id: 'intro', icon: Home, label: 'Intro', path: '/' },
-        { id: 'showroom', icon: Building2, label: 'El edificio', path: '/showroom', preloadKey: 'showroom' },
-        { id: 'maqueta', icon: Box, label: 'Maqueta 3D', path: '/maqueta' },
-        { id: 'floors', icon: Layers, label: 'Plantas', path: '/plantas', preloadKey: 'floors' },
-        { id: 'amenities', icon: Image, label: 'Amenidades', path: '/galeria', preloadKey: 'amenities' },
-        { id: 'tours', icon: Rotate3D, label: 'Recorridos', path: '/recorridos' },
-        { id: 'topographic', icon: Mountain, label: 'Topografía', path: '/topography' },
-        { id: 'video', icon: Video, label: 'Video', path: '/video' },
-        { id: 'brochure', icon: Download, label: 'Brochure', action: 'brochure' },
-        { id: 'location', icon: MapPin, label: 'Ubicación', path: '/ubicacion' },
-        { id: 'avance', icon: Construction, label: 'Avance de obra', path: '/avance-de-obra' },
-        { id: 'contact', icon: Phone, label: 'Contacto', path: '/contact' },
-    ];
-
-    // Filter menu items based on features.json
-    const menuItems = allMenuItems.filter(item => (features.sidebar as any)[item.id] !== false);
+    const menuItems = activeFeatures.filter(item => item.active && item.id !== "identity");
 
     const toggleBrochure = useStore(state => state.toggleBrochure);
 
@@ -92,15 +103,11 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                 }
                 // Route Floors through Showroom for the transition video
                 else if (path === '/plantas') {
-                    // For Next.js, we might need a different strategy or just jump to showroom with floor param
-                    // Assuming we want the transition:
                     router.push('/showroom?transition=floors&targetPath=/plantas');
                 }
                 else {
                     router.push(path);
                 }
-            } else {
-                // Handle external links or scrolling here if needed
             }
             onClose();
         }
@@ -109,26 +116,21 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     const handleMouseEnter = (key?: string) => {
         if (!key) return;
 
-        // Fire-and-forget preloading (no await)
-        if (key === 'showroom') {
-            const face0 = buildingFaces[0];
-            // Preload Intro Video (Explicit path to match Homepage)
-            preloadVideo(getAssetUrl('videos/walks/trans_intro_to_0.mp4')).catch(() => { });
-            preloadImages([face0.day.background]).catch(() => { });
+        if (key === 'showroom' && buildingFacesData.length > 0) {
+            const face0 = buildingFacesData[0];
+            if (face0) {
+                preloadVideo(getAssetUrl('videos/walks/trans_intro_to_0.mp4')).catch(() => { });
+                if (face0.day?.background) preloadImages([face0.day.background]).catch(() => { });
+            }
         }
-        else if (key === 'floors') {
-            // Preload default floor (Floor 9) AND the Central Walk video
-            const face0 = buildingFaces[0];
-            if (face0.day.introVideo) preloadVideo(face0.day.introVideo).catch(() => { });
+        else if (key === 'floors' && buildingFacesData.length > 0) {
+            const face0 = buildingFacesData[0];
+            if (face0 && face0.day?.introVideo) preloadVideo(face0.day.introVideo).catch(() => { });
 
             const defaultFloor = floorsData.find(f => f.id === '9');
             if (defaultFloor) {
                 preloadImages([defaultFloor.floorPlanImage]).catch(() => { });
             }
-        }
-        else if (key === 'amenities') {
-            // Preload first amenity or common ones?
-            // (Optional future step)
         }
     };
 
@@ -136,7 +138,6 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         if (!path) return false;
         if (path === '/' && pathname === '/') return true;
         if (path !== '/' && pathname.startsWith(path)) return true;
-        // Special handling for Floors to keep active on any unit/floor page
         if (path === '/plantas' && pathname.startsWith('/plantas')) return true;
         return false;
     };
@@ -145,7 +146,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
     return (
         <>
-            {/* Backdrop (Only for normal sidebar) */}
+            {/* Backdrop */}
             {!isForcedLandscape && (
                 <div
                     className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
@@ -153,7 +154,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                 />
             )}
             {/* Sidebar Panel */}
-            <div className={`fixed top-0 left-0 bg-[#FCFBF9] border-r border-[#E5E3DF] z-[70] shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col 
+            <div className={`fixed top-0 left-0 bg-[#FCFBF9] dark:bg-base-300 border-r border-[#E5E3DF] dark:border-base-200 z-[70] shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col 
         ${isForcedLandscape ? 'w-full h-full' : 'h-full w-[320px]'}
         ${isOpen ? 'translate-x-0 pointer-events-auto' : '-translate-x-full pointer-events-none'}
       `}>
@@ -163,13 +164,17 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                 {/* Header (Common) */}
                 {!isForcedLandscape && (
                     <div className="pt-8 pb-6 px-6 flex flex-col items-center justify-center relative z-10 bg-transparent shrink-0">
+                        {/* ThemeToggle at Top Left */}
+                        <div className="absolute top-5 left-5 z-20">
+                            <ThemeToggle />
+                        </div>
                         {/* Brand Name */}
-                        <div className="flex flex-col items-center justify-center">
-                            <h1 className="font-primary text-brand-primary tracking-[0.25em] font-bold text-2xl uppercase leading-none select-none">Venecia</h1>
-                            <span className="font-primary text-zinc-400 tracking-[0.4em] font-medium text-[9px] uppercase mt-2 select-none">Pueblo Libre</span>
+                        <div className="flex flex-col items-center justify-center mt-2">
+                            <h1 className="font-primary text-brand-primary dark:text-white tracking-[0.25em] font-bold text-2xl uppercase leading-none select-none">Venecia</h1>
+                            <span className="font-primary text-zinc-400 dark:text-zinc-500 tracking-[0.4em] font-medium text-[9px] uppercase mt-2 select-none">Pueblo Libre</span>
                         </div>
                         {/* Close button aligned with mockup corner fold */}
-                        <button onClick={onClose} className="absolute top-5 right-5 text-zinc-400 hover:text-zinc-800 hover:scale-110 transition-all cursor-pointer">
+                        <button onClick={onClose} className="absolute top-5 right-5 text-zinc-400 hover:text-zinc-800 dark:hover:text-white hover:scale-110 transition-all cursor-pointer">
                             <X size={22} />
                         </button>
                     </div>
@@ -178,10 +183,13 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                 {/* FORCED LANDSCAPE LAYOUT (Grid) */}
                 {isForcedLandscape ? (
                     <div className="flex-1 flex flex-col p-6 relative">
-                        {/* Close Button */}
-                        <button onClick={onClose} className="absolute top-6 right-6 p-2 bg-white/80 border border-[#E5E3DF] rounded-full text-zinc-500 hover:text-zinc-800 hover:bg-white transition-colors z-20 cursor-pointer">
-                            <X size={24} />
-                        </button>
+                        {/* Controls Container */}
+                        <div className="absolute top-6 right-6 flex items-center gap-3 z-20">
+                            <ThemeToggle />
+                            <button onClick={onClose} className="p-2 bg-white/80 dark:bg-base-200 border border-[#E5E3DF] dark:border-base-100 rounded-full text-zinc-500 dark:text-zinc-200 hover:text-zinc-800 dark:hover:text-white hover:bg-white transition-colors z-20 cursor-pointer">
+                                <X size={24} />
+                            </button>
+                        </div>
 
                         {/* Logo - Smaller, Top Left or Center */}
                         <div className="absolute top-6 left-6 z-20 flex items-center gap-3">
@@ -191,8 +199,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                                 className="h-8 w-auto object-contain"
                             />
                             <div className="flex flex-col items-start justify-center">
-                                <h1 className="font-primary text-brand-primary tracking-[0.2em] font-bold text-base uppercase leading-none select-none">Venecia</h1>
-                                <span className="font-primary text-zinc-400 tracking-[0.3em] font-medium text-[7px] uppercase mt-1 select-none">Pueblo Libre</span>
+                                <h1 className="font-primary text-brand-primary dark:text-white tracking-[0.2em] font-bold text-base uppercase leading-none select-none">Venecia</h1>
+                                <span className="font-primary text-zinc-400 dark:text-zinc-500 tracking-[0.3em] font-medium text-[7px] uppercase mt-1 select-none">Pueblo Libre</span>
                             </div>
                         </div>
 
@@ -201,20 +209,21 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                             <div className="grid grid-cols-5 gap-6 w-full max-w-4xl px-8">
                                 {menuItems.map((item) => {
                                     const active = isItemActive(item.path);
+                                    const IconComponent = IconMap[item.icon] || Box;
                                     return (
                                         <button
                                             key={item.label}
                                             onClick={() => handleNavigation(item.path, (item as any).action)}
-                                            className={`flex flex-col items-center justify-center gap-3 p-4 rounded-xl border transition-all hover:bg-white/95 group cursor-pointer
-                                        ${active ? 'border-brand-primary bg-brand-primary/10 shadow-[0_4px_12px_rgba(12,90,91,0.08)]' : 'border-[#E5E3DF] bg-white/70'}
+                                            className={`flex flex-col items-center justify-center gap-3 p-4 rounded-xl border transition-all hover:bg-white/95 dark:hover:bg-base-200/50 group cursor-pointer
+                                        ${active ? 'border-brand-primary bg-brand-primary/10 dark:bg-brand-primary/20 shadow-[0_4px_12px_rgba(12,90,91,0.08)]' : 'border-[#E5E3DF] dark:border-base-100 bg-white/70 dark:bg-base-300/50'}
                                     `}
                                         >
                                             <div className={`p-3 rounded-full transition-all group-hover:scale-110
-                                         ${active ? 'text-brand-primary' : 'text-zinc-400 group-hover:text-zinc-600'}
+                                         ${active ? 'text-brand-primary dark:text-white' : 'text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-600 dark:group-hover:text-zinc-300'}
                                     `}>
-                                                <item.icon size={26} strokeWidth={1.5} />
+                                                <IconComponent size={26} strokeWidth={1.5} />
                                             </div>
-                                            <span className={`text-xs font-semibold uppercase tracking-wider ${active ? 'text-brand-primary font-bold' : 'text-zinc-500 group-hover:text-zinc-800'}`}>
+                                            <span className={`text-xs font-semibold uppercase tracking-wider ${active ? 'text-brand-primary dark:text-white font-bold' : 'text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-zinc-200'}`}>
                                                 {item.label}
                                             </span>
                                         </button>
@@ -228,31 +237,31 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                             <div className="flex gap-4">
                                 {config.company?.buildingSocials?.facebook && (
                                     <a href={config.company.buildingSocials.facebook} target="_blank" rel="noopener noreferrer"
-                                        className="w-9 h-9 border border-[#E5E3DF] rounded-full hover:border-brand-primary flex items-center justify-center text-zinc-500 hover:text-brand-primary hover:bg-brand-primary/5 transition-all cursor-pointer">
+                                        className="w-9 h-9 border border-[#E5E3DF] dark:border-base-150 rounded-full hover:border-brand-primary flex items-center justify-center text-zinc-500 hover:text-brand-primary dark:hover:text-white hover:bg-brand-primary/5 transition-all cursor-pointer">
                                         <Facebook size={16} />
                                     </a>
                                 )}
                                 {config.company?.buildingSocials?.instagram && (
                                     <a href={config.company.buildingSocials.instagram} target="_blank" rel="noopener noreferrer"
-                                        className="w-9 h-9 border border-[#E5E3DF] rounded-full hover:border-brand-primary flex items-center justify-center text-zinc-500 hover:text-brand-primary hover:bg-brand-primary/5 transition-all cursor-pointer">
+                                        className="w-9 h-9 border border-[#E5E3DF] dark:border-base-150 rounded-full hover:border-brand-primary flex items-center justify-center text-zinc-500 hover:text-brand-primary dark:hover:text-white hover:bg-brand-primary/5 transition-all cursor-pointer">
                                         <Instagram size={16} />
                                     </a>
                                 )}
                                 {config.company?.buildingSocials?.tiktok && (
                                     <a href={config.company.buildingSocials.tiktok} target="_blank" rel="noopener noreferrer"
-                                        className="w-9 h-9 border border-[#E5E3DF] rounded-full hover:border-brand-primary flex items-center justify-center text-zinc-500 hover:text-brand-primary hover:bg-brand-primary/5 transition-all cursor-pointer">
+                                        className="w-9 h-9 border border-[#E5E3DF] dark:border-base-150 rounded-full hover:border-brand-primary flex items-center justify-center text-zinc-500 hover:text-brand-primary dark:hover:text-white hover:bg-brand-primary/5 transition-all cursor-pointer">
                                         <TikTokIcon size={16} />
                                     </a>
                                 )}
                             </div>
-                            <div className="h-4 w-px bg-[#E5E3DF]" />
+                            <div className="h-4 w-px bg-[#E5E3DF] dark:bg-base-200" />
                             <img
                                 src={getAssetUrl('identity/LOGO_INMOBILIARIA.png')}
                                 alt={config.company?.realStateName || 'Inmobiliaria Logo'}
-                                className="h-6 w-auto object-contain opacity-85 hover:opacity-100 transition-opacity"
+                                className="h-6 w-auto object-contain opacity-85 hover:opacity-100 transition-opacity dark:invert"
                             />
-                            <div className="h-4 w-px bg-[#E5E3DF]" />
-                            <p className="text-[10px] text-zinc-400 font-secondary select-none">
+                            <div className="h-4 w-px bg-[#E5E3DF] dark:bg-base-200" />
+                            <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-secondary select-none">
                                 {new Date().getFullYear()}© {config.company?.developer || 'RIVISION.pe'}
                             </p>
                         </div>
@@ -265,6 +274,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                             <ul className="flex flex-col gap-2 px-4">
                                 {menuItems.map((item) => {
                                     const active = isItemActive(item.path);
+                                    const IconComponent = IconMap[item.icon] || Box;
                                     return (
                                         <li key={item.label}>
                                             <button
@@ -272,18 +282,18 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                                                 onMouseEnter={() => handleMouseEnter((item as any).preloadKey)}
                                                 className={`w-full flex items-center gap-4 px-4 py-2 rounded-xl border text-sm font-semibold transition-all duration-300 cursor-pointer group 
                                                 ${active
-                                                        ? 'border-brand-primary/30 bg-brand-primary/10 text-brand-primary shadow-[0_4px_12px_rgba(12,90,91,0.06)]'
-                                                        : 'border-transparent bg-transparent text-zinc-600 hover:bg-brand-primary/5 hover:border-brand-primary/15 hover:text-brand-primary'
+                                                        ? 'border-brand-primary/30 bg-brand-primary/10 text-brand-primary dark:text-white shadow-[0_4px_12px_rgba(12,90,91,0.06)]'
+                                                        : 'border-transparent bg-transparent text-zinc-600 dark:text-zinc-300 hover:bg-brand-primary/5 hover:border-brand-primary/15 hover:text-brand-primary dark:hover:text-white'
                                                     }`}
                                             >
                                                 {/* Icon container */}
                                                 <div className={`w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-300 group-hover:scale-105
                                                     ${active 
-                                                        ? 'text-brand-primary' 
-                                                        : 'text-zinc-400 group-hover:text-brand-primary'
+                                                        ? 'text-brand-primary dark:text-white' 
+                                                        : 'text-zinc-400 dark:text-zinc-500 group-hover:text-brand-primary'
                                                     }`}
                                                 >
-                                                    <item.icon
+                                                    <IconComponent
                                                         size={18}
                                                         strokeWidth={2}
                                                     />
@@ -301,22 +311,22 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                         {/* Footer */}
                         <div className="p-8 pb-10 mt-auto text-center bg-transparent shrink-0 relative z-10">
                             {/* Social circles */}
-                            <div className="flex justify-center gap-4 mb-6 border-t border-[#E5E3DF] pt-6">
+                            <div className="flex justify-center gap-4 mb-6 border-t border-[#E5E3DF] dark:border-base-200 pt-6">
                                 {config.company?.buildingSocials?.facebook && (
                                     <a href={config.company.buildingSocials.facebook} target="_blank" rel="noopener noreferrer"
-                                        className="w-9 h-9 border border-[#E5E3DF] rounded-full hover:border-brand-primary flex items-center justify-center text-zinc-500 hover:text-brand-primary hover:bg-brand-primary/5 transition-all cursor-pointer">
+                                        className="w-9 h-9 border border-[#E5E3DF] dark:border-base-200 rounded-full hover:border-brand-primary flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:text-brand-primary dark:hover:text-white hover:bg-brand-primary/5 transition-all cursor-pointer">
                                         <Facebook size={16} />
                                     </a>
                                 )}
                                 {config.company?.buildingSocials?.instagram && (
                                     <a href={config.company.buildingSocials.instagram} target="_blank" rel="noopener noreferrer"
-                                        className="w-9 h-9 border border-[#E5E3DF] rounded-full hover:border-brand-primary flex items-center justify-center text-zinc-500 hover:text-brand-primary hover:bg-brand-primary/5 transition-all cursor-pointer">
+                                        className="w-9 h-9 border border-[#E5E3DF] dark:border-base-200 rounded-full hover:border-brand-primary flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:text-brand-primary dark:hover:text-white hover:bg-brand-primary/5 transition-all cursor-pointer">
                                         <Instagram size={16} />
                                     </a>
                                 )}
                                 {config.company?.buildingSocials?.tiktok && (
                                     <a href={config.company.buildingSocials.tiktok} target="_blank" rel="noopener noreferrer"
-                                        className="w-9 h-9 border border-[#E5E3DF] rounded-full hover:border-brand-primary flex items-center justify-center text-zinc-500 hover:text-brand-primary hover:bg-brand-primary/5 transition-all cursor-pointer">
+                                        className="w-9 h-9 border border-[#E5E3DF] dark:border-base-200 rounded-full hover:border-brand-primary flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:text-brand-primary dark:hover:text-white hover:bg-brand-primary/5 transition-all cursor-pointer">
                                         <TikTokIcon size={16} />
                                     </a>
                                 )}
@@ -326,9 +336,9 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                                 <img
                                     src={getAssetUrl('identity/LOGO_INMOBILIARIA.png')}
                                     alt={config.company?.realStateName || 'Inmobiliaria Logo'}
-                                    className="h-8 w-auto object-contain opacity-85 hover:opacity-100 transition-opacity"
+                                    className="h-8 w-auto object-contain opacity-85 hover:opacity-100 transition-opacity dark:invert"
                                 />
-                                <p className="text-[10px] text-zinc-400 font-secondary select-none">{new Date().getFullYear()}© {config.company?.developer || 'RIVISION.pe'}</p>
+                                <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-secondary select-none">{new Date().getFullYear()}© {config.company?.developer || 'RIVISION.pe'}</p>
                             </div>
                         </div>
                     </>

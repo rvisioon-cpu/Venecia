@@ -2,6 +2,8 @@ import { Resend } from 'resend';
 import ContactEmail from '@/components/emails/ContactEmail';
 import { NextResponse } from 'next/server';
 
+import config from '@/config/config';
+
 export const runtime = 'edge';
 
 export async function POST(request: Request) {
@@ -9,7 +11,7 @@ export async function POST(request: Request) {
     // Initialize Resend inside the handler to avoid build-time errors
     const resend = new Resend(process.env.RESEND_API_KEY);
     
-    const body = await request.json();
+    const body = (await request.json()) as any;
     const { 
         nombres, 
         apellido, 
@@ -25,8 +27,8 @@ export async function POST(request: Request) {
 
     // Send email using Resend
     const { data, error } = await resend.emails.send({
-      from: 'Venecia <no-reply@venecia-showroom.com>', // Updated sender address
-      to: ['sales@venecia-showroom.com'], // Updated recipient
+      from: config.resend.fromNoReply || 'Venecia <no-reply@venecia-showroom.com>',
+      to: [config.company?.email || 'sales@venecia-showroom.com'],
       subject: `Nueva Solicitud: ${nombres} ${apellido}`,
       react: ContactEmail({
         nombres,
