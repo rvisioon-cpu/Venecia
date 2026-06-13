@@ -77,27 +77,27 @@ uploadQueue.push({
   r2Key: 'building/videos/face_0_nightlight.mp4'
 });
 uploadQueue.push({
-  localPath: findFile(buildingDir, 'DJI_0778_VENECIA_QUEDA.png'),
+  localPath: findFile(buildingDir, 'cara_central_dia.png'),
   r2Key: 'building/photos/face_0_daylight.png'
 });
 uploadQueue.push({
-  localPath: findFile(buildingDir, 'DJI_0801_VENECIA_QUEDA.png'),
+  localPath: findFile(buildingDir, 'cara_central_noche.png'),
   r2Key: 'building/photos/face_0_nightlight.png'
 });
 uploadQueue.push({
-  localPath: findFile(buildingDir, 'DJI_0779_VENECIA_QUEDA.png'),
+  localPath: findFile(buildingDir, 'cara_derecha_dia.png'),
   r2Key: 'building/photos/face_1_daylight.png'
 });
 uploadQueue.push({
-  localPath: findFile(buildingDir, 'DJI_0802_VENECIA_QUEDA.png'),
+  localPath: findFile(buildingDir, 'cara_derecha_noche.png'),
   r2Key: 'building/photos/face_1_nightlight.png'
 });
 uploadQueue.push({
-  localPath: findFile(buildingDir, 'DJI_0779_VENECIA_QUEDA.png'),
+  localPath: findFile(buildingDir, 'cara_izquierda_dia.png'),
   r2Key: 'building/photos/face_2_daylight.png'
 });
 uploadQueue.push({
-  localPath: findFile(buildingDir, 'DJI_0802_VENECIA_QUEDA.png'),
+  localPath: findFile(buildingDir, 'cara_izquierda_noche.png'),
   r2Key: 'building/photos/face_2_nightlight.png'
 });
 

@@ -56,7 +56,7 @@ export const buildingFaces: BuildingFace[] = [
       introVideo: getAssetUrl('videos/walks/walk_right_daylight.mp4'),
       transitions: {
         toLeft: getAssetUrl('building/transitions/trans_1_to_0_daylight.mp4'),
-        toRight: getAssetUrl('building/transitions/trans_1_to_0_daylight.mp4')
+        toRight: ''
       }
     },
     night: {
@@ -64,7 +64,7 @@ export const buildingFaces: BuildingFace[] = [
       introVideo: getAssetUrl('videos/walks/walk_right_nightlight.mp4'),
       transitions: {
         toLeft: getAssetUrl('building/transitions/trans_1_to_0_nightlight.mp4'),
-        toRight: getAssetUrl('building/transitions/trans_1_to_0_nightlight.mp4')
+        toRight: ''
       }
     }
   },
@@ -77,7 +77,7 @@ export const buildingFaces: BuildingFace[] = [
       background: getAssetUrl('building/photos/face_2_daylight.png'),
       introVideo: getAssetUrl('videos/walks/walk_left_daylight.mp4'),
       transitions: {
-        toLeft: getAssetUrl('building/transitions/trans_2_to_0_daylight.mp4'),
+        toLeft: '',
         toRight: getAssetUrl('building/transitions/trans_2_to_0_daylight.mp4')
       }
     },
@@ -85,7 +85,7 @@ export const buildingFaces: BuildingFace[] = [
       background: getAssetUrl('building/photos/face_2_nightlight.png'),
       introVideo: getAssetUrl('videos/walks/walk_left_nightlight.mp4'),
       transitions: {
-        toLeft: getAssetUrl('building/transitions/trans_2_to_0_nightlight.mp4'),
+        toLeft: '',
         toRight: getAssetUrl('building/transitions/trans_2_to_0_nightlight.mp4')
       }
     }
