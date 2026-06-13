@@ -284,14 +284,13 @@ const FloorPage = () => {
           className="relative transition-transform duration-75 ease-out"
           style={{
             transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-            width: '100%',
           }}
           onClick={handleMapClick}
         >
           <img
             src={getAssetUrl(floor.floorPlanImage)}
             alt={floor.name}
-            className="w-full h-auto drop-shadow-2xl transition-all duration-300 contrast-[1.02] brightness-[1.02]"
+            className="max-h-[76vh] max-w-[92vw] w-auto h-auto drop-shadow-2xl transition-all duration-300 contrast-[1.02] brightness-[1.02]"
             draggable={false}
           />
 
@@ -390,6 +389,7 @@ const FloorPage = () => {
                     onMouseLeave={handleUnitLeave}
                     onOpenConsultation={handleOpenConsultation}
                     onNavigate={(path) => router.push(path)}
+                    openDirection={getUnitCenter(unit).y < 35 ? 'down' : 'up'}
                   />
                 )}
               </div>

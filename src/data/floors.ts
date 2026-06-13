@@ -119,7 +119,7 @@ export const floorsData: Floor[] = [
       { id: "103", floorId: "1", price: 0, dimensions: 14.59, status: 'available', subtitle: 'Estacionamiento 3', type: 'storage', path: 'M 50.5,23.4 L 41.7,23.3 L 41.1,0.3 L 50.4,0.2 Z' },
       { id: "104", floorId: "1", price: 0, dimensions: 13.66, status: 'available', subtitle: 'Estacionamiento 4', type: 'storage', path: 'M 59.5,23.5 L 59.3,0.1 L 50.3,0.3 L 50.6,23.1 Z' },
       { id: "105", floorId: "1", price: 0, dimensions: 13.90, status: 'available', subtitle: 'Estacionamiento 5', type: 'storage', path: 'M 69.6,23.3 L 59.7,23.3 L 59.5,0.2 L 69.4,0.2 Z' },
-      { id: "106", floorId: "1", price: 0, dimensions: 1.48, status: 'available', subtitle: 'Depósito 1', type: 'storage', x: 82, y: 50 }
+      { id: "106", floorId: "1", price: 0, dimensions: 1.48, status: 'available', subtitle: 'Depósito 1', type: 'storage', path: 'M 49.8,62.7 L 49.8,65.5 L 59.2,65.7 L 59.1,62.6 Z' }
     ]
   }
 ];
