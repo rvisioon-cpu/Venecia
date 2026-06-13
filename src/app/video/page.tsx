@@ -67,7 +67,6 @@ export default function VideoPage() {
                 controlsList="nodownload"
                 onContextMenu={(e) => e.preventDefault()}
                 autoPlay
-                muted
                 playsInline
                 className="w-full h-full object-contain"
              />
