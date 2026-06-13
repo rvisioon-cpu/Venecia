@@ -31,7 +31,7 @@ for (const floor of floorsData) {
     // We just need to wrap the JSON string in single quotes: '${coordinates}'
     const coordsSql = coordinates === 'NULL' ? 'NULL' : `'${coordinates}'`;
     
-    sql += `INSERT INTO units (id, floor_id, identifier, type, bedrooms, bathrooms, area_sqm, coordinates, state, tour_url) VALUES ('${unitId}', '${floorId}', '${unit.id}', '${typeStr}', ${bedrooms}, ${bathrooms}, ${areaSqm}, ${coordsSql}, '${state}', ${tourUrl});\n`;
+    sql += `INSERT INTO units (id, floor_id, identifier, type, bedrooms, bathrooms, area_sqm, coordinates, state, tour_url) VALUES ('${unitId}', '${floorId}', '${unit.identifier || unit.id}', '${typeStr}', ${bedrooms}, ${bathrooms}, ${areaSqm}, ${coordsSql}, '${state}', ${tourUrl});\n`;
   }
 }
 

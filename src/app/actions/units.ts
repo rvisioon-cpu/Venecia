@@ -79,10 +79,16 @@ export async function getFloorsData() {
         
         let subtitle = 'Flat';
         if (u.type === 'STORAGE') {
-          subtitle = 'Bodega';
+          if (u.identifier === '101') subtitle = 'Estacionamiento 1';
+          else if (u.identifier === '102') subtitle = 'Estacionamiento 2';
+          else if (u.identifier === '103') subtitle = 'Estacionamiento 3';
+          else if (u.identifier === '104') subtitle = 'Estacionamiento 4';
+          else if (u.identifier === '105') subtitle = 'Estacionamiento 5';
+          else if (u.identifier === '106') subtitle = 'Depósito 1';
+          else subtitle = 'Bodega';
         } else if (u.identifier === 'Terraza') {
           subtitle = 'Terraza';
-        } else if (u.identifier === '801') {
+        } else if (['801', '901', '802', '902'].includes(u.identifier)) {
           subtitle = 'Duplex';
         }
 
@@ -93,9 +99,9 @@ export async function getFloorsData() {
           assetId = 'tipo_202';
         } else if (['302', '402', '502', '602', '702'].includes(u.identifier)) {
           assetId = 'tipo_302';
-        } else if (['801'].includes(u.identifier)) {
+        } else if (['801', '901'].includes(u.identifier)) {
           assetId = 'tipo_801';
-        } else if (['802'].includes(u.identifier)) {
+        } else if (['802', '902'].includes(u.identifier)) {
           assetId = 'tipo_802';
         }
 
@@ -392,13 +398,24 @@ export async function updateUnitState(id: string, newState: string) {
     }
   }
 
+  // If we are updating a duplex (801/901 or 802/902), sync their states
+  let targetIdentifiers = [original.identifier];
+  if (original.identifier === '801' || original.identifier === '901') {
+    targetIdentifiers = ['801', '901'];
+  } else if (original.identifier === '802' || original.identifier === '902') {
+    targetIdentifiers = ['802', '902'];
+  }
+
   const [updatedUnit] = await db
     .update(units)
     .set({
       state: newState,
       updatedAt: new Date(),
     })
-    .where(eq(units.id, id))
+    .where(and(
+      inArray(units.identifier, targetIdentifiers),
+      isNull(units.deletedAt)
+    ))
     .returning();
 
   await logAction(db, session, "UPDATE", "unit", id, {

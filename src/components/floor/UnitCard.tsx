@@ -32,7 +32,10 @@ const UnitCard = ({
                   </span>
               </div>
               )}
-              <h2 className="text-lg font-light text-gray-900 leading-tight">{unit.id}</h2>
+              <h2 className="text-lg font-light text-gray-900 leading-tight">{unit.identifier || unit.id}</h2>
+              {unit.subtitle && (
+                  <p className="text-[10px] text-gray-500 font-medium uppercase tracking-wider mt-0.5">{unit.subtitle}</p>
+              )}
            </div>
         </div>
         

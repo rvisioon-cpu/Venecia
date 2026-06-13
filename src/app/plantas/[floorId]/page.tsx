@@ -35,6 +35,20 @@ const FloorPage = () => {
   const [lastTouchDistance, setLastTouchDistance] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const [devMode, setDevMode] = useState(false);
+  const [currentPathPoints, setCurrentPathPoints] = useState<{ x: number, y: number }[]>([]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const searchParams = new URLSearchParams(window.location.search);
+      if (searchParams.get('dev') === 'true') {
+        setDevMode(true);
+      }
+    }
+  }, []);
+
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const floor = floorsData.find(f => f.id === floorId);
 
   useEffect(() => {
@@ -68,8 +82,6 @@ const FloorPage = () => {
       loadFloorAssets();
     }
   }, [floorId, floor]);
-
-  if (!floor) return <div className="h-screen bg-gray-900 text-white flex items-center justify-center">Floor not found</div>;
 
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
@@ -140,18 +152,6 @@ const FloorPage = () => {
     setLastTouchDistance(null);
   };
 
-  const [devMode, setDevMode] = useState(false);
-  const [currentPathPoints, setCurrentPathPoints] = useState<{ x: number, y: number }[]>([]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const searchParams = new URLSearchParams(window.location.search);
-      if (searchParams.get('dev') === 'true') {
-        setDevMode(true);
-      }
-    }
-  }, []);
-
   const handleUndoPath = () => {
     setCurrentPathPoints(prev => prev.slice(0, -1));
   };
@@ -159,8 +159,6 @@ const FloorPage = () => {
   const handleClearPath = () => {
     setCurrentPathPoints([]);
   };
-
-  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const getPolyCenter = (path: string | undefined, defaultX: number = 50, defaultY: number = 50) => {
     if (!path) return { x: defaultX, y: defaultY };
@@ -226,6 +224,8 @@ const FloorPage = () => {
   const getUnitCenter = (unit: Unit) => {
     return getPolyCenter(unit.path, unit.x, unit.y);
   };
+
+  if (!floor) return <div className="h-screen bg-gray-900 text-white flex items-center justify-center">Floor not found</div>;
 
   return (
     <div className="h-full w-full bg-[#EBEBEB] relative overflow-hidden font-sans select-none">

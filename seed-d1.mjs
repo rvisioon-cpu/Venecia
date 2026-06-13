@@ -69,7 +69,7 @@ for (const floor of floorsData) {
       photosPlans = JSON.stringify([`plants/details/${assetId}/plans.jpg`]);
     }
 
-    sql += `INSERT INTO units (id, floor_id, identifier, type, bedrooms, bathrooms, area_sqm, coordinates, state, tour_url, photos_furnished, photos_unfurnished, photos_plans, gallery, renders) VALUES ('${unitId}', '${floorId}', '${unit.id}', '${typeStr}', ${bedrooms}, ${bathrooms}, ${areaSqm}, ${coordsSql}, '${state}', ${tourUrl}, '${photosFurnished}', '${photosUnfurnished}', '${photosPlans}', '[]', '[]');\n`;
+    sql += `INSERT INTO units (id, floor_id, identifier, type, bedrooms, bathrooms, area_sqm, coordinates, state, tour_url, photos_furnished, photos_unfurnished, photos_plans, gallery, renders) VALUES ('${unitId}', '${floorId}', '${unit.identifier || unit.id}', '${typeStr}', ${bedrooms}, ${bathrooms}, ${areaSqm}, ${coordsSql}, '${state}', ${tourUrl}, '${photosFurnished}', '${photosUnfurnished}', '${photosPlans}', '[]', '[]');\n`;
   }
 }
 

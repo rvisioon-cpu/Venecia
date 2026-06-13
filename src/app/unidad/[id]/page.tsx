@@ -23,6 +23,21 @@ const UnitPage = () => {
   const floor = floorsData.find(f => f.units.some(u => u.id === unitId));
   const unit = floor?.units.find(u => u.id === unitId);
 
+  const isDuplex = unit && (unit.subtitle === 'Dúplex' || unit.subtitle === 'Duplex' || ['801', '802'].includes(unit.identifier || ''));
+  const isPiso1 = unit && floor?.id === '8';
+
+  // Find the other level unit
+  let otherLevelUnit: any = undefined;
+  if (unit && isDuplex) {
+    const targetFloorId = floor?.id === '8' ? '9' : '8';
+    for (const f of floorsData) {
+      if (f.id === targetFloorId) {
+        otherLevelUnit = f.units.find(u => u.identifier === unit.identifier);
+        break;
+      }
+    }
+  }
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
@@ -268,11 +283,25 @@ const UnitPage = () => {
       return (
           <div className="w-full h-full bg-white relative">
              {staticImageUrl ? (
-                 <img 
-                    src={staticImageUrl} 
-                    className="w-full h-full object-contain p-4 md:p-8"
-                    alt={`${viewMode} View`}
-                 />
+                 isDuplex ? (
+                     <div className="w-full h-full p-4 md:p-8 bg-white relative">
+                         <div className="w-full h-full overflow-hidden relative">
+                             <img 
+                                src={staticImageUrl} 
+                                className={`absolute w-full h-[200%] object-contain transition-all duration-300 ${
+                                    isPiso1 ? 'top-0 left-0 object-top' : 'bottom-0 left-0 object-bottom'
+                                }`}
+                                alt={`${viewMode} View`}
+                             />
+                         </div>
+                     </div>
+                 ) : (
+                     <img 
+                        src={staticImageUrl} 
+                        className="w-full h-full object-contain p-4 md:p-8"
+                        alt={`${viewMode} View`}
+                     />
+                 )
              ) : (
                  <div className="w-full h-full flex items-center justify-center bg-neutral-200">
                      <p className="text-neutral-400">Image not found: {viewMode}</p>
@@ -692,6 +721,40 @@ const UnitPage = () => {
             <div className="absolute inset-0 z-0">
                 {/* Main Content (Static/Gallery/Tour) */}
                 {renderContent()}
+
+                {/* Duplex Floor Selector Buttons */}
+                {isDuplex && viewMode !== 'gallery' && viewMode !== 'tour' && (
+                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex bg-black/60 backdrop-blur p-1 rounded-lg border border-white/10 shadow-lg gap-1">
+                        <button
+                            onClick={() => {
+                                if (!isPiso1 && otherLevelUnit) {
+                                    router.push(`/unidad/${otherLevelUnit.id}`);
+                                }
+                            }}
+                            className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-md transition-all cursor-pointer ${
+                                isPiso1 
+                                    ? 'bg-brand-primary text-white shadow' 
+                                    : 'text-gray-300 hover:text-white hover:bg-white/10'
+                            }`}
+                        >
+                            Piso 1
+                        </button>
+                        <button
+                            onClick={() => {
+                                if (isPiso1 && otherLevelUnit) {
+                                    router.push(`/unidad/${otherLevelUnit.id}`);
+                                }
+                            }}
+                            className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-md transition-all cursor-pointer ${
+                                !isPiso1 
+                                    ? 'bg-brand-primary text-white shadow' 
+                                    : 'text-gray-300 hover:text-white hover:bg-white/10'
+                            }`}
+                        >
+                            Piso 2
+                        </button>
+                    </div>
+                )}
                 
                 {/* Transition Video Overlay */}
                 {isPlayingTransition && transitionVideo && (
