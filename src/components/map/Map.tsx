@@ -7,7 +7,7 @@ import { locationsData } from '@/data/locations';
 import { getAssetUrl } from '@/utils/assets'; 
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || '';
-const MAPBOX_STYLE = 'mapbox://styles/mapbox/light-v11';
+const MAPBOX_STYLE = process.env.NEXT_PUBLIC_MAPBOX_STYLE_URL || 'mapbox://styles/mapbox/light-v11';
 
 // Initial view state centering on Venecia, Pueblo Libre, Lima
 const INITIAL_VIEW_STATE = {
