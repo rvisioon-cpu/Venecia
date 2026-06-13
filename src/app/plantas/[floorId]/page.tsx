@@ -7,7 +7,6 @@ import Sidebar from '@/components/layout/Sidebar';
 import ConsultationModal from '@/components/UI/modals/ConsultationModal';
 import UnitPopover from '@/components/floor/UnitPopover';
 import UnitCard from '@/components/floor/UnitCard';
-import PathBuilder from '@/components/floor/PathBuilder'; // Assuming dev tool not needed in prod template for now, or uncomment if needed
 import MobileFloorNav from '@/components/floor/MobileFloorNav';
 import FullScreenToggle from '@/components/UI/FullScreenToggle';
 import { preloadImages } from '@/utils/preload';
@@ -35,17 +34,7 @@ const FloorPage = () => {
   const [lastTouchDistance, setLastTouchDistance] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [devMode, setDevMode] = useState(false);
-  const [currentPathPoints, setCurrentPathPoints] = useState<{ x: number, y: number }[]>([]);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const searchParams = new URLSearchParams(window.location.search);
-      if (searchParams.get('dev') === 'true') {
-        setDevMode(true);
-      }
-    }
-  }, []);
 
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -152,13 +141,7 @@ const FloorPage = () => {
     setLastTouchDistance(null);
   };
 
-  const handleUndoPath = () => {
-    setCurrentPathPoints(prev => prev.slice(0, -1));
-  };
 
-  const handleClearPath = () => {
-    setCurrentPathPoints([]);
-  };
 
   const getPolyCenter = (path: string | undefined, defaultX: number = 50, defaultY: number = 50) => {
     if (!path) return { x: defaultX, y: defaultY };
@@ -175,13 +158,11 @@ const FloorPage = () => {
   };
 
   const handleUnitEnter = (unit: Unit) => {
-    if (devMode) return;
     if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
     setSelectedUnit(unit);
   };
 
   const handleUnitLeave = () => {
-    if (devMode) return;
     // Prevent auto-close on mobile/tablet (XL breakpoint)
     if (typeof window !== 'undefined' && window.innerWidth < 1280) return;
 
@@ -198,28 +179,7 @@ const FloorPage = () => {
     setIsConsultationOpen(true);
   };
 
-  const generatePathString = () => {
-    if (currentPathPoints.length === 0) return '';
-    const d = currentPathPoints.map((p, i) => {
-      const x = Math.round(p.x * 10) / 10;
-      const y = Math.round(p.y * 10) / 10;
-      return `${i === 0 ? 'M' : 'L'} ${x},${y}`;
-    }).join(' ');
-    return `${d} Z`;
-  };
 
-  const handleMapClick = (e: React.MouseEvent) => {
-    if (!devMode) return;
-
-    if (containerRef.current) {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const xPixels = e.clientX - rect.left;
-      const yPixels = e.clientY - rect.top;
-      const xPercent = (xPixels / rect.width) * 100;
-      const yPercent = (yPixels / rect.height) * 100;
-      setCurrentPathPoints(prev => [...prev, { x: xPercent, y: yPercent }]);
-    }
-  };
 
   const getUnitCenter = (unit: Unit) => {
     return getPolyCenter(unit.path, unit.x, unit.y);
@@ -246,15 +206,6 @@ const FloorPage = () => {
 
       <div className="fixed top-20 left-1/2 -translate-x-1/2 md:translate-x-0 md:top-6 md:left-20 z-40 flex items-center gap-3 bg-gray-800 text-white px-4 py-2 rounded-md shadow-md text-sm font-medium uppercase tracking-wider whitespace-nowrap">
         <span>Planta {floor.name}</span>
-        <button
-          onClick={() => setDevMode(prev => !prev)}
-          className={`ml-2 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer hover:scale-105 active:scale-95 ${
-            devMode ? 'bg-amber-500 text-gray-900 border border-amber-400' : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-transparent'
-          }`}
-          title={devMode ? "Desactivar herramienta de trazado de coordenadas" : "Activar herramienta de trazado de coordenadas"}
-        >
-          {devMode ? 'Salir Trazado' : 'Trazar Coordenadas'}
-        </button>
       </div>
 
       <div className="fixed top-6 right-6 z-50">
@@ -285,19 +236,18 @@ const FloorPage = () => {
           style={{
             transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
           }}
-          onClick={handleMapClick}
         >
           <img
             src={getAssetUrl(floor.floorPlanImage)}
             alt={floor.name}
-            className="max-h-[76vh] max-w-[92vw] w-auto h-auto drop-shadow-2xl transition-all duration-300 contrast-[1.02] brightness-[1.02]"
+            className="max-h-[100vh] max-w-[100vw] w-auto h-auto drop-shadow-2xl transition-all duration-300 contrast-[1.02] brightness-[1.02]"
             draggable={false}
           />
 
           <svg
             viewBox="0 0 100 100"
             preserveAspectRatio="none"
-            className={`absolute inset-0 w-full h-full ${devMode ? 'pointer-events-auto cursor-crosshair' : 'pointer-events-none'}`}
+            className="absolute inset-0 w-full h-full pointer-events-none"
             style={{ zIndex: 5 }}
           >
             {floor.units.map(unit => {
@@ -309,47 +259,21 @@ const FloorPage = () => {
                   key={`path-${unit.id}`}
                   d={unit.path}
                   className={`
-                    transition-all duration-300 ${!devMode && 'cursor-pointer pointer-events-auto'}
+                    transition-all duration-300 cursor-pointer pointer-events-auto
                     ${isSelected ? 'fill-black/40' : 'fill-transparent hover:fill-black/20'}
                   `}
                   onMouseEnter={() => handleUnitEnter(unit)}
                   onMouseLeave={handleUnitLeave}
                   onClick={(e) => {
-                    if (devMode) return;
                     e.stopPropagation();
-                    // Also select on click for mobile
                     setSelectedUnit(unit);
                   }}
                 />
               );
             })}
-
-            {/* Draw current path builder points and lines */}
-            {devMode && currentPathPoints.length > 0 && (
-              <>
-                <path
-                  d={generatePathString()}
-                  fill="rgba(59, 130, 246, 0.2)"
-                  stroke="#3b82f6"
-                  strokeWidth="0.5"
-                  strokeDasharray="1"
-                />
-                {currentPathPoints.map((pt, i) => (
-                  <circle
-                    key={i}
-                    cx={pt.x}
-                    cy={pt.y}
-                    r="0.8"
-                    fill="#3b82f6"
-                    stroke="white"
-                    strokeWidth="0.2"
-                  />
-                ))}
-              </>
-            )}
           </svg>
 
-          {!devMode && floor.units.map(unit => {
+          {floor.units.map(unit => {
             const center = getUnitCenter(unit);
             const isSelected = selectedUnit?.id === unit.id;
 
@@ -404,17 +328,9 @@ const FloorPage = () => {
         unitId={consultationUnitId}
       />
 
-      {devMode && (
-        <div className="fixed bottom-24 left-6 z-50">
-          <PathBuilder
-            generatedPath={generatePathString()}
-            onUndo={handleUndoPath}
-            onClear={handleClearPath}
-          />
-        </div>
-      )}
 
-      {/* Zoom Controls */}
+
+      {/* Zoom Controls 
       <div className="fixed bottom-24 right-6 z-50 flex flex-col gap-2">
         <button
           onClick={() => setScale(prev => Math.min(prev + 0.2, 6.0))}
@@ -440,7 +356,7 @@ const FloorPage = () => {
         >
           RST
         </button>
-      </div>
+      </div> */}
 
       {/* Mobile Unit Modal - Centered */}
       {selectedUnit && (
