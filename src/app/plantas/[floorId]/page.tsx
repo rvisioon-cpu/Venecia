@@ -27,8 +27,8 @@ const FloorPage = () => {
   const [consultationUnitId, setConsultationUnitId] = useState<string>('');
 
   // Map State
-  const MIN_SCALE = 1.1;
-  const [scale, setScale] = useState(MIN_SCALE);
+  const MIN_SCALE = 1.0;
+  const [scale, setScale] = useState(1.1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
@@ -74,7 +74,7 @@ const FloorPage = () => {
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
     const scaleSensitivity = 0.001;
-    const newScale = Math.min(Math.max(MIN_SCALE, scale - e.deltaY * scaleSensitivity), 4);
+    const newScale = Math.min(Math.max(MIN_SCALE, scale - e.deltaY * scaleSensitivity), 6);
     setScale(newScale);
   };
 
@@ -128,7 +128,7 @@ const FloorPage = () => {
       const delta = dist - lastTouchDistance;
       // Sensitivity factor
       const zoomSpeed = 0.005;
-      const newScale = Math.min(Math.max(MIN_SCALE, scale + delta * zoomSpeed), 4);
+      const newScale = Math.min(Math.max(MIN_SCALE, scale + delta * zoomSpeed), 6);
 
       setScale(newScale);
       setLastTouchDistance(dist);
@@ -244,8 +244,17 @@ const FloorPage = () => {
         </span>
       </div>
 
-      <div className="fixed top-20 left-1/2 -translate-x-1/2 md:translate-x-0 md:top-6 md:left-20 z-40 bg-gray-800 text-white px-4 py-2 rounded-md shadow-md text-sm font-medium uppercase tracking-wider whitespace-nowrap">
-        Planta {floor.name}
+      <div className="fixed top-20 left-1/2 -translate-x-1/2 md:translate-x-0 md:top-6 md:left-20 z-40 flex items-center gap-3 bg-gray-800 text-white px-4 py-2 rounded-md shadow-md text-sm font-medium uppercase tracking-wider whitespace-nowrap">
+        <span>Planta {floor.name}</span>
+        <button
+          onClick={() => setDevMode(prev => !prev)}
+          className={`ml-2 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer hover:scale-105 active:scale-95 ${
+            devMode ? 'bg-amber-500 text-gray-900 border border-amber-400' : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-transparent'
+          }`}
+          title={devMode ? "Desactivar herramienta de trazado de coordenadas" : "Activar herramienta de trazado de coordenadas"}
+        >
+          {devMode ? 'Salir Trazado' : 'Trazar Coordenadas'}
+        </button>
       </div>
 
       <div className="fixed top-6 right-6 z-50">
@@ -404,6 +413,34 @@ const FloorPage = () => {
           />
         </div>
       )}
+
+      {/* Zoom Controls */}
+      <div className="fixed bottom-24 right-6 z-50 flex flex-col gap-2">
+        <button
+          onClick={() => setScale(prev => Math.min(prev + 0.2, 6.0))}
+          className="w-10 h-10 bg-white hover:bg-gray-100 text-gray-800 rounded-full shadow-lg border border-gray-200 flex items-center justify-center font-bold text-lg transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+          title="Zoom +"
+        >
+          +
+        </button>
+        <button
+          onClick={() => setScale(prev => Math.max(prev - 0.2, 1.0))}
+          className="w-10 h-10 bg-white hover:bg-gray-100 text-gray-800 rounded-full shadow-lg border border-gray-200 flex items-center justify-center font-bold text-lg transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+          title="Zoom -"
+        >
+          −
+        </button>
+        <button
+          onClick={() => {
+            setScale(1.1);
+            setPosition({ x: 0, y: 0 });
+          }}
+          className="w-10 h-10 bg-white hover:bg-gray-100 text-gray-800 rounded-full shadow-lg border border-gray-200 flex items-center justify-center font-secondary text-[10px] font-bold tracking-wider transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+          title="Restablecer Vista"
+        >
+          RST
+        </button>
+      </div>
 
       {/* Mobile Unit Modal - Centered */}
       {selectedUnit && (
