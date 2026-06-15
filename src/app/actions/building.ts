@@ -45,7 +45,7 @@ function mapDbRowToBuildingFace(row: any): BuildingFace {
     return getAssetUrl(path);
   };
 
-  return {
+  const face: BuildingFace = {
     id: row.id,
     name: row.name,
     dayToNightTransition: resolve(row.dayToNightTransition),
@@ -71,6 +71,17 @@ function mapDbRowToBuildingFace(row: any): BuildingFace {
       }
     }
   };
+
+  // Clean up boundaries so we don't display invalid rotation buttons
+  if (row.order === 1) { // Cara Derecha: No right transition
+    face.day.transitions.toRight = "";
+    face.night.transitions.toRight = "";
+  } else if (row.order === 2) { // Cara Izquierda: No left transition
+    face.day.transitions.toLeft = "";
+    face.night.transitions.toLeft = "";
+  }
+
+  return face;
 }
 
 const defaultFacesSeed = [
@@ -97,11 +108,11 @@ const defaultFacesSeed = [
     dayBackground: "building/photos/face_1_daylight.png",
     dayIntroVideo: "videos/walks/walk_right_daylight.mp4",
     dayToLeftTransition: "building/transitions/trans_1_to_0_daylight.mp4",
-    dayToRightTransition: "building/transitions/trans_1_to_0_daylight.mp4",
+    dayToRightTransition: null,
     nightBackground: "building/photos/face_1_nightlight.png",
     nightIntroVideo: "videos/walks/walk_right_nightlight.mp4",
     nightToLeftTransition: "building/transitions/trans_1_to_0_nightlight.mp4",
-    nightToRightTransition: "building/transitions/trans_1_to_0_nightlight.mp4",
+    nightToRightTransition: null,
     dayToNightTransition: "building/transitions/trans_1_day_to_night.mp4",
     nightToDayTransition: "building/transitions/trans_1_night_to_day.mp4",
     order: 1,
@@ -111,11 +122,11 @@ const defaultFacesSeed = [
     name: "Cara Izquierda",
     dayBackground: "building/photos/face_2_daylight.png",
     dayIntroVideo: "videos/walks/walk_left_daylight.mp4",
-    dayToLeftTransition: "building/transitions/trans_2_to_0_daylight.mp4",
+    dayToLeftTransition: null,
     dayToRightTransition: "building/transitions/trans_2_to_0_daylight.mp4",
     nightBackground: "building/photos/face_2_nightlight.png",
     nightIntroVideo: "videos/walks/walk_left_nightlight.mp4",
-    nightToLeftTransition: "building/transitions/trans_2_to_0_nightlight.mp4",
+    nightToLeftTransition: null,
     nightToRightTransition: "building/transitions/trans_2_to_0_nightlight.mp4",
     dayToNightTransition: "building/transitions/trans_2_day_to_night.mp4",
     nightToDayTransition: "building/transitions/trans_2_night_to_day.mp4",

@@ -87,21 +87,16 @@ const Homepage = () => {
   const setLoading = useStore(state => state.setLoading);
   const isLoadingAssets = useStore(state => state.isLoadingAssets);
 
-  const handleStartIntro = async () => {
-    setLoading(true);
+  const handleStartIntro = () => {
+    setIsPlayingIntro(true);
 
-    try {
-      await preloadVideo(getAssetUrl('videos/walks/trans_intro_to_0.mp4'));
-      await preloadImages([
-        getAssetUrl('building/photos/face_0_daylight.png'),
-        getAssetUrl('building/photos/face_0_nightlight.png')
-      ]);
-    } catch (error) {
-      console.error("Preloading failed:", error);
-    } finally {
-      setLoading(false);
-      setIsPlayingIntro(true);
-    }
+    // Preload showroom background images in the background while the intro video plays
+    preloadImages([
+      getAssetUrl('building/photos/face_0_daylight.png'),
+      getAssetUrl('building/photos/face_0_nightlight.png')
+    ]).catch((error) => {
+      console.warn("Background preloading of showroom images failed:", error);
+    });
   };
 
   const handleVideoEnd = () => {

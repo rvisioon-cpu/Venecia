@@ -142,10 +142,8 @@ const ShowroomContent = () => {
       }
 
       // 3. Preload "Ingresar" Walk Video
-      if (currentFace === 0) {
-          const walkVideo = timeOfDay === 'day' ? currentFaceData.day?.introVideo : currentFaceData.night?.introVideo;
-          if (walkVideo) videosToLoad.push(walkVideo);
-      }
+      const walkVideo = timeOfDay === 'day' ? currentFaceData.day?.introVideo : currentFaceData.night?.introVideo;
+      if (walkVideo) videosToLoad.push(walkVideo);
 
       // Execution
       if (fastImagesToLoad.length > 0) {
