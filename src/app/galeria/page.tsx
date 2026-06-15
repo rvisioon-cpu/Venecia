@@ -26,12 +26,7 @@ const GalleryPage = () => {
       getGalleryCollections().then((data) => {
         const activeCollections = data.filter(c => c.isActive);
         setCollections(activeCollections);
-        if (activeCollections.length > 0) {
-          setActiveTabId(activeCollections[0].id);
-        } else {
-          setIsLoading(false);
-          setGlobalLoading(false);
-        }
+        setActiveTabId('amenities');
       });
     });
   }, [setGlobalLoading]);
@@ -221,28 +216,6 @@ const GalleryPage = () => {
                 <div className="text-gray-500 font-secondary text-sm uppercase tracking-widest">
                     No hay imágenes configuradas en esta galería.
                 </div>
-             )}
-
-             {/* Floating Categories Bar (overlay bottom center) */}
-             {collections.length > 1 && (
-               <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 p-1.5 bg-black/60 backdrop-blur-md border border-white/10 rounded-full max-w-[90%] overflow-x-auto scrollbar-none pointer-events-auto">
-                 {collections.map((col) => (
-                   <button
-                     key={col.id}
-                     onClick={() => {
-                       setActiveTabId(col.id);
-                       setCurrentIndex(0);
-                     }}
-                     className={`px-4 py-2 text-xs font-secondary uppercase tracking-widest rounded-full transition-all duration-300 whitespace-nowrap ${
-                       activeTabId === col.id
-                         ? 'bg-brand-primary text-white font-bold shadow-md'
-                         : 'text-gray-400 hover:text-white hover:bg-white/5'
-                     }`}
-                   >
-                     {col.title}
-                   </button>
-                 ))}
-               </div>
              )}
            </>
          )}
