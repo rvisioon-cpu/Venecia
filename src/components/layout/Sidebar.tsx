@@ -44,6 +44,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
     const storeFloorsData = useStore(state => state.floorsData);
     const storeBuildingFacesData = useStore(state => state.buildingFacesData);
+    const timeOfDay = useStore(state => state.timeOfDay);
 
     const floorsData = storeFloorsData && storeFloorsData.length > 0 ? storeFloorsData : staticFloorsData;
     const buildingFacesData = storeBuildingFacesData && storeBuildingFacesData.length > 0 ? storeBuildingFacesData : staticBuildingFaces;
@@ -68,11 +69,12 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
             const face0 = buildingFacesData[0];
             if (face0) {
                 preloadVideo(getAssetUrl('videos/walks/trans_intro_to_0.mp4')).catch(() => { });
-                if (face0.day?.background) {
-                    preloadImages([face0.day.background]).catch(() => { });
+                const currentAssetSet = timeOfDay === 'day' ? face0.day : face0.night;
+                if (currentAssetSet?.background) {
+                    preloadImages([currentAssetSet.background]).catch(() => { });
                 }
-                if (face0.day?.introVideo) {
-                    preloadVideo(face0.day.introVideo).catch(() => { });
+                if (currentAssetSet?.introVideo) {
+                    preloadVideo(currentAssetSet.introVideo).catch(() => { });
                 }
             }
 
@@ -82,7 +84,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                 preloadImages([defaultFloor.floorPlanImage]).catch(() => { });
             }
         }
-    }, [isOpen, buildingFacesData, floorsData]);
+    }, [isOpen, buildingFacesData, floorsData, timeOfDay]);
 
     const menuItems = activeFeatures.filter(item => item.active && item.id !== "identity");
 
@@ -116,16 +118,17 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     const handleMouseEnter = (key?: string) => {
         if (!key) return;
 
+        const face0 = buildingFacesData[0];
+        const currentAssetSet = face0 ? (timeOfDay === 'day' ? face0.day : face0.night) : null;
+
         if (key === 'showroom' && buildingFacesData.length > 0) {
-            const face0 = buildingFacesData[0];
             if (face0) {
                 preloadVideo(getAssetUrl('videos/walks/trans_intro_to_0.mp4')).catch(() => { });
-                if (face0.day?.background) preloadImages([face0.day.background]).catch(() => { });
+                if (currentAssetSet?.background) preloadImages([currentAssetSet.background]).catch(() => { });
             }
         }
         else if (key === 'floors' && buildingFacesData.length > 0) {
-            const face0 = buildingFacesData[0];
-            if (face0 && face0.day?.introVideo) preloadVideo(face0.day.introVideo).catch(() => { });
+            if (currentAssetSet?.introVideo) preloadVideo(currentAssetSet.introVideo).catch(() => { });
 
             const defaultFloor = floorsData.find(f => f.id === '9');
             if (defaultFloor) {
