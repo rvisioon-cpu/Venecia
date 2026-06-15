@@ -14,7 +14,7 @@ import { showroomConfig } from '@/data/showroom';
 const ShowroomContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  
+
   const startTransition = useStore(state => state.startTransition);
   const viewState = useStore(state => state.viewState);
   const currentRoom = useStore(state => state.currentRoom);
@@ -30,65 +30,65 @@ const ShowroomContent = () => {
   // Reset state on mount or params change
   useEffect(() => {
     const initShowroom = async () => {
-        // Set loading initially
-        useStore.setState({ isLoadingAssets: true });
-        
-        const transition = searchParams.get('transition');
-        // targetPath is handled by the store or router logic usually, 
-        // but here we just need to know if we are entering via a specific flow.
-        
-        // Reset to Day if entering via Intro (or fresh load) because the Intro video is Day-only.
-        const shouldResetToDay = !transition || transition === 'intro';
+      // Set loading initially
+      useStore.setState({ isLoadingAssets: true });
 
-        useStore.setState({ 
-          currentRoom: showroomConfig.initialRoom, 
-          viewState: 'IDLE',
-          currentFloor: showroomConfig.initialFloor, 
-          transitionUrl: null,
-          currentFace: showroomConfig.initialFace,
-          ...(shouldResetToDay ? { timeOfDay: 'day' } : {})
-        });
-        
-        if (transition && buildingFacesData.length > 0) {
-             const face0 = buildingFacesData[0];
-             
-             if (transition === 'intro') {
-                 // Showroom: Matches Homepage "Entrar" video
-                 const introVideoUrl = getAssetUrl('videos/walks/trans_intro_to_0.mp4');
-                 
-                 useStore.setState({ 
-                     viewState: 'TRANSITION_VIDEO',
-                     transitionUrl: introVideoUrl,
-                     targetDestination: 'Lobby' 
-                 });
-             } else if (transition === 'floors') {
-                 // Plantas: Uses the generic "Central View" walk (Day/Night sensitive)
-                 const floorsVideoUrl = timeOfDay === 'day' ? face0?.day?.introVideo : face0?.night?.introVideo;
-                 
-                 if (floorsVideoUrl) {
-                     useStore.setState({ 
-                         viewState: 'TRANSITION_VIDEO',
-                         transitionUrl: floorsVideoUrl,
-                         targetDestination: 'Floors'
-                     });
-                 }
-             }
+      const transition = searchParams.get('transition');
+      // targetPath is handled by the store or router logic usually, 
+      // but here we just need to know if we are entering via a specific flow.
+
+      // Reset to Day if entering via Intro (or fresh load) because the Intro video is Day-only.
+      const shouldResetToDay = !transition || transition === 'intro';
+
+      useStore.setState({
+        currentRoom: showroomConfig.initialRoom,
+        viewState: 'IDLE',
+        currentFloor: showroomConfig.initialFloor,
+        transitionUrl: null,
+        currentFace: showroomConfig.initialFace,
+        ...(shouldResetToDay ? { timeOfDay: 'day' } : {})
+      });
+
+      if (transition && buildingFacesData.length > 0) {
+        const face0 = buildingFacesData[0];
+
+        if (transition === 'intro') {
+          // Showroom: Matches Homepage "Entrar" video
+          const introVideoUrl = getAssetUrl('videos/walks/trans_intro_to_0.mp4');
+
+          useStore.setState({
+            viewState: 'TRANSITION_VIDEO',
+            transitionUrl: introVideoUrl,
+            targetDestination: 'Lobby'
+          });
+        } else if (transition === 'floors') {
+          // Plantas: Uses the generic "Central View" walk (Day/Night sensitive)
+          const floorsVideoUrl = timeOfDay === 'day' ? face0?.day?.introVideo : face0?.night?.introVideo;
+
+          if (floorsVideoUrl) {
+            useStore.setState({
+              viewState: 'TRANSITION_VIDEO',
+              transitionUrl: floorsVideoUrl,
+              targetDestination: 'Floors'
+            });
+          }
         }
+      }
 
-        try {
-            if (buildingFacesData.length > 0) {
-                const face0 = buildingFacesData[0];
-                const determinedTime = shouldResetToDay ? 'day' : (transition === 'floors' ? timeOfDay : 'day');
-                
-                const mainAsset = determinedTime === 'day' ? face0?.day?.background : face0?.night?.background;
-                const secondaryAsset = determinedTime === 'day' ? face0?.night?.background : face0?.day?.background;
+      try {
+        if (buildingFacesData.length > 0) {
+          const face0 = buildingFacesData[0];
+          const determinedTime = shouldResetToDay ? 'day' : (transition === 'floors' ? timeOfDay : 'day');
 
-                if (mainAsset) await preloadImages([mainAsset]);
-                if (secondaryAsset) preloadImages([secondaryAsset]).catch(() => {});
-            }
-        } catch (e) { console.warn("Showroom mount preload failed", e); }
-        
-        useStore.setState({ isLoadingAssets: false });
+          const mainAsset = determinedTime === 'day' ? face0?.day?.background : face0?.night?.background;
+          const secondaryAsset = determinedTime === 'day' ? face0?.night?.background : face0?.day?.background;
+
+          if (mainAsset) await preloadImages([mainAsset]);
+          if (secondaryAsset) preloadImages([secondaryAsset]).catch(() => { });
+        }
+      } catch (e) { console.warn("Showroom mount preload failed", e); }
+
+      useStore.setState({ isLoadingAssets: false });
     };
 
     initShowroom();
@@ -96,78 +96,78 @@ const ShowroomContent = () => {
 
   // Proximity Loading Logic
   useEffect(() => {
-      // Don't preload if we are transitioning or not in lobby
-      if (currentRoom !== 'Lobby' || buildingFacesData.length === 0) return;
+    // Don't preload if we are transitioning or not in lobby
+    if (currentRoom !== 'Lobby' || buildingFacesData.length === 0) return;
 
-      const currentFaceData = buildingFacesData[currentFace] || buildingFacesData[0];
-      if (!currentFaceData) return;
+    const currentFaceData = buildingFacesData[currentFace] || buildingFacesData[0];
+    if (!currentFaceData) return;
 
-      const fastImagesToLoad: string[] = []; 
-      const secondaryImagesToLoad: string[] = []; 
-      const videosToLoad: string[] = []; 
+    const fastImagesToLoad: string[] = [];
+    const secondaryImagesToLoad: string[] = [];
+    const videosToLoad: string[] = [];
 
-      // 1. Identify Adjacent Faces
-      const adjacentIds = [];
-      if (currentFace === 0) {
-          if (buildingFacesData.length > 1) adjacentIds.push(1);
-          if (buildingFacesData.length > 2) adjacentIds.push(2);
-      } else {
-          adjacentIds.push(0);
+    // 1. Identify Adjacent Faces
+    const adjacentIds = [];
+    if (currentFace === 0) {
+      if (buildingFacesData.length > 1) adjacentIds.push(1);
+      if (buildingFacesData.length > 2) adjacentIds.push(2);
+    } else {
+      adjacentIds.push(0);
+    }
+
+    adjacentIds.forEach(id => {
+      const face = buildingFacesData[id];
+      if (!face) return;
+      const assetSet = timeOfDay === 'day' ? face.day : face.night;
+
+      if (assetSet?.background) fastImagesToLoad.push(assetSet.background);
+
+      const currentAssetSet = currentFaceData[timeOfDay];
+      if (id === 1 && currentFace === 0 && currentAssetSet?.transitions?.toRight) {
+        videosToLoad.push(currentAssetSet.transitions.toRight);
       }
-
-      adjacentIds.forEach(id => {
-          const face = buildingFacesData[id];
-          if (!face) return;
-          const assetSet = timeOfDay === 'day' ? face.day : face.night;
-          
-          if (assetSet?.background) fastImagesToLoad.push(assetSet.background);
-          
-          const currentAssetSet = currentFaceData[timeOfDay];
-          if (id === 1 && currentFace === 0 && currentAssetSet?.transitions?.toRight) {
-              videosToLoad.push(currentAssetSet.transitions.toRight); 
-          }
-          if (id === 2 && currentFace === 0 && currentAssetSet?.transitions?.toLeft) {
-              videosToLoad.push(currentAssetSet.transitions.toLeft);
-          }
-          if (currentFace !== 0 && currentAssetSet?.transitions?.toLeft) {
-              videosToLoad.push(currentAssetSet.transitions.toLeft);
-          }
-      });
-
-      // 2. Identify Alt Time of Day
-      if (timeOfDay === 'day' && currentFaceData?.night?.background) {
-          secondaryImagesToLoad.push(currentFaceData.night.background);
-      } else if (timeOfDay === 'night' && currentFaceData?.day?.background) {
-          secondaryImagesToLoad.push(currentFaceData.day.background);
+      if (id === 2 && currentFace === 0 && currentAssetSet?.transitions?.toLeft) {
+        videosToLoad.push(currentAssetSet.transitions.toLeft);
       }
-
-      // 3. Preload "Ingresar" Walk Video
-      const walkVideo = timeOfDay === 'day' ? currentFaceData.day?.introVideo : currentFaceData.night?.introVideo;
-      if (walkVideo) videosToLoad.push(walkVideo);
-
-      // Execution
-      if (fastImagesToLoad.length > 0) {
-          preloadImages(fastImagesToLoad).catch(() => console.warn('Fast preload failed'));
+      if (currentFace !== 0 && currentAssetSet?.transitions?.toLeft) {
+        videosToLoad.push(currentAssetSet.transitions.toLeft);
       }
+    });
 
-      const videoTimer = setTimeout(() => {
-          if (videosToLoad.length > 0) {
-             videosToLoad.forEach(v => preloadVideo(v).catch(() => {}));
-          }
-      }, 2000);
+    // 2. Identify Alt Time of Day
+    if (timeOfDay === 'day' && currentFaceData?.night?.background) {
+      secondaryImagesToLoad.push(currentFaceData.night.background);
+    } else if (timeOfDay === 'night' && currentFaceData?.day?.background) {
+      secondaryImagesToLoad.push(currentFaceData.day.background);
+    }
 
-      const secondaryTimer = setTimeout(() => {
-          if (secondaryImagesToLoad.length > 0) {
-              preloadImages(secondaryImagesToLoad).catch(() => {});
-          }
-      }, 4000);
+    // 3. Preload "Ingresar" Walk Video
+    const walkVideo = timeOfDay === 'day' ? currentFaceData.day?.introVideo : currentFaceData.night?.introVideo;
+    if (walkVideo) videosToLoad.push(walkVideo);
 
-      return () => {
-          clearTimeout(videoTimer);
-          clearTimeout(secondaryTimer);
-      };
+    // Execution
+    if (fastImagesToLoad.length > 0) {
+      preloadImages(fastImagesToLoad).catch(() => console.warn('Fast preload failed'));
+    }
 
-  }, [currentFace, timeOfDay, currentRoom, buildingFacesData]); 
+    const videoTimer = setTimeout(() => {
+      if (videosToLoad.length > 0) {
+        videosToLoad.forEach(v => preloadVideo(v).catch(() => { }));
+      }
+    }, 2000);
+
+    const secondaryTimer = setTimeout(() => {
+      if (secondaryImagesToLoad.length > 0) {
+        preloadImages(secondaryImagesToLoad).catch(() => { });
+      }
+    }, 4000);
+
+    return () => {
+      clearTimeout(videoTimer);
+      clearTimeout(secondaryTimer);
+    };
+
+  }, [currentFace, timeOfDay, currentRoom, buildingFacesData]);
 
   const currentFaceData = buildingFacesData[currentFace] || buildingFacesData[0];
   const hasLeftTransition = currentFaceData ? !!currentFaceData[timeOfDay]?.transitions?.toLeft : false;
@@ -182,7 +182,7 @@ const ShowroomContent = () => {
       <SceneController isHighlighted={isHoveringIngresar} />
 
       <div className="fixed top-6 left-6 z-30 group">
-        <button 
+        <button
           onClick={() => setIsSidebarOpen(true)}
           className="p-2 text-white bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 rounded-full transition-all hover:scale-105 cursor-pointer shadow-lg"
         >
@@ -197,22 +197,22 @@ const ShowroomContent = () => {
 
       {/* Recorrido General Button */}
       {viewState === 'IDLE' && (
-      <button 
-        onClick={() => router.push('/recorridos?tourId=building-main')}
-        className="fixed top-6 left-1/2 -translate-x-1/2 z-30 px-6 py-2 bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 rounded-full text-white font-medium text-sm transition-all hover:scale-105 cursor-pointer shadow-lg uppercase tracking-wide flex items-center gap-2"
-      >
-        <Rotate3d size={18} />
-        Recorrido General 
-      </button>
+        <button
+          onClick={() => router.push('/recorridos?tourId=building-main')}
+          className="fixed top-6 left-1/2 -translate-x-1/2 z-30 px-6 py-2 bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 rounded-full text-white font-medium text-sm transition-all hover:scale-105 cursor-pointer shadow-lg uppercase tracking-wide flex items-center gap-2"
+        >
+          <Rotate3d size={18} />
+          Recorrido General
+        </button>
       )}
 
       {/* Right-side Controls Stack */}
       <div className="fixed top-6 right-6 z-30 flex flex-col gap-4 items-end">
-        
+
         {/* Day/Night Toggle */}
         {viewState === 'IDLE' && (
           <div className="relative group">
-            <button 
+            <button
               onClick={toggleTimeOfDay}
               disabled={isLoadingAssets}
               className={`p-3 bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 rounded-full text-white transition-all hover:scale-110 cursor-pointer shadow-lg ${isLoadingAssets ? 'opacity-50 cursor-wait' : ''}`}
@@ -230,37 +230,37 @@ const ShowroomContent = () => {
       </div>
 
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-      
+
       {/* Rotation UI */}
       {showLeftButton && (
-          <button 
-            onClick={() => rotateBuilding('left')}
-            disabled={isLoadingAssets}
-            className={`fixed top-1/2 left-4 -translate-y-1/2 z-40 p-3 rounded-full bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 text-white transition-all hover:scale-110 cursor-pointer ${isLoadingAssets ? 'opacity-50 cursor-wait' : ''}`}
-          >
-            {isLoadingAssets ? <Loader className="w-8 h-8" /> : (
+        <button
+          onClick={() => rotateBuilding('left')}
+          disabled={isLoadingAssets}
+          className={`fixed top-1/2 left-4 -translate-y-1/2 z-40 p-3 rounded-full bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 text-white transition-all hover:scale-110 cursor-pointer ${isLoadingAssets ? 'opacity-50 cursor-wait' : ''}`}
+        >
+          {isLoadingAssets ? <Loader className="w-8 h-8" /> : (
             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            )}
-          </button>
+          )}
+        </button>
       )}
 
       {showRightButton && (
-          <button 
-            onClick={() => rotateBuilding('right')}
-            disabled={isLoadingAssets}
-            className={`fixed top-1/2 right-4 -translate-y-1/2 z-40 p-3 rounded-full bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 text-white transition-all hover:scale-110 cursor-pointer ${isLoadingAssets ? 'opacity-50 cursor-wait' : ''}`}
-          >
-            {isLoadingAssets ? <Loader className="w-8 h-8" /> : (
+        <button
+          onClick={() => rotateBuilding('right')}
+          disabled={isLoadingAssets}
+          className={`fixed top-1/2 right-4 -translate-y-1/2 z-40 p-3 rounded-full bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 text-white transition-all hover:scale-110 cursor-pointer ${isLoadingAssets ? 'opacity-50 cursor-wait' : ''}`}
+        >
+          {isLoadingAssets ? <Loader className="w-8 h-8" /> : (
             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-            )}
-          </button>
+          )}
+        </button>
       )}
 
-      {/* Structure Reference Image */}
+      {/* Structure Reference Image 
       {viewState === 'IDLE' && (
         <div className="fixed bottom-6 md:bottom-10 sm:bottom-3 left-6 md:left-10 sm:left-3 z-20 pointer-events-none select-none">
           <img 
@@ -269,30 +269,30 @@ const ShowroomContent = () => {
             className="w-auto h-48 sm:h-32 opacity-90 drop-shadow-lg"
           />
         </div>
-      )}
+      )} */}
 
       {/* Floating UI */}
       {viewState === 'IDLE' && (
-      <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50">
-        <button 
-          onClick={() => startTransition('Floors')} 
-          disabled={isLoadingAssets}
-          onMouseEnter={() => setIsHoveringIngresar(true)}
-          onMouseLeave={() => setIsHoveringIngresar(false)}
-          className={`bg-brand-primary/80 backdrop-blur-xl border border-white/20 text-white px-8 py-3 rounded-full hover:bg-brand-primary transition-all disabled:opacity-50 cursor-pointer flex items-center gap-2 ${isLoadingAssets ? 'cursor-wait' : ''}`}
-        >
-          {isLoadingAssets ? <Loader /> : 'Ingresar'}
-        </button>
-      </div>
+        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50">
+          <button
+            onClick={() => startTransition('Floors')}
+            disabled={isLoadingAssets}
+            onMouseEnter={() => setIsHoveringIngresar(true)}
+            onMouseLeave={() => setIsHoveringIngresar(false)}
+            className={`bg-brand-primary/80 backdrop-blur-xl border border-white/20 text-white px-8 py-3 rounded-full hover:bg-brand-primary transition-all disabled:opacity-50 cursor-pointer flex items-center gap-2 ${isLoadingAssets ? 'cursor-wait' : ''}`}
+          >
+            {isLoadingAssets ? <Loader /> : 'Ingresar'}
+          </button>
+        </div>
       )}
     </div>
   );
 };
 
 export default function ShowroomPage() {
-    return (
-        <Suspense fallback={<div className="h-screen w-screen flex items-center justify-center bg-black text-white"><Loader /></div>}>
-            <ShowroomContent />
-        </Suspense>
-    )
+  return (
+    <Suspense fallback={<div className="h-screen w-screen flex items-center justify-center bg-black text-white"><Loader /></div>}>
+      <ShowroomContent />
+    </Suspense>
+  )
 }
