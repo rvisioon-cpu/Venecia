@@ -260,7 +260,7 @@ const FloorPage = () => {
                   d={unit.path}
                   className={`
                     transition-all duration-300 cursor-pointer pointer-events-auto
-                    ${isSelected ? 'fill-black/40' : 'fill-transparent hover:fill-black/20'}
+                    ${isSelected ? 'fill-brand-primary/70' : 'fill-transparent hover:fill-brand-primary/20'}
                   `}
                   onMouseEnter={() => handleUnitEnter(unit)}
                   onMouseLeave={handleUnitLeave}

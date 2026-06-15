@@ -8,7 +8,6 @@ import { useStore } from '@/store/useStore';
 import { preloadVideo, preloadImages } from '@/utils/preload';
 import Loader from '@/components/UI/Loader';
 import FullScreenToggle from '@/components/UI/FullScreenToggle';
-import Logo from '@/components/UI/Logo';
 import { homepageData } from '@/data/homepage';
 
 const Homepage = () => {
@@ -173,10 +172,16 @@ const Homepage = () => {
         {/* Middle Section: Presentation Text (Black Box) & Logo */}
         <div className="flex-1 flex items-center justify-center relative w-full max-w-4xl mx-auto my-6">
           {/* Brand Logo centered in middle by default, shifts to top during slides */}
-          <Logo
+          <div
             ref={logoRef}
-            className="absolute text-[clamp(2.5rem,8vw,5.5rem)] w-full max-w-xl opacity-90 transition-transform will-change-transform"
-          />
+            className="absolute w-full max-w-[28rem] md:max-w-xl opacity-90 transition-transform will-change-transform flex justify-center items-center px-4"
+          >
+            <img
+              src={getAssetUrl('identity/logo_venecia_transparent.png')}
+              alt="Venecia"
+              className="w-full h-auto object-contain max-h-[35vh]"
+            />
+          </div>
 
           {homepageData.slides.map((slide, index) => (
             <p

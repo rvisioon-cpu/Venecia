@@ -777,6 +777,7 @@ const Contact = () => {
                           {isSubmitting ? 'Enviando...' : 'Enviar respuesta'}
                       </button>
 
+                      {/* 
                       <button 
                           type="button"
                           onClick={() => setActiveSection('booking')}
@@ -792,6 +793,7 @@ const Contact = () => {
                       >
                           Elige tu asesor
                       </button>
+                      */}
                   </div>
                </form>
             </div>
