@@ -1,0 +1,12 @@
+DELETE FROM media WHERE category = 'amenities';
+INSERT INTO media (id, title, url, type, category, is_active) VALUES ('ddc226be-a989-4258-9ff3-b93c5c1b70f9', 'Amenidad 15', 'media/amenities/15.jpg', 'image/jpeg', 'amenities', 1);
+INSERT INTO media (id, title, url, type, category, is_active) VALUES ('924b7e37-c07e-4e56-937e-b55f8b6b8121', 'Amenidad 16', 'media/amenities/16.jpg', 'image/jpeg', 'amenities', 1);
+INSERT INTO media (id, title, url, type, category, is_active) VALUES ('9d81a7f7-4b25-46d9-ade2-0a1c42658a94', 'Amenidad 18', 'media/amenities/18.jpg', 'image/jpeg', 'amenities', 1);
+INSERT INTO media (id, title, url, type, category, is_active) VALUES ('b83c645b-75a3-4303-9b1b-eebe39ebc5de', 'Amenidad 19', 'media/amenities/19.jpg', 'image/jpeg', 'amenities', 1);
+INSERT INTO media (id, title, url, type, category, is_active) VALUES ('9982e22a-c245-4dd2-a33a-326a18ee89b5', 'Amenidad 23', 'media/amenities/23.jpg', 'image/jpeg', 'amenities', 1);
+INSERT INTO media (id, title, url, type, category, is_active) VALUES ('49c8e369-1e04-4928-b157-85ea6141f599', 'Amenidad 25', 'media/amenities/25.jpg', 'image/jpeg', 'amenities', 1);
+INSERT INTO media (id, title, url, type, category, is_active) VALUES ('400f0490-d201-41c8-b4d6-d9077e778b8d', 'Amenidad 27', 'media/amenities/27.jpg', 'image/jpeg', 'amenities', 1);
+INSERT INTO media (id, title, url, type, category, is_active) VALUES ('d9b5c3ee-edd5-4f6f-b3ac-8698b0d6fa71', 'Amenidad 30.2', 'media/amenities/30.2.jpg', 'image/jpeg', 'amenities', 1);
+INSERT INTO media (id, title, url, type, category, is_active) VALUES ('3bdcd564-f975-4c3d-a7a6-d719f426bb4d', 'Amenidad 4', 'media/amenities/4.jpg', 'image/jpeg', 'amenities', 1);
+INSERT INTO media (id, title, url, type, category, is_active) VALUES ('78afa265-e0f9-48f1-b30a-88e54b592c43', 'Amenidad 6', 'media/amenities/6.jpg', 'image/jpeg', 'amenities', 1);
+INSERT INTO media (id, title, url, type, category, is_active) VALUES ('46699a12-b7fc-4c87-9573-35cfd0ff18df', 'Amenidad 7', 'media/amenities/7.jpg', 'image/jpeg', 'amenities', 1);
