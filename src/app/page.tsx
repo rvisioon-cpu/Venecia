@@ -9,6 +9,7 @@ import { preloadVideo, preloadImages } from '@/utils/preload';
 import Loader from '@/components/UI/Loader';
 import FullScreenToggle from '@/components/UI/FullScreenToggle';
 import { homepageData } from '@/data/homepage';
+import Logo from '@/components/UI/Logo';
 
 const Homepage = () => {
   const router = useRouter();
@@ -172,16 +173,11 @@ const Homepage = () => {
         {/* Middle Section: Presentation Text (Black Box) & Logo */}
         <div className="flex-1 flex items-center justify-center relative w-full max-w-4xl mx-auto my-6">
           {/* Brand Logo centered in middle by default, shifts to top during slides */}
-          <div
+          <Logo
             ref={logoRef}
-            className="absolute w-full max-w-[28rem] md:max-w-xl opacity-90 transition-transform will-change-transform flex justify-center items-center px-4"
-          >
-            <img
-              src={getAssetUrl('identity/logo_venecia_transparent.png')}
-              alt="Venecia"
-              className="w-full h-auto object-contain max-h-[35vh]"
-            />
-          </div>
+            className="absolute w-full max-w-[28rem] md:max-w-xl opacity-90 will-change-transform px-4"
+            style={{ fontSize: 'clamp(3rem, 8vw, 6rem)' }}
+          />
 
           {homepageData.slides.map((slide, index) => (
             <p
