@@ -39,12 +39,12 @@ const Homepage = () => {
 
     // 1. Initial State: Wait 3 seconds
     tl.to({}, { duration: 3 })
-      
+
       // Logo slides up when text is about to start
-      .to(logoRef.current, { 
-        y: '-25vh', 
-        duration: 2, 
-        ease: "power3.inOut" 
+      .to(logoRef.current, {
+        y: '-25vh',
+        duration: 2,
+        ease: "power3.inOut"
       }, "moveUp")
 
     // 3. Text Cycle
@@ -72,10 +72,10 @@ const Homepage = () => {
     });
 
     // End: Logo returns to center
-    tl.to(logoRef.current, { 
-        y: 0, 
-        duration: 1.5,
-        ease: "power3.inOut" 
+    tl.to(logoRef.current, {
+      y: 0,
+      duration: 1.5,
+      ease: "power3.inOut"
     }, "reset");
 
     return () => {
@@ -179,21 +179,23 @@ const Homepage = () => {
             style={{ fontSize: 'clamp(3rem, 8vw, 6rem)' }}
           />
 
-          {homepageData.slides.map((slide, index) => (
-            <p
-              key={index}
-              ref={el => { textRefs.current[index] = el }}
-              className="absolute bg-black/40 backdrop-blur-md rounded-2xl p-6 lg:p-10 text-center text-lg lg:text-3xl font-light tracking-wide opacity-0 text-white drop-shadow-lg max-w-3xl w-full mx-auto pointer-events-none"
-            >
-              {slide.highlight ? (
-                <><span className="font-bold">{slide.highlight}</span> {slide.text.replace('{{highlight}}', '').trim()}</>
-              ) : (
-                slide.text
-              )}
-            </p>
-          ))}
+          {/* Presentation Text: sits below logo within the same middle section */}
+          <div className="absolute bottom-0 left-16 right-16 flex flex-col justify-center h-40">
+            {homepageData.slides.map((slide, index) => (
+              <p
+                key={index}
+                ref={el => { textRefs.current[index] = el }}
+                className="absolute bg-black/40 backdrop-blur-md rounded-2xl p-6 lg:p-10 text-center text-lg lg:text-3xl font-light tracking-wide opacity-0 text-white drop-shadow-lg max-w-3xl w-full mx-auto pointer-events-none"
+              >
+                {slide.highlight ? (
+                  <><span className="font-bold">{slide.highlight}</span> {slide.text.replace('{{highlight}}', '').trim()}</>
+                ) : (
+                  slide.text
+                )}
+              </p>
+            ))}
+          </div>
         </div>
-
         {/* Bottom Section: Entrar Button */}
         <div className="w-full flex justify-center pb-2 lg:pb-6 shrink-0">
           <button
