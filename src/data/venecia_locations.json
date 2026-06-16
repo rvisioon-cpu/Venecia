@@ -1,0 +1,1237 @@
+{
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Tai Loy",
+        "categoria": "Comercio",
+        "imagen": "icons/COMERCIO/logo-tailoy.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.073819,
+          -12.09053
+        ],
+        "type": "Point"
+      },
+      "id": "03c4eb0bc3aef68612b5cb6d0d70bbf4"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Pamer",
+        "categoria": "Educacion",
+        "imagen": "icons/EDUCACION/logo-pamer.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.067996,
+          -12.085424
+        ],
+        "type": "Point"
+      },
+      "id": "0620af5d6a4903f5af1d84bdb98579e1"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Clinica Municipal Corazon de Maria",
+        "categoria": "Salud Y Bienestar",
+        "imagen": "icons/SALUD_Y_BIENESTAR/logo-hospital.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.069478,
+          -12.086287
+        ],
+        "type": "Point"
+      },
+      "id": "0f95da580026c711d19589803e5cd07b"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Toulouse Lautrec",
+        "categoria": "Educacion",
+        "imagen": "icons/EDUCACION/logo-toulouse.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.058387,
+          -12.093946
+        ],
+        "type": "Point"
+      },
+      "id": "1574b80c07a35d56d23918e98e3d9692"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Parque La Amistad",
+        "categoria": "Areas Verdes Y Recreacion",
+        "imagen": "icons/AREAS_VERDES_Y_RECREACION/parque_1.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.073729,
+          -12.083626
+        ],
+        "type": "Point"
+      },
+      "id": "17bd171975759cdddec8fdb7a23a66bc"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Master Kong",
+        "categoria": "Restaurantes",
+        "imagen": "icons/RESTAURANTES/logo-masterkong.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.06344,
+          -12.075717
+        ],
+        "type": "Point"
+      },
+      "id": "18a080fed9797542d2329efc923710c7"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Organa",
+        "categoria": "Comercio",
+        "imagen": "icons/COMERCIO/logo-organa.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.061952,
+          -12.084582
+        ],
+        "type": "Point"
+      },
+      "id": "18d358560fc29fa3504648cb94772b2c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Cantolao",
+        "categoria": "Lifestyle",
+        "imagen": "icons/LIFESTYLE/logo-cantolao.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.074019,
+          -12.080376
+        ],
+        "type": "Point"
+      },
+      "id": "18d5d05494bff3a97eee874decce64b0"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Parque Leoncio Prado",
+        "categoria": "Areas Verdes Y Recreacion",
+        "imagen": "icons/AREAS_VERDES_Y_RECREACION/parque_2.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.061449,
+          -12.089334
+        ],
+        "type": "Point"
+      },
+      "id": "1fe96490da9d368e0eb9bb2d8d941426"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Hospital Nacional PNP",
+        "categoria": "Salud Y Bienestar",
+        "imagen": "icons/SALUD_Y_BIENESTAR/logo-hospital.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.060382,
+          -12.085194
+        ],
+        "type": "Point"
+      },
+      "id": "2081d5ffad9c525e32e52331baf40235"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Institucion Educativa Miguel Grau",
+        "categoria": "Educacion",
+        "imagen": "icons/EDUCACION/logo-colegio.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.068773,
+          -12.089188
+        ],
+        "type": "Point"
+      },
+      "id": "2691080d3e5c123d37ba12ccedb03506"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Justin Saldaña",
+        "categoria": "Areas Verdes Y Recreacion",
+        "imagen": "icons/AREAS_VERDES_Y_RECREACION/parque_3.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.073762,
+          -12.084812
+        ],
+        "type": "Point"
+      },
+      "id": "26d1d3353b91db453dba5b4a62239466"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Parque Puente y Cortez",
+        "categoria": "Areas Verdes Y Recreacion",
+        "imagen": "icons/AREAS_VERDES_Y_RECREACION/parque_4.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.064708,
+          -12.080917
+        ],
+        "type": "Point"
+      },
+      "id": "27a942d532844164e3126189e180937a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Cajero Banco de la Nacion",
+        "categoria": "Finanzas",
+        "imagen": "icons/FINANZAS/logo-bancodelanacion.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.06084,
+          -12.083975
+        ],
+        "type": "Point"
+      },
+      "id": "290de9bef1a5b4b4a609e83af2ccf3d0"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Mass",
+        "categoria": "Comercio",
+        "imagen": "icons/COMERCIO/logo-mass.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.067922,
+          -12.084458
+        ],
+        "type": "Point"
+      },
+      "id": "2b4d98d676fc50ad3b2bbe35ab10d1ad"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Parque Santa Eulalia",
+        "categoria": "Areas Verdes Y Recreacion",
+        "imagen": "icons/AREAS_VERDES_Y_RECREACION/parque_5.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.075284,
+          -12.086024
+        ],
+        "type": "Point"
+      },
+      "id": "2bd959898c9018a7cd68fe6187ee94c6"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Metro",
+        "categoria": "Comercio",
+        "imagen": "icons/COMERCIO/logo-metro.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.057864,
+          -12.089173
+        ],
+        "type": "Point"
+      },
+      "id": "33b91cdedc7b3bce8c574fe8a99404dc"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Domino's Pizza",
+        "categoria": "Restaurantes",
+        "imagen": "icons/RESTAURANTES/logo-dominos.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.066658,
+          -12.082169
+        ],
+        "type": "Point"
+      },
+      "id": "39131312d5bc933b9bc42e381647d9d5"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Hospital Militar Central",
+        "categoria": "Salud Y Bienestar",
+        "imagen": "icons/SALUD_Y_BIENESTAR/logo-hospital.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.061695,
+          -12.086791
+        ],
+        "type": "Point"
+      },
+      "id": "3e0a868abd7d509c1d58f3267fc68588"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Banco de la Nacion",
+        "categoria": "Finanzas",
+        "imagen": "icons/FINANZAS/logo-bancodelanacion.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.068799,
+          -12.092934
+        ],
+        "type": "Point"
+      },
+      "id": "434ed0ca1dc7d29974056787bf5c240a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Mercado Magdalena",
+        "categoria": "Comercio",
+        "imagen": "icons/COMERCIO/logo-mercado.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.073157,
+          -12.090929
+        ],
+        "type": "Point"
+      },
+      "id": "4374bd6375daa03266a349f415d53c85"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "La Choza Nautica",
+        "categoria": "Restaurantes",
+        "imagen": "icons/RESTAURANTES/logo-lachozanautica.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.064797,
+          -12.07874
+        ],
+        "type": "Point"
+      },
+      "id": "4460702188662d4d336aeb55f197bd47"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Little Caesar's",
+        "categoria": "Restaurantes",
+        "imagen": "icons/RESTAURANTES/logo-littlecaesars.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.064691,
+          -12.07727
+        ],
+        "type": "Point"
+      },
+      "id": "4aeac89c7b7e030e07312c7bae573f78"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Clinica San Felipe",
+        "categoria": "Salud Y Bienestar",
+        "imagen": "icons/SALUD_Y_BIENESTAR/logo-hospital.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.054338,
+          -12.086035
+        ],
+        "type": "Point"
+      },
+      "id": "4c92173b79108a9fea8c5a39b956623f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Parque Miguel Alegre",
+        "categoria": "Areas Verdes Y Recreacion",
+        "imagen": "icons/AREAS_VERDES_Y_RECREACION/parque_6.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.072646,
+          -12.082531
+        ],
+        "type": "Point"
+      },
+      "id": "5017ee84a2bb89d9a14a1c43eaff9161"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Teatro Peruano Japones",
+        "categoria": "Lifestyle",
+        "imagen": "icons/LIFESTYLE/logo-teatro.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.055244,
+          -12.087504
+        ],
+        "type": "Point"
+      },
+      "id": "527e7afc68e365bb1ea342041c946d8c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Colegio Parroquial San Juan Maria Vianney",
+        "categoria": "Educacion",
+        "imagen": "icons/EDUCACION/logo-colegio.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.067997,
+          -12.093583
+        ],
+        "type": "Point"
+      },
+      "id": "546b153d589f80ec75a48bf4d74e4d0f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "BCP",
+        "categoria": "Finanzas",
+        "imagen": "icons/FINANZAS/logo-bcp.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.064957,
+          -12.077451
+        ],
+        "type": "Point"
+      },
+      "id": "56c1e9740be9ac3d06ae86529c3685d5"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Mifarma",
+        "categoria": "Salud Y Bienestar",
+        "imagen": "icons/SALUD_Y_BIENESTAR/logo-mifarma.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.061809,
+          -12.084407
+        ],
+        "type": "Point"
+      },
+      "id": "5792084f2cbe31e262ae9a5ff06946d3"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Veterinaria  Municipal de Magdalena",
+        "categoria": "Salud Y Bienestar",
+        "imagen": "icons/SALUD_Y_BIENESTAR/logo-veterinaria.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.070338,
+          -12.085339
+        ],
+        "type": "Point"
+      },
+      "id": "57ae93a73732fa673084c3d5297f5643"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Complejo Deportivo Daniel Peredo",
+        "categoria": "Lifestyle",
+        "imagen": "icons/AREAS_VERDES_Y_RECREACION/logo-deporte.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.057172,
+          -12.076891
+        ],
+        "type": "Point"
+      },
+      "id": "5923a17936c46305a0317deb25048b6f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Parque Santa Martha",
+        "categoria": "Areas Verdes Y Recreacion",
+        "imagen": "icons/AREAS_VERDES_Y_RECREACION/parque_7.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.068462,
+          -12.081295
+        ],
+        "type": "Point"
+      },
+      "id": "5a4540a81312037d7c88456b4d5da0a0"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "ATM Interbank",
+        "categoria": "Finanzas",
+        "imagen": "icons/FINANZAS/logo-interbank.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.072077,
+          -12.089856
+        ],
+        "type": "Point"
+      },
+      "id": "6243226dd4f9f204b4cc36a186459a42"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Scotiabank",
+        "categoria": "Finanzas",
+        "imagen": "icons/FINANZAS/logo-scotiabank.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.065142,
+          -12.077899
+        ],
+        "type": "Point"
+      },
+      "id": "65b72e5aacc0f75b3957d70b0428ff64"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Supermercado Candy",
+        "categoria": "Comercio",
+        "imagen": "icons/COMERCIO/logo-candy.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.067072,
+          -12.090679
+        ],
+        "type": "Point"
+      },
+      "id": "6807cc0561aa3a1397ad8f4cdc0fcded"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Nido Retama",
+        "categoria": "Educacion",
+        "imagen": "icons/EDUCACION/logo-colegio.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.06697,
+          -12.08638
+        ],
+        "type": "Point"
+      },
+      "id": "6acc2d74c7a914df55bb3094635e49ce"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Cineplanet Salaverry",
+        "categoria": "Lifestyle",
+        "imagen": "icons/LIFESTYLE/logo-cineplanet.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.053266,
+          -12.089763
+        ],
+        "type": "Point"
+      },
+      "id": "72b5c60edcfc7330c65a3e641ffb3953"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "World Fit 360",
+        "categoria": "Lifestyle",
+        "imagen": "icons/LIFESTYLE/logo-gimnasio.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.066172,
+          -12.089734
+        ],
+        "type": "Point"
+      },
+      "id": "73317ac218d6bd1d3a647b490c83ad37"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Colegio Jesus Mio",
+        "categoria": "Educacion",
+        "imagen": "icons/EDUCACION/logo-colegio.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.067556,
+          -12.086672
+        ],
+        "type": "Point"
+      },
+      "id": "749666fb01ebc370da8528b62dd793fa"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Policlinico Peruano Japones",
+        "categoria": "Salud Y Bienestar",
+        "imagen": "icons/SALUD_Y_BIENESTAR/logo-hospital.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.054701,
+          -12.087712
+        ],
+        "type": "Point"
+      },
+      "id": "78ebc14e6056829bb61df9618a3a59be"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "PUCP",
+        "categoria": "Educacion",
+        "imagen": "icons/EDUCACION/logo-pucp.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.080121,
+          -12.069332
+        ],
+        "type": "Point"
+      },
+      "id": "8131244b4608e795eb14a0c002998465"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Campo Deportivo Arena 7",
+        "categoria": "Lifestyle",
+        "imagen": "icons/AREAS_VERDES_Y_RECREACION/logo-deporte.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.075312,
+          -12.080421
+        ],
+        "type": "Point"
+      },
+      "id": "841bc39a66f4ee37d41f8d91646d37bb"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Interbank",
+        "categoria": "Finanzas",
+        "imagen": "icons/FINANZAS/logo-interbank.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.064741,
+          -12.078039
+        ],
+        "type": "Point"
+      },
+      "id": "8739f7022a7112ca96d5453526f5db22"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "El Huron Azul",
+        "categoria": "Salud Y Bienestar",
+        "imagen": "icons/SALUD_Y_BIENESTAR/logo-huronazul.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.065312,
+          -12.078308
+        ],
+        "type": "Point"
+      },
+      "id": "87a6c39ffc76c5ed7c068c96ef3266ec"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Fighter Fit",
+        "categoria": "Lifestyle",
+        "imagen": "icons/LIFESTYLE/logo-gimnasio.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.066384,
+          -12.081585
+        ],
+        "type": "Point"
+      },
+      "id": "8d860622f687dd0a814a8308b7d4f425"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Villa Chicken",
+        "categoria": "Restaurantes",
+        "imagen": "icons/RESTAURANTES/logo-villachicken.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.064077,
+          -12.091752
+        ],
+        "type": "Point"
+      },
+      "id": "8e9dd26669db4c4e691b762f513f14bc"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Tienda 3A",
+        "categoria": "Comercio",
+        "imagen": "icons/COMERCIO/logo-3a.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.065254,
+          -12.078213
+        ],
+        "type": "Point"
+      },
+      "id": "922c4fd3c646ce1baac55c51a4ad0dfb"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Oxxo",
+        "categoria": "Restaurantes",
+        "imagen": "icons/COMERCIO/logo-oxxo.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.064754,
+          -12.088769
+        ],
+        "type": "Point"
+      },
+      "id": "9db85e1ed234128ce8e9da6131e29600"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Mibanco",
+        "categoria": "Finanzas",
+        "imagen": "icons/FINANZAS/logo-mibanco.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.065928,
+          -12.089359
+        ],
+        "type": "Point"
+      },
+      "id": "a47f5b83035f2b01f487af0a2a529646"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Elia",
+        "categoria": "Restaurantes",
+        "imagen": "icons/RESTAURANTES/logo-elia.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.064755,
+          -12.090514
+        ],
+        "type": "Point"
+      },
+      "id": "a58370c4aca09be1ce49ef556ec42b4e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Chicharrones Don Lucho",
+        "categoria": "Restaurantes",
+        "imagen": "icons/RESTAURANTES/logo-restaurante.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.064894,
+          -12.076943
+        ],
+        "type": "Point"
+      },
+      "id": "a68cd24b0c11ccfb94c91e94b87fa52e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "UPC",
+        "categoria": "Educacion",
+        "imagen": "icons/EDUCACION/logo-upc.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.050028,
+          -12.087608
+        ],
+        "type": "Point"
+      },
+      "id": "af7c7397043b7cc80da0ebf88b7cbb60"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Policlinico Pueblo Libre",
+        "categoria": "Salud Y Bienestar",
+        "imagen": "icons/SALUD_Y_BIENESTAR/logo-hospital.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.066591,
+          -12.078402
+        ],
+        "type": "Point"
+      },
+      "id": "afcc476dd2743c83b3f0caf16562c826"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "BBVA",
+        "categoria": "Finanzas",
+        "imagen": "icons/FINANZAS/logo-bbva.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.066453,
+          -12.080775
+        ],
+        "type": "Point"
+      },
+      "id": "b109afd36235c582109da81e00b77714"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Pardos Chicken",
+        "categoria": "Restaurantes",
+        "imagen": "icons/RESTAURANTES/logo-pardoschicken.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.062906,
+          -12.091913
+        ],
+        "type": "Point"
+      },
+      "id": "b1649dfb33fce13e52cf83c07d037c61"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "KFC",
+        "categoria": "Restaurantes",
+        "imagen": "icons/RESTAURANTES/logo-restaurante.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.065561,
+          -12.089828
+        ],
+        "type": "Point"
+      },
+      "id": "b21e1f183268f492a976a255d1b8e9ee"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Starbucks",
+        "categoria": "Restaurantes",
+        "imagen": "icons/RESTAURANTES/logo-starbucks.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.066541,
+          -12.083553
+        ],
+        "type": "Point"
+      },
+      "id": "bb410911c5fd32b7c4591daa05f54c99"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Plaza San Miguel",
+        "categoria": "Comercio",
+        "imagen": "icons/COMERCIO/logo-plazasanmiguel.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.082367,
+          -12.077213
+        ],
+        "type": "Point"
+      },
+      "id": "bc624bb5ea30b927d308c589a3fddcec"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Smart Fit",
+        "categoria": "Lifestyle",
+        "imagen": "icons/LIFESTYLE/logo-smartfit.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.071072,
+          -12.089857
+        ],
+        "type": "Point"
+      },
+      "id": "bfa9f29a4bc1fc24a7bb88d6e4ad1f2d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Universidad del Pacifico",
+        "categoria": "Educacion",
+        "imagen": "icons/EDUCACION/logo-upacifico.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.048329,
+          -12.083853
+        ],
+        "type": "Point"
+      },
+      "id": "c136bd7d9c81f1c2906296f397b81c5f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Mass",
+        "categoria": "Comercio",
+        "imagen": "icons/COMERCIO/logo-mass.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.064412,
+          -12.087569
+        ],
+        "type": "Point"
+      },
+      "id": "c621611f494be22aecfe04ffae5a0304"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Centro Cultural Peruano Japones",
+        "categoria": "Lifestyle",
+        "imagen": "icons/LIFESTYLE/logo-museo.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.055242,
+          -12.087755
+        ],
+        "type": "Point"
+      },
+      "id": "c7306dd28cf95642f68df5d6fef43fd4"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Real Plaza Salaverry",
+        "categoria": "Comercio",
+        "imagen": "icons/COMERCIO/logo-plazasalaverry.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.052428,
+          -12.090086
+        ],
+        "type": "Point"
+      },
+      "id": "c78f7b442517ef195fe399ab0e9c2ffe"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Tambo",
+        "categoria": "Comercio",
+        "imagen": "icons/COMERCIO/logo-tambo.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.068089,
+          -12.084894
+        ],
+        "type": "Point"
+      },
+      "id": "c822478774ecd4406847a18fe28eb677"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Heladería Speziale",
+        "categoria": "Restaurantes",
+        "imagen": "icons/RESTAURANTES/logo-speziale.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.067827,
+          -12.087469
+        ],
+        "type": "Point"
+      },
+      "id": "ce19b966715d5f424ffd8e3daeadec31"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Pizzería La Romana",
+        "categoria": "Restaurantes",
+        "imagen": "icons/RESTAURANTES/logo-laromana.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.064886,
+          -12.078699
+        ],
+        "type": "Point"
+      },
+      "id": "d66b6e76e96d9e2434472bc34bb6cced"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Cajero BCP",
+        "categoria": "Finanzas",
+        "imagen": "icons/FINANZAS/logo-bcp.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.067137,
+          -12.083433
+        ],
+        "type": "Point"
+      },
+      "id": "dc738b4142d41951f9716483e85f892c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Antigua Taberna Queirolo",
+        "categoria": "Restaurantes",
+        "imagen": "icons/RESTAURANTES/logo-tabernaqueirolo.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.063071,
+          -12.077591
+        ],
+        "type": "Point"
+      },
+      "id": "df6cead883d3a62151eb1bfc1b10b41c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Campo Deportivo Maracana",
+        "categoria": "Lifestyle",
+        "imagen": "icons/AREAS_VERDES_Y_RECREACION/logo-deporte.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.073484,
+          -12.081835
+        ],
+        "type": "Point"
+      },
+      "id": "e2e8f97abe0791a2131b3ad3784148f0"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Parque Antonio de Sucre",
+        "categoria": "Areas Verdes Y Recreacion",
+        "imagen": "icons/AREAS_VERDES_Y_RECREACION/parque_8.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.067466,
+          -12.081639
+        ],
+        "type": "Point"
+      },
+      "id": "e49c864fa87991ddabe6675c68ec184f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Parque Virginia Candamo de la Puente",
+        "categoria": "Areas Verdes Y Recreacion",
+        "imagen": "icons/AREAS_VERDES_Y_RECREACION/parque_9.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.064926,
+          -12.079687
+        ],
+        "type": "Point"
+      },
+      "id": "e5fe9feac0c059f62d711d28e48e7d2a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "El Bolivariano",
+        "categoria": "Restaurantes",
+        "imagen": "icons/RESTAURANTES/logo-bolivariano.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.063877,
+          -12.076776
+        ],
+        "type": "Point"
+      },
+      "id": "e7133247cae90800a8d6916828c64a79"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Pichincha",
+        "categoria": "Finanzas",
+        "imagen": "icons/FINANZAS/logo-pichincha.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.053859,
+          -12.087578
+        ],
+        "type": "Point"
+      },
+      "id": "ecdc06c53ce6166a69c10c925982d1dd"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "ISIL",
+        "categoria": "Educacion",
+        "imagen": "icons/EDUCACION/logo-isil.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.053263,
+          -12.093852
+        ],
+        "type": "Point"
+      },
+      "id": "f16dca723c830178ca52f7f4e14e6de0"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Parque Principe",
+        "categoria": "Areas Verdes Y Recreacion",
+        "imagen": "icons/AREAS_VERDES_Y_RECREACION/parque_1.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.067026,
+          -12.080633
+        ],
+        "type": "Point"
+      },
+      "id": "f1d38c35be2fa743913c4ec9cbb15088"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Inkafarma",
+        "categoria": "Salud Y Bienestar",
+        "imagen": "icons/SALUD_Y_BIENESTAR/logo-inkafarma.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.066981,
+          -12.082976
+        ],
+        "type": "Point"
+      },
+      "id": "fd0443bc47549f48a8fd6e9845c53798"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nombre": "Cajero BBVA",
+        "categoria": "Finanzas",
+        "imagen": "icons/FINANZAS/logo-bbva.png"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.060679,
+          -12.087707
+        ],
+        "type": "Point"
+      },
+      "id": "ff1ace0e880716b07c052c9398a31fdd"
+    }
+  ],
+  "type": "FeatureCollection"
+}

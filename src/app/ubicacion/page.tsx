@@ -305,7 +305,7 @@ const DirectionsPage = () => {
                                     placeholder={searchMode === 'explore' ? "Buscar lugares cercanos..." : "Ingresa tu ubicación..."}
                                     value={filter}
                                     onChange={(e) => setFilter(e.target.value)}
-                                    className="w-full bg-gray-50 border border-gray-200 rounded-lg pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-brand-orange transition-colors"
+                                    className="w-full bg-gray-50 text-brand-orange border border-gray-200 rounded-lg pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-brand-orange transition-colors"
                                 />
                             </div>
                         </div>
