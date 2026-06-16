@@ -10,7 +10,6 @@ import { floorsData as staticFloorsData } from '@/data/floors';
 import config from '@/config/config';
 import BuildingFacadeSvg from '@/components/UI/BuildingFacadeSvg';
 import { getFeatures } from '@/app/actions/features';
-import ThemeToggle from '@/components/UI/ThemeToggle';
 import defaultFeatures from '@/data/features.json';
 
 interface SidebarProps {
@@ -164,35 +163,12 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                 {/* Animated Building Facade background vector */}
                 <BuildingFacadeSvg isOpen={isOpen} className="z-0" />
 
-                {/* Header (Common) */}
-                {!isForcedLandscape && (
-                    <div className="pt-8 pb-6 px-6 flex flex-col items-center justify-center relative z-10 bg-transparent shrink-0">
-                        {/* ThemeToggle at Top Left */}
-                        <div className="absolute top-5 left-5 z-20">
-                            <ThemeToggle />
-                        </div>
-                        {/* Brand Name */}
-                        <div className="flex flex-col items-center justify-center mt-2">
-                            <h1 className="font-primary text-brand-primary dark:text-white tracking-[0.25em] font-bold text-2xl uppercase leading-none select-none">Venecia</h1>
-                            <span className="font-primary text-zinc-400 dark:text-zinc-500 tracking-[0.4em] font-medium text-[9px] uppercase mt-2 select-none">Pueblo Libre</span>
-                        </div>
-                        {/* Close button aligned with mockup corner fold */}
-                        <button onClick={onClose} className="absolute top-5 right-5 text-zinc-400 hover:text-zinc-800 dark:hover:text-white hover:scale-110 transition-all cursor-pointer">
-                            <X size={22} />
-                        </button>
-                    </div>
-                )}
 
                 {/* FORCED LANDSCAPE LAYOUT (Grid) */}
                 {isForcedLandscape ? (
                     <div className="flex-1 flex flex-col p-6 relative">
                         {/* Controls Container */}
-                        <div className="absolute top-6 right-6 flex items-center gap-3 z-20">
-                            <ThemeToggle />
-                            <button onClick={onClose} className="p-2 bg-white/80 dark:bg-base-200 border border-[#E5E3DF] dark:border-base-100 rounded-full text-zinc-500 dark:text-zinc-200 hover:text-zinc-800 dark:hover:text-white hover:bg-white transition-colors z-20 cursor-pointer">
-                                <X size={24} />
-                            </button>
-                        </div>
+
 
                         {/* Logo - Smaller, Top Left or Center */}
                         <div className="absolute top-6 left-6 z-20 flex items-center gap-3">
@@ -291,8 +267,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                                             >
                                                 {/* Icon container */}
                                                 <div className={`w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-300 group-hover:scale-105
-                                                    ${active 
-                                                        ? 'text-brand-primary dark:text-white' 
+                                                    ${active
+                                                        ? 'text-brand-primary dark:text-white'
                                                         : 'text-zinc-400 dark:text-zinc-500 group-hover:text-brand-primary'
                                                     }`}
                                                 >
