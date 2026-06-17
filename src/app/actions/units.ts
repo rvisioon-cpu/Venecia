@@ -100,13 +100,11 @@ export async function getFloorsData() {
         } else if (['302', '402', '502', '602', '702'].includes(u.identifier)) {
           assetId = 'tipo_302';
         } else if (u.identifier === '801') {
-          assetId = 'tipo_801';
-        } else if (u.identifier === '901') {
-          assetId = 'tipo_901';
+          // Duplex level 1 (floor 8) and level 2 (floor 9) share the
+          // identifier but use different typology assets per level.
+          assetId = f.level === 9 ? 'tipo_901' : 'tipo_801';
         } else if (u.identifier === '802') {
-          assetId = 'tipo_802';
-        } else if (u.identifier === '902') {
-          assetId = 'tipo_902';
+          assetId = f.level === 9 ? 'tipo_902' : 'tipo_802';
         }
 
         return {

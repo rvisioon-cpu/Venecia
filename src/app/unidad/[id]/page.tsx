@@ -148,6 +148,8 @@ const UnitPage = () => {
       else if (viewMode === 'unfurnished' && newMode === 'furnished') transitionName = 'unfurnished_to_furnished';
       else if (viewMode === 'furnished' && newMode === 'plans') transitionName = 'furnished_to_plans';
       else if (viewMode === 'plans' && newMode === 'furnished') transitionName = 'plans_to_furnished';
+      else if (viewMode === 'unfurnished' && newMode === 'plans') transitionName = 'unfurnished_to_plans';
+      else if (viewMode === 'plans' && newMode === 'unfurnished') transitionName = 'plans_to_unfurnished';
       
       const videoUrl = getTransitionUrl(assetId, transitionName);
       let targetStaticImage: string | undefined;
@@ -197,6 +199,8 @@ const UnitPage = () => {
       else if (viewMode === 'unfurnished' && targetMode === 'furnished') transitionName = 'unfurnished_to_furnished';
       else if (viewMode === 'furnished' && targetMode === 'plans') transitionName = 'furnished_to_plans';
       else if (viewMode === 'plans' && targetMode === 'furnished') transitionName = 'plans_to_furnished';
+      else if (viewMode === 'unfurnished' && targetMode === 'plans') transitionName = 'unfurnished_to_plans';
+      else if (viewMode === 'plans' && targetMode === 'unfurnished') transitionName = 'plans_to_unfurnished';
       
       const videoUrl = transitionName ? getTransitionUrl(assetId, transitionName) : null;
       const targetStaticImage = getStaticViewUrl(assetId, targetMode);
@@ -327,8 +331,10 @@ const UnitPage = () => {
           return { showLeft: false, showRight: false };
       }
 
-      if (viewMode === 'unfurnished') return { showLeft: false, showRight: true, rightTarget: 'furnished' as const };
-      if (viewMode === 'plans') return { showLeft: true, showRight: false, leftTarget: 'furnished' as const };
+      // Allow switching freely between all three typologies (transition
+      // videos exist for every pair, including unfurnished <-> plans).
+      if (viewMode === 'unfurnished') return { showLeft: true, showRight: true, leftTarget: 'furnished' as const, rightTarget: 'plans' as const };
+      if (viewMode === 'plans') return { showLeft: true, showRight: true, leftTarget: 'unfurnished' as const, rightTarget: 'furnished' as const };
       if (viewMode === 'furnished') return { showLeft: true, showRight: true, leftTarget: 'unfurnished' as const, rightTarget: 'plans' as const };
       return { showLeft: false, showRight: false }; // Gallery or other
   };
