@@ -99,10 +99,14 @@ export async function getFloorsData() {
           assetId = 'tipo_202';
         } else if (['302', '402', '502', '602', '702'].includes(u.identifier)) {
           assetId = 'tipo_302';
-        } else if (['801', '901'].includes(u.identifier)) {
+        } else if (u.identifier === '801') {
           assetId = 'tipo_801';
-        } else if (['802', '902'].includes(u.identifier)) {
+        } else if (u.identifier === '901') {
+          assetId = 'tipo_901';
+        } else if (u.identifier === '802') {
           assetId = 'tipo_802';
+        } else if (u.identifier === '902') {
+          assetId = 'tipo_902';
         }
 
         return {
