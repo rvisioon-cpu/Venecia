@@ -70,7 +70,7 @@ export default function MapComponent({ destination, origin, padding, onMarkerCli
                 // Fetch estimates for all modes
                 const modes = ['driving', 'walking', 'cycling'] as const;
                 const requests = modes.map(mode =>
-                    fetch(`https://api.mapbox.com/directions/v5/mapbox/${mode}/${start[0]},${start[1]};${end[0]},${end[1]}?languaje=es&steps=true&geometries=geojson&access_token=${MAPBOX_TOKEN}`)
+                    fetch(`https://api.mapbox.com/directions/v5/mapbox/${mode}/${start[0]},${start[1]};${end[0]},${end[1]}?language=es&steps=true&geometries=geojson&access_token=${MAPBOX_TOKEN}`)
                         .then(res => res.json() as Promise<any>)
                 );
 
