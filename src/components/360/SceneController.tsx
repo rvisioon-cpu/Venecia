@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useStore } from '@/store/useStore';
 import gsap from 'gsap';
@@ -10,7 +10,7 @@ interface SceneControllerProps {
 }
 
 export default function SceneController({ isHighlighted }: SceneControllerProps) {
-  const { viewState, endTransition, currentRoom, currentFace, confirmRotation, finishRotation, transitionUrl, timeOfDay, targetDestination, floorsData, buildingFacesData } = useStore();
+  const { viewState, endTransition, currentRoom, currentFace, confirmRotation, finishRotation, transitionUrl, timeOfDay, targetDestination, floorsData, buildingFacesData, isLoadingAssets } = useStore();
   const router = useRouter();
 
   // Preload the first floor plan while the "enter building" walk video plays.
@@ -31,6 +31,18 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
 
   const activeVideoUrl =
     transitionUrl || (viewState === 'TRANSITION_VIDEO' ? (currentAssetSet?.introVideo ?? null) : null);
+
+  // Tracks whether the freshly-mounted transition <video> has actually started
+  // painting frames. Until then we keep the old face masked behind an opaque
+  // overlay, otherwise the new <video> element re-decodes its first frame from
+  // scratch (preloadVideo only warms a detached element) and the old image
+  // shows through for a moment.
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  useEffect(() => {
+    if (!isTransitioning) setIsVideoPlaying(false);
+  }, [isTransitioning, activeVideoUrl]);
+
+  const showTransitionMask = isLoadingAssets || (isTransitioning && !isVideoPlaying);
 
   const handleVideoEnd = () => {
     if (viewState === 'TRANSITION_VIDEO') {
@@ -120,11 +132,15 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
           muted
           playsInline
           onLoadedMetadata={(e) => { e.currentTarget.play().catch(() => { }); }}
+          onPlaying={() => setIsVideoPlaying(true)}
           onEnded={handleVideoEnd}
           onError={handleVideoEnd}
           className="absolute inset-0 w-full h-full object-cover z-50 pointer-events-none"
         />
       )}
+
+      {/* LAYER 3: Transition mask — hides the old face until the new video/image is actually ready to paint */}
+      <div className={`absolute inset-0 bg-black z-[60] pointer-events-none transition-opacity duration-150 ${showTransitionMask ? 'opacity-100' : 'opacity-0'}`} />
 
     </div>
   );
