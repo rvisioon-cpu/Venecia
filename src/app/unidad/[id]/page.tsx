@@ -287,25 +287,14 @@ const UnitPage = () => {
       return (
           <div className="w-full h-full bg-white relative">
              {staticImageUrl ? (
-                 isDuplex ? (
-                     <div className="w-full h-full p-4 md:p-8 bg-white relative">
-                         <div className="w-full h-full overflow-hidden relative">
-                             <img 
-                                src={staticImageUrl} 
-                                className={`absolute w-full h-[200%] object-contain transition-all duration-300 ${
-                                    isPiso1 ? 'top-0 left-0 object-top' : 'bottom-0 left-0 object-bottom'
-                                }`}
-                                alt={`${viewMode} View`}
-                             />
-                         </div>
-                     </div>
-                 ) : (
-                     <img 
-                        src={staticImageUrl} 
-                        className="w-full h-full object-contain p-4 md:p-8"
-                        alt={`${viewMode} View`}
-                     />
-                 )
+                 // Each duplex level now has its own full 16:9 plan (tipo_801/tipo_901,
+                 // tipo_802/tipo_902), so render it like any unit instead of cropping
+                 // one stacked image in half.
+                 <img
+                    src={staticImageUrl}
+                    className="w-full h-full object-contain p-4 md:p-8"
+                    alt={`${viewMode} View`}
+                 />
              ) : (
                  <div className="w-full h-full flex items-center justify-center bg-neutral-200">
                      <p className="text-neutral-400">Image not found: {viewMode}</p>
@@ -508,6 +497,9 @@ const UnitPage = () => {
                     className="text-center py-12 rounded-xl relative overflow-hidden group shadow-inner"
                     style={{
                         backgroundImage: (() => {
+                            // Prefer the unit's first gallery image as the poster backdrop.
+                            const hasGallery = assetManifest.some(p => p.includes(`plants/details/${assetId}/gallery/`));
+                            if (hasGallery && unitGalleryImages[0]?.src) return `url(${unitGalleryImages[0].src})`;
                             const posterPath = `plants/details/${assetId}/poster.png`;
                             return assetManifest.includes(posterPath) ? `url(${getAssetUrl(posterPath)})` : 'none';
                         })(),
