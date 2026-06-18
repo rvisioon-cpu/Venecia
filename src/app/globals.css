@@ -20,7 +20,9 @@
   font-style: normal;
   font-display: swap;
 }
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: light --default;
+}
 
 @custom-variant dark (&:where(.dark, .dark *));
 
