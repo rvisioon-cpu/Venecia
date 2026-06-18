@@ -23,9 +23,14 @@ const ShowroomContent = () => {
   const toggleTimeOfDay = useStore(state => state.toggleTimeOfDay);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isHoveringIngresar, setIsHoveringIngresar] = useState(false);
+  const [loadingAction, setLoadingAction] = useState<'left' | 'right' | 'daynight' | 'enter' | null>(null);
   const currentFace = useStore(state => state.currentFace);
   const isLoadingAssets = useStore(state => state.isLoadingAssets);
   const buildingFacesData = useStore(state => state.buildingFacesData);
+
+  useEffect(() => {
+    if (!isLoadingAssets) setLoadingAction(null);
+  }, [isLoadingAssets]);
 
   // Reset state on mount or params change
   const transitionParam = searchParams.get('transition');
@@ -190,7 +195,7 @@ const ShowroomContent = () => {
         <button
           onClick={() => router.push('/recorridos?tourId=building-main')}
           disabled={isLoadingAssets}
-          className={`fixed top-6 left-1/2 -translate-x-1/2 z-30 px-6 py-2 bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 rounded-full text-white font-medium text-sm transition-all duration-300 hover:scale-105 cursor-pointer shadow-lg uppercase tracking-wide flex items-center gap-2 ${isLoadingAssets ? 'opacity-0 scale-90 pointer-events-none' : 'opacity-100 scale-100'}`}
+          className="fixed top-6 left-1/2 -translate-x-1/2 z-30 px-6 py-2 bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 rounded-full text-white font-medium text-sm transition-all duration-300 hover:scale-105 cursor-pointer shadow-lg uppercase tracking-wide flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
         >
           <Rotate3d size={18} />
           Recorrido General
@@ -202,13 +207,15 @@ const ShowroomContent = () => {
 
         {/* Day/Night Toggle */}
         {viewState === 'IDLE' && (
-          <div className={`relative group transition-all duration-300 ${isLoadingAssets ? 'opacity-0 scale-90 pointer-events-none' : 'opacity-100 scale-100'}`}>
+          <div className="relative group">
             <button
-              onClick={toggleTimeOfDay}
+              onClick={() => { setLoadingAction('daynight'); toggleTimeOfDay(); }}
               disabled={isLoadingAssets}
-              className="p-3 bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 rounded-full text-white transition-all hover:scale-110 cursor-pointer shadow-lg"
+              className="p-3 bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 rounded-full text-white transition-all hover:scale-110 cursor-pointer shadow-lg disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
-              {timeOfDay === 'day' ? <Moon size={24} /> : <Sun size={24} />}
+              {loadingAction === 'daynight' ? (
+                <Loader className="w-6 h-6" />
+              ) : timeOfDay === 'day' ? <Moon size={24} /> : <Sun size={24} />}
             </button>
             <div className="absolute top-1/2 right-full mr-3 -translate-y-1/2 px-3 py-1 bg-black/80 backdrop-blur-sm text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
               {timeOfDay === 'day' ? 'Switch to Night' : 'Switch to Day'}
@@ -222,35 +229,36 @@ const ShowroomContent = () => {
 
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-      {/* Loading Indicator (rotation / day-night / entry transitions) */}
-      <div className={`fixed inset-0 z-40 flex items-center justify-center transition-all duration-300 ${isLoadingAssets ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-90 pointer-events-none'}`}>
-        <div className="bg-black/40 backdrop-blur-xl border border-white/20 rounded-full p-4 shadow-lg">
-          <Loader className="w-8 h-8 text-white" />
-        </div>
-      </div>
-
       {/* Rotation UI */}
       {showLeftButton && (
         <button
-          onClick={() => rotateBuilding('left')}
+          onClick={() => { setLoadingAction('left'); rotateBuilding('left'); }}
           disabled={isLoadingAssets}
-          className={`fixed top-1/2 left-4 -translate-y-1/2 z-40 p-3 rounded-full bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 text-white transition-all duration-300 hover:scale-110 cursor-pointer ${isLoadingAssets ? 'opacity-0 scale-90 pointer-events-none' : 'opacity-100 scale-100'}`}
+          className="fixed top-1/2 left-4 -translate-y-1/2 z-40 p-3 rounded-full bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 text-white transition-all duration-300 hover:scale-110 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
+          {loadingAction === 'left' ? (
+            <Loader className="h-8 w-8" />
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          )}
         </button>
       )}
 
       {showRightButton && (
         <button
-          onClick={() => rotateBuilding('right')}
+          onClick={() => { setLoadingAction('right'); rotateBuilding('right'); }}
           disabled={isLoadingAssets}
-          className={`fixed top-1/2 right-4 -translate-y-1/2 z-40 p-3 rounded-full bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 text-white transition-all duration-300 hover:scale-110 cursor-pointer ${isLoadingAssets ? 'opacity-0 scale-90 pointer-events-none' : 'opacity-100 scale-100'}`}
+          className="fixed top-1/2 right-4 -translate-y-1/2 z-40 p-3 rounded-full bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 text-white transition-all duration-300 hover:scale-110 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
+          {loadingAction === 'right' ? (
+            <Loader className="h-8 w-8" />
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          )}
         </button>
       )}
 
@@ -269,13 +277,13 @@ const ShowroomContent = () => {
       {viewState === 'IDLE' && (
         <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50">
           <button
-            onClick={() => startTransition('Floors')}
+            onClick={() => { setLoadingAction('enter'); startTransition('Floors'); }}
             onMouseEnter={() => setIsHoveringIngresar(true)}
             onMouseLeave={() => setIsHoveringIngresar(false)}
             disabled={isLoadingAssets}
-            className={`bg-brand-primary/80 backdrop-blur-xl border border-white/20 text-white px-8 py-3 rounded-full hover:bg-brand-primary transition-all duration-300 cursor-pointer flex items-center gap-2 ${isLoadingAssets ? 'opacity-0 scale-90 pointer-events-none' : 'opacity-100 scale-100'}`}
+            className="bg-brand-primary/80 backdrop-blur-xl border border-white/20 text-white px-8 py-3 rounded-full hover:bg-brand-primary transition-all duration-300 cursor-pointer flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            Ingresar
+            {loadingAction === 'enter' ? <Loader className="w-[18px] h-[18px]" /> : 'Ingresar'}
           </button>
         </div>
       )}
