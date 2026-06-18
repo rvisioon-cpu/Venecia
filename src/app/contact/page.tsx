@@ -412,22 +412,21 @@ const Contact = () => {
            <FullScreenToggle />
       </div>
 
-      {/* BACKGROUND LAYER (Video) */}
-      <div className="absolute inset-0 z-0">
-        <video 
-          autoPlay 
-          loop 
-          muted 
+      {/* VIDEO COLUMN (beside the form, shown in full so it is not cropped) */}
+      <div className="relative z-0 hidden md:flex flex-1 items-center justify-center bg-black overflow-hidden">
+        <video
+          autoPlay
+          loop
+          muted
           playsInline
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
         >
           <source src={getAssetUrl('videos/walk.mp4')} type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-black/20" />
       </div>
 
       {/* CENTERED/RIGHT PANEL */}
-      <div className="relative z-10 w-full md:w-[600px] lg:w-[650px] bg-white h-full ml-auto shadow-2xl flex flex-col animate-slide-in-right overflow-y-auto">
+      <div className="relative z-10 w-full md:w-[600px] lg:w-[650px] bg-white h-full shadow-2xl flex flex-col animate-slide-in-right overflow-y-auto">
         
         {/* Header */}
         <div className="px-8 pt-8 pb-4 flex flex-col items-start shrink-0 space-y-3">
