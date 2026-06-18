@@ -14,6 +14,7 @@ interface BgLayer {
 }
 
 const CROSSFADE_MS = 350;
+const VIDEO_END_SAFETY_TIMEOUT_MS = 4000;
 
 export default function SceneController({ isHighlighted }: SceneControllerProps) {
   const { viewState, endTransition, currentRoom, currentFace, confirmRotation, finishRotation, transitionUrl, timeOfDay, targetDestination, floorsData, buildingFacesData } = useStore();
@@ -119,9 +120,32 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
   const activeVideoUrl =
     transitionUrl || (viewState === 'TRANSITION_VIDEO' ? (currentAssetSet?.introVideo ?? null) : null);
 
+  // Same precaution as the /plantas entry: on a first/cold load
+  // buildingFacesData (and the face background it points to) may still be
+  // loading when the intro walk-in video finishes. Don't reveal the Lobby
+  // until the background is actually decoded, with a safety timeout so we
+  // never get stuck on a black screen if something never loads.
+  const topBgLayer = bgLayers[bgLayers.length - 1];
+  const isBackgroundReady = !!targetBackground && topBgLayer?.src === targetBackground && readyLayerIds.has(topBgLayer.id);
+  const [videoEndedPendingReveal, setVideoEndedPendingReveal] = useState(false);
+
+  useEffect(() => {
+    if (!videoEndedPendingReveal) return;
+    if (isBackgroundReady) {
+      endTransition('Lobby');
+      setVideoEndedPendingReveal(false);
+      return;
+    }
+    const timeout = setTimeout(() => {
+      endTransition('Lobby');
+      setVideoEndedPendingReveal(false);
+    }, VIDEO_END_SAFETY_TIMEOUT_MS);
+    return () => clearTimeout(timeout);
+  }, [videoEndedPendingReveal, isBackgroundReady, endTransition]);
+
   const handleVideoEnd = () => {
     if (viewState === 'TRANSITION_VIDEO') {
-      endTransition('Lobby');
+      setVideoEndedPendingReveal(true);
     } else if (viewState === 'TRANSITION_ROTATION') {
       // Commit target face and unmount immediately
       useStore.setState((s) => ({
