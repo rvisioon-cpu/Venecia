@@ -235,12 +235,17 @@ const FloorPage = () => {
           className="relative transition-transform duration-75 ease-out"
           style={{
             transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+            // Cover the full screen while keeping the floor plan's 16:9 aspect
+            // ratio (assets are 3840x2160). Keeping the wrapper at 16:9 means the
+            // image and the unit hotspot overlay (percentage based) stay aligned.
+            width: 'max(100vw, calc(100vh * 16 / 9))',
+            height: 'max(100vh, calc(100vw * 9 / 16))',
           }}
         >
           <img
             src={getAssetUrl(floor.floorPlanImage)}
             alt={floor.name}
-            className="max-h-[100vh] max-w-[100vw] w-auto h-auto drop-shadow-2xl transition-all duration-300 contrast-[1.02] brightness-[1.02]"
+            className="w-full h-full object-cover drop-shadow-2xl transition-all duration-300 contrast-[1.02] brightness-[1.02]"
             draggable={false}
           />
 
