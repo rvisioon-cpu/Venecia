@@ -764,11 +764,14 @@ const UnitPage = () => {
                 
                 {/* Transition Video Overlay */}
                 {isPlayingTransition && transitionVideo && (
-                    <div className="absolute inset-0 z-40 bg-black">
-                        <video 
+                    // Match the static plan presentation (white bg + same padding +
+                    // object-contain) so the 16:9 morph aligns with the before/after
+                    // frames and the letterbox is white instead of black bars.
+                    <div className="absolute inset-0 z-40 bg-white">
+                        <video
                             ref={videoRef}
                             src={transitionVideo}
-                            className="w-full h-full object-contain"
+                            className="w-full h-full object-contain p-4 md:p-8"
                             playsInline
                             // muted 
                             // autoPlay called in useEffect
