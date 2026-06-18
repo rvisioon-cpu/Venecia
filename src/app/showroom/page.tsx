@@ -117,18 +117,12 @@ const ShowroomContent = () => {
     const fastImagesToLoad: string[] = [];
     const secondaryImagesToLoad: string[] = [];
 
-    // 1. Adjacent face backgrounds (small images, cheap to warm)
-    const adjacentIds: number[] = [];
-    if (currentFace === 0) {
-      if (buildingFacesData.length > 1) adjacentIds.push(1);
-      if (buildingFacesData.length > 2) adjacentIds.push(2);
-    } else {
-      adjacentIds.push(0);
-    }
-
-    adjacentIds.forEach(id => {
-      const face = buildingFacesData[id];
-      if (!face) return;
+    // 1. Every other face's background for the current time of day. There are
+    // only ever 2-3 faces, so warming all of them (not just the immediate
+    // neighbors) removes the first-click wait no matter which direction the
+    // user rotates, while staying cheap.
+    buildingFacesData.forEach((face, id) => {
+      if (id === currentFace) return;
       const assetSet = timeOfDay === 'day' ? face.day : face.night;
       if (assetSet?.background) fastImagesToLoad.push(assetSet.background);
     });
