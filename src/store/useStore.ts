@@ -197,7 +197,6 @@ export const useStore = create<ShowroomState>((set, get) => ({
     set({ isLoadingAssets: false });
     
     set({ 
-      currentFace: nextFaceIndex,
       nextFace: nextFaceIndex, 
       transitionUrl: videoUrl,
       viewState: 'TRANSITION_ROTATION' 
@@ -243,7 +242,6 @@ export const useStore = create<ShowroomState>((set, get) => ({
     }
 
     set({ 
-      timeOfDay: nextTimeOfDay,
       viewState: 'TRANSITION_TIMELAPSE',
       transitionUrl: videoUrl
     });

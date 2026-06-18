@@ -41,11 +41,20 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
         endTransition('Lobby');
       }
     } else if (viewState === 'TRANSITION_ROTATION') {
-      // Unmount the video immediately
-      finishRotation();
+      // Commit target face and unmount immediately
+      useStore.setState((s) => ({
+        currentFace: s.nextFace !== null ? s.nextFace : s.currentFace,
+        nextFace: null,
+        viewState: 'IDLE',
+        transitionUrl: null
+      }));
     } else if (viewState === 'TRANSITION_TIMELAPSE') {
-      // Unmount the video immediately
-      useStore.setState({ viewState: 'IDLE', transitionUrl: null });
+      // Commit target time of day and unmount immediately
+      useStore.setState((s) => ({
+        timeOfDay: s.timeOfDay === 'day' ? 'night' : 'day',
+        viewState: 'IDLE',
+        transitionUrl: null
+      }));
     }
   };
 
