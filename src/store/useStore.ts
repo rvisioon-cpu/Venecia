@@ -200,10 +200,10 @@ export const useStore = create<ShowroomState>((set, get) => ({
                return;
           }
           
-          // 2. Decode the destination background BEFORE starting, so the reveal at
-          // the end of the video is an instant cut with no flash/pop (mirrors the
-          // smooth unit transitions, which preload the target before playing).
-          await preloadImages([nextBackgroundUrl]).catch((e) => console.warn('Background image preload failed', e));
+          // 2. Decode the destination background asynchronously (no await), so that
+          // the transition starts playing immediately and the background image is
+          // preloaded in the background while the video plays.
+          preloadImages([nextBackgroundUrl]).catch((e) => console.warn('Background image preload failed', e));
 
       } catch (e) {
           console.warn('Failed to preload rotation video', e);
@@ -248,7 +248,10 @@ export const useStore = create<ShowroomState>((set, get) => ({
         set({ isLoadingAssets: true });
         try {
             await preloadVideo(videoUrl);
-            if (targetBackground) await preloadImages([targetBackground]);
+            if (targetBackground) {
+                // Preload the background image asynchronously in parallel (no await)
+                preloadImages([targetBackground]).catch((e) => console.warn('Failed to preload timelapse background', e));
+            }
         } catch (e) { console.warn('Failed to preload timelapse', e); }
         set({ isLoadingAssets: false });
     }

@@ -28,6 +28,8 @@ const ShowroomContent = () => {
   const buildingFacesData = useStore(state => state.buildingFacesData);
 
   // Reset state on mount or params change
+  const transitionParam = searchParams.get('transition');
+
   useEffect(() => {
     const initShowroom = async () => {
       // NOTE: we intentionally do NOT set isLoadingAssets here. The initial
@@ -36,7 +38,7 @@ const ShowroomContent = () => {
       // day/night toggles, which disable only their own buttons while their
       // specific transition video loads.
 
-      const transition = searchParams.get('transition');
+      const transition = transitionParam;
       // targetPath is handled by the store or router logic usually, 
       // but here we just need to know if we are entering via a specific flow.
 
@@ -52,8 +54,11 @@ const ShowroomContent = () => {
         ...(shouldResetToDay ? { timeOfDay: 'day' } : {})
       });
 
-      if (transition && buildingFacesData.length > 0) {
-        const face0 = buildingFacesData[0];
+      const faces = useStore.getState().buildingFacesData;
+      const currentTimeOfDay = useStore.getState().timeOfDay;
+
+      if (transition && faces.length > 0) {
+        const face0 = faces[0];
 
         if (transition === 'intro') {
           // Showroom: Matches Homepage "Entrar" video
@@ -66,7 +71,7 @@ const ShowroomContent = () => {
           });
         } else if (transition === 'floors') {
           // Plantas: Uses the generic "Central View" walk (Day/Night sensitive)
-          const floorsVideoUrl = timeOfDay === 'day' ? face0?.day?.introVideo : face0?.night?.introVideo;
+          const floorsVideoUrl = currentTimeOfDay === 'day' ? face0?.day?.introVideo : face0?.night?.introVideo;
 
           if (floorsVideoUrl) {
             useStore.setState({
@@ -79,9 +84,9 @@ const ShowroomContent = () => {
       }
 
       try {
-        if (buildingFacesData.length > 0) {
-          const face0 = buildingFacesData[0];
-          const determinedTime = shouldResetToDay ? 'day' : (transition === 'floors' ? timeOfDay : 'day');
+        if (faces.length > 0) {
+          const face0 = faces[0];
+          const determinedTime = shouldResetToDay ? 'day' : (transition === 'floors' ? currentTimeOfDay : 'day');
 
           const mainAsset = determinedTime === 'day' ? face0?.day?.background : face0?.night?.background;
           const secondaryAsset = determinedTime === 'day' ? face0?.night?.background : face0?.day?.background;
@@ -94,7 +99,7 @@ const ShowroomContent = () => {
     };
 
     initShowroom();
-  }, [searchParams, buildingFacesData]); // Re-run if params or faces change
+  }, [transitionParam]); // Re-run only if transition param changes
 
   // Proximity Loading Logic
   useEffect(() => {
