@@ -42,7 +42,20 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
     if (!isTransitioning) setIsVideoPlaying(false);
   }, [isTransitioning, activeVideoUrl]);
 
-  const showTransitionMask = isLoadingAssets || (isTransitioning && !isVideoPlaying);
+  // Tracks whether the currently-targeted background <img> has actually
+  // finished loading/decoding. The store preloads backgrounds into a
+  // *detached* Image() before committing currentFace, which warms the HTTP
+  // cache but does not guarantee the mounted <img> has decoded a paintable
+  // frame the instant its `src` changes (e.g. right when a rotation/timelapse
+  // video ends and currentFace flips in the same render). Without this, the
+  // mask drops the moment isTransitioning goes false, exposing one stale
+  // frame of the old face underneath.
+  const [isBackgroundLoaded, setIsBackgroundLoaded] = useState(false);
+  useEffect(() => {
+    setIsBackgroundLoaded(false);
+  }, [currentAssetSet?.background]);
+
+  const showTransitionMask = isLoadingAssets || (isTransitioning && !isVideoPlaying) || !isBackgroundLoaded;
 
   const handleVideoEnd = () => {
     if (viewState === 'TRANSITION_VIDEO') {
@@ -79,9 +92,20 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
           <div className="relative w-full h-full">
             {currentAssetSet?.background && (
               <img
+                key={currentAssetSet.background}
                 src={currentAssetSet.background}
                 alt={currentFaceData?.name || "Edificio"}
                 className="w-full h-full object-cover"
+                decoding="async"
+                onLoad={(e) => {
+                  const img = e.currentTarget;
+                  const markReady = () => setIsBackgroundLoaded(true);
+                  if (img.decode) {
+                    img.decode().then(markReady).catch(markReady);
+                  } else {
+                    markReady();
+                  }
+                }}
               />
             )}
 
