@@ -184,7 +184,8 @@ const ShowroomContent = () => {
       {viewState === 'IDLE' && (
         <button
           onClick={() => router.push('/recorridos?tourId=building-main')}
-          className="fixed top-6 left-1/2 -translate-x-1/2 z-30 px-6 py-2 bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 rounded-full text-white font-medium text-sm transition-all hover:scale-105 cursor-pointer shadow-lg uppercase tracking-wide flex items-center gap-2"
+          disabled={isLoadingAssets}
+          className={`fixed top-6 left-1/2 -translate-x-1/2 z-30 px-6 py-2 bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 rounded-full text-white font-medium text-sm transition-all duration-300 hover:scale-105 cursor-pointer shadow-lg uppercase tracking-wide flex items-center gap-2 ${isLoadingAssets ? 'opacity-0 scale-90 pointer-events-none' : 'opacity-100 scale-100'}`}
         >
           <Rotate3d size={18} />
           Recorrido General
@@ -196,13 +197,13 @@ const ShowroomContent = () => {
 
         {/* Day/Night Toggle */}
         {viewState === 'IDLE' && (
-          <div className="relative group">
+          <div className={`relative group transition-all duration-300 ${isLoadingAssets ? 'opacity-0 scale-90 pointer-events-none' : 'opacity-100 scale-100'}`}>
             <button
               onClick={toggleTimeOfDay}
               disabled={isLoadingAssets}
-              className={`p-3 bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 rounded-full text-white transition-all hover:scale-110 cursor-pointer shadow-lg ${isLoadingAssets ? 'opacity-50 cursor-wait' : ''}`}
+              className="p-3 bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 rounded-full text-white transition-all hover:scale-110 cursor-pointer shadow-lg"
             >
-              {isLoadingAssets ? <Loader className="w-6 h-6" /> : (timeOfDay === 'day' ? <Moon size={24} /> : <Sun size={24} />)}
+              {timeOfDay === 'day' ? <Moon size={24} /> : <Sun size={24} />}
             </button>
             <div className="absolute top-1/2 right-full mr-3 -translate-y-1/2 px-3 py-1 bg-black/80 backdrop-blur-sm text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
               {timeOfDay === 'day' ? 'Switch to Night' : 'Switch to Day'}
@@ -216,18 +217,23 @@ const ShowroomContent = () => {
 
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
+      {/* Loading Indicator (rotation / day-night / entry transitions) */}
+      <div className={`fixed inset-0 z-40 flex items-center justify-center pointer-events-none transition-all duration-300 ${isLoadingAssets ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
+        <div className="bg-black/40 backdrop-blur-xl border border-white/20 rounded-full p-4 shadow-lg">
+          <Loader className="w-8 h-8 text-white" />
+        </div>
+      </div>
+
       {/* Rotation UI */}
       {showLeftButton && (
         <button
           onClick={() => rotateBuilding('left')}
           disabled={isLoadingAssets}
-          className={`fixed top-1/2 left-4 -translate-y-1/2 z-40 p-3 rounded-full bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 text-white transition-all hover:scale-110 cursor-pointer ${isLoadingAssets ? 'opacity-50 cursor-wait' : ''}`}
+          className={`fixed top-1/2 left-4 -translate-y-1/2 z-40 p-3 rounded-full bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 text-white transition-all duration-300 hover:scale-110 cursor-pointer ${isLoadingAssets ? 'opacity-0 scale-90 pointer-events-none' : 'opacity-100 scale-100'}`}
         >
-          {isLoadingAssets ? <Loader className="w-8 h-8" /> : (
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          )}
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
         </button>
       )}
 
@@ -235,13 +241,11 @@ const ShowroomContent = () => {
         <button
           onClick={() => rotateBuilding('right')}
           disabled={isLoadingAssets}
-          className={`fixed top-1/2 right-4 -translate-y-1/2 z-40 p-3 rounded-full bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 text-white transition-all hover:scale-110 cursor-pointer ${isLoadingAssets ? 'opacity-50 cursor-wait' : ''}`}
+          className={`fixed top-1/2 right-4 -translate-y-1/2 z-40 p-3 rounded-full bg-brand-primary/80 hover:bg-brand-primary backdrop-blur-xl border border-white/20 text-white transition-all duration-300 hover:scale-110 cursor-pointer ${isLoadingAssets ? 'opacity-0 scale-90 pointer-events-none' : 'opacity-100 scale-100'}`}
         >
-          {isLoadingAssets ? <Loader className="w-8 h-8" /> : (
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          )}
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
         </button>
       )}
 
@@ -263,7 +267,8 @@ const ShowroomContent = () => {
             onClick={() => startTransition('Floors')}
             onMouseEnter={() => setIsHoveringIngresar(true)}
             onMouseLeave={() => setIsHoveringIngresar(false)}
-            className="bg-brand-primary/80 backdrop-blur-xl border border-white/20 text-white px-8 py-3 rounded-full hover:bg-brand-primary transition-all cursor-pointer flex items-center gap-2"
+            disabled={isLoadingAssets}
+            className={`bg-brand-primary/80 backdrop-blur-xl border border-white/20 text-white px-8 py-3 rounded-full hover:bg-brand-primary transition-all duration-300 cursor-pointer flex items-center gap-2 ${isLoadingAssets ? 'opacity-0 scale-90 pointer-events-none' : 'opacity-100 scale-100'}`}
           >
             Ingresar
           </button>

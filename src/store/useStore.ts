@@ -26,7 +26,7 @@ interface ShowroomState {
   // Actions
   setFloor: (floor: number | string) => Promise<void>;
   preloadAllFloors: () => Promise<void>;
-  startTransition: (destination: string) => void;
+  startTransition: (destination: string) => Promise<void>;
   endTransition: (newRoom: string) => void;
   rotateBuilding: (direction: 'left' | 'right') => Promise<void>;
   confirmRotation: () => void;
@@ -104,7 +104,7 @@ export const useStore = create<ShowroomState>((set, get) => ({
     }
   },
   
-  startTransition: (destination) => {
+  startTransition: async (destination) => {
     const state = get();
     const face = state.buildingFacesData[state.currentFace] || state.buildingFacesData[0];
     if (!face) return;
@@ -112,7 +112,15 @@ export const useStore = create<ShowroomState>((set, get) => ({
     // Use the introWalk video for the current face/time as the transition to inside
     const videoUrl = assetSet.introVideo;
 
-    set({ 
+    if (videoUrl) {
+      set({ isLoadingAssets: true });
+      try {
+        await preloadVideo(videoUrl);
+      } catch (e) { console.warn('Failed to preload transition video', e); }
+      set({ isLoadingAssets: false });
+    }
+
+    set({
       viewState: 'TRANSITION_VIDEO',
       targetDestination: destination,
       transitionUrl: videoUrl
