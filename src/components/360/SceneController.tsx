@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useStore } from '@/store/useStore';
 import gsap from 'gsap';
@@ -10,7 +10,7 @@ interface SceneControllerProps {
 }
 
 export default function SceneController({ isHighlighted }: SceneControllerProps) {
-  const { viewState, endTransition, currentRoom, currentFace, confirmRotation, finishRotation, transitionUrl, timeOfDay, targetDestination, floorsData, buildingFacesData, isLoadingAssets } = useStore();
+  const { viewState, endTransition, currentRoom, currentFace, confirmRotation, finishRotation, transitionUrl, timeOfDay, targetDestination, floorsData, buildingFacesData } = useStore();
   const router = useRouter();
 
   // Preload the first floor plan while the "enter building" walk video plays.
@@ -31,31 +31,6 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
 
   const activeVideoUrl =
     transitionUrl || (viewState === 'TRANSITION_VIDEO' ? (currentAssetSet?.introVideo ?? null) : null);
-
-  // Tracks whether the freshly-mounted transition <video> has actually started
-  // painting frames. Until then we keep the old face masked behind an opaque
-  // overlay, otherwise the new <video> element re-decodes its first frame from
-  // scratch (preloadVideo only warms a detached element) and the old image
-  // shows through for a moment.
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  useEffect(() => {
-    if (!isTransitioning) setIsVideoPlaying(false);
-  }, [isTransitioning, activeVideoUrl]);
-
-  // Tracks whether the currently-targeted background <img> has actually
-  // finished loading/decoding. The store preloads backgrounds into a
-  // *detached* Image() before committing currentFace, which warms the HTTP
-  // cache but does not guarantee the mounted <img> has decoded a paintable
-  // frame the instant its `src` changes (e.g. right when a rotation/timelapse
-  // video ends and currentFace flips in the same render). Without this, the
-  // mask drops the moment isTransitioning goes false, exposing one stale
-  // frame of the old face underneath.
-  const [isBackgroundLoaded, setIsBackgroundLoaded] = useState(false);
-  useEffect(() => {
-    setIsBackgroundLoaded(false);
-  }, [currentAssetSet?.background]);
-
-  const showTransitionMask = isLoadingAssets || (isTransitioning && !isVideoPlaying) || !isBackgroundLoaded;
 
   const handleVideoEnd = () => {
     if (viewState === 'TRANSITION_VIDEO') {
@@ -92,20 +67,9 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
           <div className="relative w-full h-full">
             {currentAssetSet?.background && (
               <img
-                key={currentAssetSet.background}
                 src={currentAssetSet.background}
                 alt={currentFaceData?.name || "Edificio"}
                 className="w-full h-full object-cover"
-                decoding="async"
-                onLoad={(e) => {
-                  const img = e.currentTarget;
-                  const markReady = () => setIsBackgroundLoaded(true);
-                  if (img.decode) {
-                    img.decode().then(markReady).catch(markReady);
-                  } else {
-                    markReady();
-                  }
-                }}
               />
             )}
 
@@ -156,15 +120,11 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
           muted
           playsInline
           onLoadedMetadata={(e) => { e.currentTarget.play().catch(() => { }); }}
-          onPlaying={() => setIsVideoPlaying(true)}
           onEnded={handleVideoEnd}
           onError={handleVideoEnd}
           className="absolute inset-0 w-full h-full object-cover z-50 pointer-events-none"
         />
       )}
-
-      {/* LAYER 3: Transition mask — hides the old face until the new video/image is actually ready to paint */}
-      <div className={`absolute inset-0 bg-black z-[60] pointer-events-none transition-opacity duration-150 ${showTransitionMask ? 'opacity-100' : 'opacity-0'}`} />
 
     </div>
   );
