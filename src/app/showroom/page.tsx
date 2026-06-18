@@ -223,7 +223,7 @@ const ShowroomContent = () => {
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
       {/* Loading Indicator (rotation / day-night / entry transitions) */}
-      <div className={`fixed inset-0 z-40 flex items-center justify-center pointer-events-none transition-all duration-300 ${isLoadingAssets ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
+      <div className={`fixed inset-0 z-40 flex items-center justify-center transition-all duration-300 ${isLoadingAssets ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-90 pointer-events-none'}`}>
         <div className="bg-black/40 backdrop-blur-xl border border-white/20 rounded-full p-4 shadow-lg">
           <Loader className="w-8 h-8 text-white" />
         </div>

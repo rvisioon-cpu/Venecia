@@ -29,11 +29,6 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
     viewState === 'TRANSITION_ROTATION' ||
     viewState === 'TRANSITION_TIMELAPSE';
 
-  // Video for the current transition. A fresh <video> is mounted per transition
-  // (keyed by URL) — like the unit page — so it never retains a previous
-  // transition's last frame, which is what caused the one-frame flash when a
-  // single persistent <video> element was reused (its old frame showed for a
-  // moment before the new clip decoded / while opacity was toggled).
   const activeVideoUrl =
     transitionUrl || (viewState === 'TRANSITION_VIDEO' ? (currentAssetSet?.introVideo ?? null) : null);
 
@@ -46,16 +41,11 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
         endTransition('Lobby');
       }
     } else if (viewState === 'TRANSITION_ROTATION') {
-      // Commit the new face under the still-visible video, wait for it to paint
-      // (two rAFs), then unmount the video — a seamless cut, no crossfade, no flash.
-      confirmRotation();
-      requestAnimationFrame(() => requestAnimationFrame(() => finishRotation()));
+      // Unmount the video immediately
+      finishRotation();
     } else if (viewState === 'TRANSITION_TIMELAPSE') {
-      // Toggle day/night underneath, wait for paint, then end (unmounts the video).
-      useStore.setState((s) => ({ timeOfDay: s.timeOfDay === 'day' ? 'night' : 'day' }));
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        useStore.setState({ viewState: 'IDLE', transitionUrl: null });
-      }));
+      // Unmount the video immediately
+      useStore.setState({ viewState: 'IDLE', transitionUrl: null });
     }
   };
 
