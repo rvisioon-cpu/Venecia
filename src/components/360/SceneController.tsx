@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useStore } from '@/store/useStore';
 import gsap from 'gsap';
@@ -8,6 +8,13 @@ import { preloadImages } from '@/utils/preload';
 interface SceneControllerProps {
   isHighlighted?: boolean;
 }
+
+interface BgLayer {
+  id: number;
+  src: string;
+}
+
+const CROSSFADE_MS = 350;
 
 export default function SceneController({ isHighlighted }: SceneControllerProps) {
   const { viewState, endTransition, currentRoom, currentFace, confirmRotation, finishRotation, transitionUrl, timeOfDay, targetDestination, floorsData, buildingFacesData } = useStore();
@@ -23,6 +30,45 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
 
   const currentFaceData = buildingFacesData[currentFace] || buildingFacesData[0];
   const currentAssetSet = currentFaceData ? currentFaceData[timeOfDay] : null;
+  const targetBackground = currentAssetSet?.background;
+
+  // Double-buffered background: each new background image is appended as its
+  // own <img> layer, stacked on top (later DOM order = painted on top) and
+  // starts at opacity-0. It crossfades in once it has actually loaded/decoded,
+  // and only then do we drop the older layer(s) underneath — so the previous
+  // face is never abruptly swapped/blanked while the new one is still
+  // loading/decoding.
+  const layerIdRef = useRef(0);
+  const [bgLayers, setBgLayers] = useState<BgLayer[]>(() =>
+    targetBackground ? [{ id: layerIdRef.current, src: targetBackground }] : []
+  );
+  const [readyLayerIds, setReadyLayerIds] = useState<Set<number>>(() => new Set([layerIdRef.current]));
+
+  useEffect(() => {
+    if (!targetBackground) return;
+    setBgLayers((prev) => {
+      if (prev.length > 0 && prev[prev.length - 1].src === targetBackground) return prev;
+      layerIdRef.current += 1;
+      return [...prev, { id: layerIdRef.current, src: targetBackground }];
+    });
+  }, [targetBackground]);
+
+  const handleBackgroundLoaded = (id: number) => {
+    setReadyLayerIds((prev) => {
+      if (prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+    // Prune any layers older than this one once the crossfade has finished.
+    setTimeout(() => {
+      setBgLayers((prev) => {
+        const idx = prev.findIndex((l) => l.id === id);
+        if (idx <= 0) return prev;
+        return prev.slice(idx);
+      });
+    }, CROSSFADE_MS);
+  };
 
   const isTransitioning =
     viewState === 'TRANSITION_VIDEO' ||
@@ -65,13 +111,25 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
       <div className="absolute inset-0 bg-gray-800 flex items-center justify-center">
         {currentRoom === 'Lobby' ? (
           <div className="relative w-full h-full">
-            {currentAssetSet?.background && (
+            {bgLayers.map((layer) => (
               <img
-                src={currentAssetSet.background}
+                key={layer.id}
+                src={layer.src}
                 alt={currentFaceData?.name || "Edificio"}
-                className="w-full h-full object-cover"
+                decoding="async"
+                onLoad={(e) => {
+                  const img = e.currentTarget;
+                  const markReady = () => handleBackgroundLoaded(layer.id);
+                  if (img.decode) {
+                    img.decode().then(markReady).catch(markReady);
+                  } else {
+                    markReady();
+                  }
+                }}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity ease-in-out ${readyLayerIds.has(layer.id) ? 'opacity-100' : 'opacity-0'}`}
+                style={{ transitionDuration: `${CROSSFADE_MS}ms` }}
               />
-            )}
+            ))}
 
             {/* Background Video Layer - Fades in when ready */}
             {currentAssetSet?.backgroundVideo && (
