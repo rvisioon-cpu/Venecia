@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect, useTransition } from 'react';
 import { Facebook, Instagram, Menu, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, User, Mail, Phone, MapPin, Check, AlertTriangle, X } from 'lucide-react'; 
-import { getAssetUrl } from '@/utils/assets';
 import Sidebar from '@/components/layout/Sidebar';
 import FullScreenToggle from '@/components/UI/FullScreenToggle';
 import config from '@/config/config';
@@ -412,17 +411,9 @@ const Contact = () => {
            <FullScreenToggle />
       </div>
 
-      {/* VIDEO COLUMN (beside the form, shown in full so it is not cropped) */}
+      {/* IMAGE COLUMN (beside the form, shown in full so it is not cropped) */}
       <div className="relative z-0 hidden md:flex flex-1 items-center justify-center bg-black overflow-hidden">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-contain"
-        >
-          <source src={getAssetUrl('videos/walk.mp4')} type="video/mp4" />
-        </video>
+        <img src="/building/contact.png" alt="" className="w-full h-full object-contain" />
       </div>
 
       {/* CENTERED/RIGHT PANEL */}
