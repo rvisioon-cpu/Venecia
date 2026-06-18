@@ -192,10 +192,10 @@ export const useStore = create<ShowroomState>((set, get) => ({
                return;
           }
           
-          // 2. Start preloading the image in the background (fire and forget)
-          // We don't await this because the video duration usually covers the download time.
-          // Even if it doesn't, the browser will render it as it arrives.
-          preloadImages([nextBackgroundUrl]).catch((e) => console.warn('Background image preload failed', e));
+          // 2. Decode the destination background BEFORE starting, so the reveal at
+          // the end of the video is an instant cut with no flash/pop (mirrors the
+          // smooth unit transitions, which preload the target before playing).
+          await preloadImages([nextBackgroundUrl]).catch((e) => console.warn('Background image preload failed', e));
 
       } catch (e) {
           console.warn('Failed to preload rotation video', e);
@@ -234,11 +234,13 @@ export const useStore = create<ShowroomState>((set, get) => ({
     if (!currentFaceData) return;
     const isDay = state.timeOfDay === 'day';
     const videoUrl = isDay ? currentFaceData.dayToNightTransition : currentFaceData.nightToDayTransition;
-    
+    const targetBackground = isDay ? currentFaceData.night?.background : currentFaceData.day?.background;
+
     if (videoUrl) {
         set({ isLoadingAssets: true });
         try {
             await preloadVideo(videoUrl);
+            if (targetBackground) await preloadImages([targetBackground]);
         } catch (e) { console.warn('Failed to preload timelapse', e); }
         set({ isLoadingAssets: false });
     }

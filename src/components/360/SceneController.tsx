@@ -68,6 +68,19 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewState, transitionUrl, buildingFacesData]);
 
+  // Hide the transition video only AFTER the new background has been painted
+  // (two rAFs guarantee a committed paint), so revealing it is a seamless cut
+  // instead of a crossfade. The destination image is preloaded beforehand.
+  const revealAfterPaint = (after?: () => void) => {
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (videoRef.current) {
+        videoRef.current.style.opacity = "0";
+        videoRef.current.style.zIndex = "-1";
+      }
+      after?.();
+    }));
+  };
+
   const handleVideoEnd = () => {
     // If wrapping up a room transition
     // If wrapping up a room transition
@@ -101,42 +114,18 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
     }
     // If wrapping up a rotation
     else if (viewState === 'TRANSITION_ROTATION') {
-        console.log('[Scene] handleVideoEnd: TRANSITION_ROTATION - Calling confirmRotation');
-        // 1. Commit the new face (background swap) behind the video
-        confirmRotation(); 
-
-        // 2. Fade out video to reveal new face
-        // 2. Fade out video to reveal new face
-        if (videoRef.current) {
-             // Add a small delay to allow React to render the new background image
-             // before we reveal it.
-             gsap.to(videoRef.current, {
-                opacity: 0,
-                duration: 0.5, // Slower fade for smoother transition
-                delay: 0.1, // Wait 100ms for DOM update
-                onComplete: () => {
-                    if (videoRef.current) videoRef.current.style.zIndex = "-1";
-                    finishRotation();
-                }
-             });
-        }
+        // Commit the new face behind the still-opaque video, wait for the new
+        // background (already preloaded) to paint, then cut the video instantly.
+        // No crossfade => no pop between the video's last frame and the static
+        // image, matching the smooth unit transitions.
+        confirmRotation();
+        revealAfterPaint(finishRotation);
     }
     // If wrapping up a timelapse
     else if (viewState === 'TRANSITION_TIMELAPSE') {
-        // 1. Toggle the time of day and reset state (background swap)
+        // Toggle day/night underneath, wait for paint, then cut instantly.
         finishTimeLapse();
-
-        // 2. Fade out video to reveal new time of day
-        if (videoRef.current) {
-             gsap.to(videoRef.current, {
-                opacity: 0,
-                duration: 0.5,
-                delay: 0.1, 
-                onComplete: () => {
-                    if (videoRef.current) videoRef.current.style.zIndex = "-1";
-                }
-             });
-        }
+        revealAfterPaint();
     }
   };
 

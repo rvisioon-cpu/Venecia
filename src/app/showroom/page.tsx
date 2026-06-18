@@ -30,8 +30,11 @@ const ShowroomContent = () => {
   // Reset state on mount or params change
   useEffect(() => {
     const initShowroom = async () => {
-      // Set loading initially
-      useStore.setState({ isLoadingAssets: true });
+      // NOTE: we intentionally do NOT set isLoadingAssets here. The initial
+      // background is preloaded below to warm the cache, but it must not block
+      // the UI / navigation. isLoadingAssets is reserved for the rotation and
+      // day/night toggles, which disable only their own buttons while their
+      // specific transition video loads.
 
       const transition = searchParams.get('transition');
       // targetPath is handled by the store or router logic usually, 
@@ -83,12 +86,11 @@ const ShowroomContent = () => {
           const mainAsset = determinedTime === 'day' ? face0?.day?.background : face0?.night?.background;
           const secondaryAsset = determinedTime === 'day' ? face0?.night?.background : face0?.day?.background;
 
-          if (mainAsset) await preloadImages([mainAsset]);
+          // Fire-and-forget cache warming — never block the UI / navigation.
+          if (mainAsset) preloadImages([mainAsset]).catch(() => { });
           if (secondaryAsset) preloadImages([secondaryAsset]).catch(() => { });
         }
       } catch (e) { console.warn("Showroom mount preload failed", e); }
-
-      useStore.setState({ isLoadingAssets: false });
     };
 
     initShowroom();
@@ -276,12 +278,11 @@ const ShowroomContent = () => {
         <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50">
           <button
             onClick={() => startTransition('Floors')}
-            disabled={isLoadingAssets}
             onMouseEnter={() => setIsHoveringIngresar(true)}
             onMouseLeave={() => setIsHoveringIngresar(false)}
-            className={`bg-brand-primary/80 backdrop-blur-xl border border-white/20 text-white px-8 py-3 rounded-full hover:bg-brand-primary transition-all disabled:opacity-50 cursor-pointer flex items-center gap-2 ${isLoadingAssets ? 'cursor-wait' : ''}`}
+            className="bg-brand-primary/80 backdrop-blur-xl border border-white/20 text-white px-8 py-3 rounded-full hover:bg-brand-primary transition-all cursor-pointer flex items-center gap-2"
           >
-            {isLoadingAssets ? <Loader /> : 'Ingresar'}
+            Ingresar
           </button>
         </div>
       )}
