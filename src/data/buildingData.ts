@@ -28,7 +28,7 @@ export const buildingFaces: BuildingFace[] = [
     dayToNightTransition: getAssetUrl('building/transitions/trans_0_day_to_night.mp4'),
     nightToDayTransition: getAssetUrl('building/transitions/trans_0_night_to_day.mp4'),
     day: {
-      background: getAssetUrl('building/photos/face_0_daylight.png'),
+      background: getAssetUrl('building/photos/face_0_daylight.webp'),
       backgroundVideo: getAssetUrl('building/videos/face_0_daylight.mp4'),
       introVideo: getAssetUrl('videos/walks/walk_center_daylight.mp4'),
       transitions: {
@@ -37,7 +37,7 @@ export const buildingFaces: BuildingFace[] = [
       }
     },
     night: {
-      background: getAssetUrl('building/photos/face_0_nightlight.png'),
+      background: getAssetUrl('building/photos/face_0_nightlight.webp'),
       backgroundVideo: getAssetUrl('building/videos/face_0_nightlight.mp4'),
       introVideo: getAssetUrl('videos/walks/walk_center_nightlight.mp4'),
       transitions: {
@@ -52,7 +52,7 @@ export const buildingFaces: BuildingFace[] = [
     dayToNightTransition: getAssetUrl('building/transitions/trans_1_day_to_night.mp4'),
     nightToDayTransition: getAssetUrl('building/transitions/trans_1_night_to_day.mp4'),
     day: {
-      background: getAssetUrl('building/photos/face_1_daylight.png'),
+      background: getAssetUrl('building/photos/face_1_daylight.webp'),
       introVideo: getAssetUrl('videos/walks/walk_right_daylight.mp4'),
       transitions: {
         toLeft: getAssetUrl('building/transitions/trans_1_to_0_daylight.mp4'),
@@ -60,7 +60,7 @@ export const buildingFaces: BuildingFace[] = [
       }
     },
     night: {
-      background: getAssetUrl('building/photos/face_1_nightlight.png'),
+      background: getAssetUrl('building/photos/face_1_nightlight.webp'),
       introVideo: getAssetUrl('videos/walks/walk_right_nightlight.mp4'),
       transitions: {
         toLeft: getAssetUrl('building/transitions/trans_1_to_0_nightlight.mp4'),
@@ -74,7 +74,7 @@ export const buildingFaces: BuildingFace[] = [
     dayToNightTransition: getAssetUrl('building/transitions/trans_2_day_to_night.mp4'),
     nightToDayTransition: getAssetUrl('building/transitions/trans_2_night_to_day.mp4'),
     day: {
-      background: getAssetUrl('building/photos/face_2_daylight.png'),
+      background: getAssetUrl('building/photos/face_2_daylight.webp'),
       introVideo: getAssetUrl('videos/walks/walk_left_daylight.mp4'),
       transitions: {
         toLeft: '',
@@ -82,7 +82,7 @@ export const buildingFaces: BuildingFace[] = [
       }
     },
     night: {
-      background: getAssetUrl('building/photos/face_2_nightlight.png'),
+      background: getAssetUrl('building/photos/face_2_nightlight.webp'),
       introVideo: getAssetUrl('videos/walks/walk_left_nightlight.mp4'),
       transitions: {
         toLeft: '',

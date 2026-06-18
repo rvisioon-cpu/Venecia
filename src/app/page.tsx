@@ -92,8 +92,8 @@ const Homepage = () => {
 
     // Preload showroom background images in the background while the intro video plays
     preloadImages([
-      getAssetUrl('building/photos/face_0_daylight.png'),
-      getAssetUrl('building/photos/face_0_nightlight.png')
+      getAssetUrl('building/photos/face_0_daylight.webp'),
+      getAssetUrl('building/photos/face_0_nightlight.webp')
     ]).catch((error) => {
       console.warn("Background preloading of showroom images failed:", error);
     });
@@ -140,7 +140,7 @@ const Homepage = () => {
             // 1. Silent preload of the "Enter" transition video
             preloadVideo(getAssetUrl('videos/walks/trans_intro_to_0.mp4')).catch(() => { });
             // 2. Silent preload of the first building face (Daylight)
-            preloadImages([getAssetUrl('building/photos/face_0_daylight.png')]).catch(() => { });
+            preloadImages([getAssetUrl('building/photos/face_0_daylight.webp')]).catch(() => { });
           }}
         >
           <source src={homepageData.intro.video} type="video/mp4" />
