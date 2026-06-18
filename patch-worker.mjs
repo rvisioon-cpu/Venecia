@@ -42,6 +42,11 @@ if (isStaticAsset) {
     try {
       const assetResponse = await env.ASSETS.fetch(request);
       if (assetResponse.status !== 404) {
+        if (!assetResponse.headers.has('cache-control')) {
+          const headers = new Headers(assetResponse.headers);
+          headers.set('cache-control', 'public, max-age=31536000, immutable');
+          return new Response(assetResponse.body, { status: assetResponse.status, headers });
+        }
         return assetResponse;
       }
     } catch (_) {
@@ -49,15 +54,25 @@ if (isStaticAsset) {
     }
   }
 
-  // 2. Try to serve from R2 bucket if not found in assets
+  // 2. Try to serve from R2 bucket if not found in assets, via the edge cache
   if (env.R2) {
     try {
       let key = pathname.startsWith('/') ? pathname.slice(1) : pathname;
       if (key.startsWith('api/r2/')) {
         key = key.slice('api/r2/'.length);
       }
-      
-      const object = await env.R2.get(key);
+
+      const cache = caches.default;
+      const cacheKey = new Request(url.toString(), request);
+      const rangeHeader = request.headers.get('range');
+
+      if (!rangeHeader) {
+        const cached = await cache.match(cacheKey);
+        if (cached) return cached;
+      }
+
+      const r2Options = rangeHeader ? { range: request.headers, onlyIf: undefined } : {};
+      const object = await env.R2.get(key, r2Options);
       if (object !== null) {
         const headers = new Headers();
         if (object.httpMetadata) {
@@ -65,13 +80,26 @@ if (isStaticAsset) {
           if (object.httpMetadata.contentLanguage) headers.set("content-language", object.httpMetadata.contentLanguage);
           if (object.httpMetadata.contentDisposition) headers.set("content-disposition", object.httpMetadata.contentDisposition);
           if (object.httpMetadata.contentEncoding) headers.set("content-encoding", object.httpMetadata.contentEncoding);
-          if (object.httpMetadata.cacheControl) headers.set("cache-control", object.httpMetadata.cacheControl);
         }
+        headers.set("cache-control", "public, max-age=31536000, immutable");
         if (object.httpEtag) {
           headers.set("etag", object.httpEtag);
         }
-        headers.set("Content-Length", object.size.toString());
-        return new Response(object.body, { headers });
+        headers.set("accept-ranges", "bytes");
+
+        const isRanged = 'range' in object && object.range;
+        if (isRanged) {
+          const { offset, length } = object.range;
+          const totalSize = object.size;
+          headers.set("content-range", \`bytes \${offset}-\${offset + length - 1}/\${totalSize}\`);
+          headers.set("content-length", length.toString());
+          return new Response(object.body, { status: 206, headers });
+        }
+
+        headers.set("content-length", object.size.toString());
+        const response = new Response(object.body, { status: 200, headers });
+        ctx.waitUntil(cache.put(cacheKey, response.clone()));
+        return response;
       }
     } catch (e) {
       console.error("R2 fallback worker error:", e);
