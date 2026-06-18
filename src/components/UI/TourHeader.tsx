@@ -8,7 +8,7 @@ interface TourHeaderProps {
 
 const TourHeader = ({ title, subtitle, onBack }: TourHeaderProps) => {
     return (
-        <div className="absolute top-6 left-6 z-50 flex items-center gap-3 group">
+        <div className="absolute top-16 left-6 z-50 flex items-center gap-3 group">
            <button
              onClick={onBack}
              className="p-3 bg-black/60 backdrop-blur-sm rounded-full text-white hover:bg-black/80 transition-colors cursor-pointer shadow-lg"

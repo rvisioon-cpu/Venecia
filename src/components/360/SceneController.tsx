@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useStore } from '@/store/useStore';
 import gsap from 'gsap';
 import { preloadImages } from '@/utils/preload';
@@ -18,7 +17,6 @@ const CROSSFADE_MS = 350;
 
 export default function SceneController({ isHighlighted }: SceneControllerProps) {
   const { viewState, endTransition, currentRoom, currentFace, confirmRotation, finishRotation, transitionUrl, timeOfDay, targetDestination, floorsData, buildingFacesData } = useStore();
-  const router = useRouter();
 
   // Preload the first floor plan while the "enter building" walk video plays.
   useEffect(() => {
@@ -70,8 +68,11 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
     }, CROSSFADE_MS);
   };
 
+  // The "enter the building" walk into /plantas is rendered by the
+  // layout-level <FloorEntryTransition> instead, so it survives the
+  // showroom -> /plantas/9 navigation without unmounting/flickering.
   const isTransitioning =
-    viewState === 'TRANSITION_VIDEO' ||
+    (viewState === 'TRANSITION_VIDEO' && targetDestination !== 'Floors') ||
     viewState === 'TRANSITION_ROTATION' ||
     viewState === 'TRANSITION_TIMELAPSE';
 
@@ -80,12 +81,7 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
 
   const handleVideoEnd = () => {
     if (viewState === 'TRANSITION_VIDEO') {
-      if (targetDestination === 'Floors') {
-        // Keep the video mounted (masking the unload) while navigating to /plantas.
-        router.push('/plantas');
-      } else {
-        endTransition('Lobby');
-      }
+      endTransition('Lobby');
     } else if (viewState === 'TRANSITION_ROTATION') {
       // Commit target face and unmount immediately
       useStore.setState((s) => ({
