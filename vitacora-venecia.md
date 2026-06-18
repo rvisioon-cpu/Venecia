@@ -111,6 +111,26 @@ Refinamientos y optimizaciones tras la implementación del dashboard:
 - `529bdea`: Convert contact image PNG → WebP
 - `3a694ca`: Migrate building faces PNG → WebP
 
+### Fase 7: Pulido de Transiciones del Showroom (18 de Junio de 2026)
+Eliminación del "ghost-frame" (cara/fondo anterior visible brevemente durante transiciones de rotación, día/noche y entrada) y mejoras de UX de carga, basadas en reportes técnicos detallados del usuario sobre timing de decodificación de imágenes en el navegador.
+
+**Cambios Principales:**
+- Spinner de carga movido del overlay centrado a los propios botones que disparan la acción (rotación, día/noche, "Ingresar"), en vez de un fade-out global de la UI.
+- Sistema de doble buffer con crossfade por opacidad para las imágenes de fondo (`SceneController.tsx`): cada nueva imagen se monta en una capa `<img>` independiente y solo se revela (crossfade) una vez que `img.decode()` confirma que el bitmap está realmente decodificado, evitando el parpadeo del frame anterior.
+- Cache de decodificación (`decodedImageCacheRef`/`warmDecode`) que mantiene "calientes" en memoria las imágenes de las caras vecinas y el fondo alterno (día/noche), evitando ~300-400ms de demora de decodificación en el primer clic aunque los bytes ya estén en caché HTTP.
+- Precarga ampliada a todas las caras del edificio (no solo las vecinas inmediatas), ya que solo hay 2-3 caras en total.
+- Video de entrada "Ingresar" → `/plantas/9` movido a un componente de layout (`FloorEntryTransition.tsx`, montado en `layout.tsx`) que sobrevive a la navegación `showroom` → `/plantas/9`, evitando que el video se desmonte a mitad de la transición.
+- Fix de un flash de "Piso 9 not found" / Lobby vacío en cargas frías: tanto `FloorEntryTransition` como `SceneController` ahora esperan a que los datos/imagen de destino estén realmente listos antes de revelar la vista (con timeout de seguridad de 4s para nunca quedar bloqueados en negro).
+- Botón de header de tours (`TourHeader.tsx`) reposicionado ligeramente más abajo para no chocar con un control nativo de Kuula.
+
+**Commits Clave:**
+- `9030d8a` / `0dfdcbf` / `2fd7500`: Spinner inline en botones (reemplaza overlay/máscara negra)
+- `e2f9b66`: Doble buffer con crossfade de opacidad
+- `5e7c389`: Precarga de todas las caras del edificio
+- `cca1cbd`: Video de entrada a plantas movido a overlay de layout (`FloorEntryTransition`)
+- `918350e`: Cache de decodificación para imágenes vecinas
+- `3eb7631`: No revelar destino hasta que datos/imagen estén listos (fix "Piso 9 not found")
+
 ---
 
 ## 📊 Estado Actual (18 de Junio de 2026)
