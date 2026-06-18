@@ -57,7 +57,16 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
       // For now, let's fade in quickly to avoid flash
       gsap.to(videoRef.current, { opacity: 1, duration: 0 });
     }
-  }, [viewState, transitionUrl, currentFace, timeOfDay, buildingFacesData]);
+    // NOTE: This effect must only fire when a transition *begins* (viewState /
+    // transitionUrl change). `currentFace` and `timeOfDay` are intentionally
+    // excluded: when a rotation ends, confirmRotation() updates currentFace
+    // while viewState is still TRANSITION_ROTATION. Re-running the effect then
+    // would reset the video to currentTime=0 (its first frame = previous face)
+    // and replay it during the fade-out, causing a brief flash of the old face.
+    // The latest currentFace/timeOfDay are still read fresh via closure whenever
+    // the effect legitimately runs at the start of a transition.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewState, transitionUrl, buildingFacesData]);
 
   const handleVideoEnd = () => {
     // If wrapping up a room transition
