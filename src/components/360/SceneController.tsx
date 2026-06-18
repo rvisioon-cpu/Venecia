@@ -26,9 +26,49 @@ export default function SceneController({ isHighlighted }: SceneControllerProps)
     }
   }, [viewState, targetDestination, floorsData]);
 
+  // Keeps fully *decoded* Image objects alive in memory, not just their bytes
+  // in the HTTP cache. A freshly-created <img> pointed at an already-cached
+  // URL still has to decode the bitmap from scratch (for these ~3840px webp
+  // faces that's ~300-400ms) unless the browser's decode cache still has a
+  // live reference to that resource — which is exactly what this Map
+  // provides by holding the offscreen Image() alive.
+  const decodedImageCacheRef = useRef<Map<string, HTMLImageElement>>(new Map());
+  const warmDecode = (src?: string) => {
+    if (!src || decodedImageCacheRef.current.has(src)) return;
+    const img = new Image();
+    img.decoding = 'async';
+    img.src = src;
+    const store = () => decodedImageCacheRef.current.set(src, img);
+    if (img.decode) {
+      img.decode().then(store).catch(store);
+    } else {
+      img.onload = store;
+    }
+  };
+
   const currentFaceData = buildingFacesData[currentFace] || buildingFacesData[0];
   const currentAssetSet = currentFaceData ? currentFaceData[timeOfDay] : null;
   const targetBackground = currentAssetSet?.background;
+
+  // Keep both rotation neighbors (and the current face's alt time-of-day)
+  // decoded and warm at all times, re-running every time the user actually
+  // lands on a new face/time so the *next* jump in either direction is ready.
+  useEffect(() => {
+    if (buildingFacesData.length === 0) return;
+    const total = buildingFacesData.length;
+    if (total > 1) {
+      const neighborIds = new Set([
+        (currentFace + 1) % total,
+        (currentFace - 1 + total) % total,
+      ]);
+      neighborIds.forEach((id) => {
+        const face = buildingFacesData[id];
+        warmDecode(face?.[timeOfDay]?.background);
+      });
+    }
+    const altTimeOfDay = timeOfDay === 'day' ? 'night' : 'day';
+    warmDecode(currentFaceData?.[altTimeOfDay]?.background);
+  }, [currentFace, timeOfDay, buildingFacesData, currentFaceData]);
 
   // Double-buffered background: each new background image is appended as its
   // own <img> layer, stacked on top (later DOM order = painted on top) and
