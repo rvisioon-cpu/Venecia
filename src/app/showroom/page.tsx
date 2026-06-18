@@ -5,7 +5,7 @@ import { useStore } from '@/store/useStore';
 import SceneController from '@/components/360/SceneController';
 import Sidebar from '@/components/layout/Sidebar';
 import { Sun, Moon, Rotate3d } from 'lucide-react';
-import { preloadImages, preloadVideo } from '@/utils/preload';
+import { preloadImages } from '@/utils/preload';
 import { getAssetUrl } from '@/utils/assets';
 import Loader from '@/components/UI/Loader';
 import FullScreenToggle from '@/components/UI/FullScreenToggle';
@@ -106,10 +106,9 @@ const ShowroomContent = () => {
 
     const fastImagesToLoad: string[] = [];
     const secondaryImagesToLoad: string[] = [];
-    const videosToLoad: string[] = [];
 
-    // 1. Identify Adjacent Faces
-    const adjacentIds = [];
+    // 1. Adjacent face backgrounds (small images, cheap to warm)
+    const adjacentIds: number[] = [];
     if (currentFace === 0) {
       if (buildingFacesData.length > 1) adjacentIds.push(1);
       if (buildingFacesData.length > 2) adjacentIds.push(2);
@@ -121,42 +120,27 @@ const ShowroomContent = () => {
       const face = buildingFacesData[id];
       if (!face) return;
       const assetSet = timeOfDay === 'day' ? face.day : face.night;
-
       if (assetSet?.background) fastImagesToLoad.push(assetSet.background);
-
-      const currentAssetSet = currentFaceData[timeOfDay];
-      if (id === 1 && currentFace === 0 && currentAssetSet?.transitions?.toRight) {
-        videosToLoad.push(currentAssetSet.transitions.toRight);
-      }
-      if (id === 2 && currentFace === 0 && currentAssetSet?.transitions?.toLeft) {
-        videosToLoad.push(currentAssetSet.transitions.toLeft);
-      }
-      if (currentFace !== 0 && currentAssetSet?.transitions?.toLeft) {
-        videosToLoad.push(currentAssetSet.transitions.toLeft);
-      }
     });
 
-    // 2. Identify Alt Time of Day
+    // 2. Alt time-of-day background for the current face
     if (timeOfDay === 'day' && currentFaceData?.night?.background) {
       secondaryImagesToLoad.push(currentFaceData.night.background);
     } else if (timeOfDay === 'night' && currentFaceData?.day?.background) {
       secondaryImagesToLoad.push(currentFaceData.day.background);
     }
 
-    // 3. Preload "Ingresar" Walk Video
-    const walkVideo = timeOfDay === 'day' ? currentFaceData.day?.introVideo : currentFaceData.night?.introVideo;
-    if (walkVideo) videosToLoad.push(walkVideo);
+    // NOTE: transition/walk VIDEOS are intentionally NOT preloaded here. They
+    // are multi-MB and, with the browser's ~6 connections-per-host limit, they
+    // saturated the pool and queued client-side navigation behind them (e.g.
+    // tapping "Contacto" closed the menu but only navigated ~a minute later).
+    // The specific transition video is preloaded on demand by rotateBuilding /
+    // toggleTimeOfDay when the user actually triggers it.
 
     // Execution
     if (fastImagesToLoad.length > 0) {
       preloadImages(fastImagesToLoad).catch(() => console.warn('Fast preload failed'));
     }
-
-    const videoTimer = setTimeout(() => {
-      if (videosToLoad.length > 0) {
-        videosToLoad.forEach(v => preloadVideo(v).catch(() => { }));
-      }
-    }, 2000);
 
     const secondaryTimer = setTimeout(() => {
       if (secondaryImagesToLoad.length > 0) {
@@ -165,7 +149,6 @@ const ShowroomContent = () => {
     }, 4000);
 
     return () => {
-      clearTimeout(videoTimer);
       clearTimeout(secondaryTimer);
     };
 
