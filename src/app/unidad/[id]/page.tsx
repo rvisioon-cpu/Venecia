@@ -468,7 +468,7 @@ const UnitPage = () => {
                                     </li>
                                     <li className="flex flex-col items-center gap-2 text-neutral-700">
                                         <Bed strokeWidth={1.5} className="text-brand-gold" size={24} />
-                                        <span className="text-xs font-bold uppercase tracking-wider">{unit.bedrooms} Rec</span>
+                                        <span className="text-xs font-bold uppercase tracking-wider">{unit.bedrooms} Dorm</span>
                                     </li>
                                     <li className="flex flex-col items-center gap-2 text-neutral-700">
                                         <Bath strokeWidth={1.5} className="text-brand-gold" size={24} />
@@ -530,7 +530,7 @@ const UnitPage = () => {
                                     </li>
                                     <li className="flex items-center gap-4 text-neutral-700">
                                         <Bed strokeWidth={1.5} className="text-brand-gold" size={22} />
-                                        <span className="text-sm font-medium">{unit.bedrooms} Recámaras</span>
+                                        <span className="text-sm font-medium">{unit.bedrooms} Dormitorios</span>
                                     </li>
                                     <li className="flex items-center gap-4 text-neutral-700">
                                         <Bath strokeWidth={1.5} className="text-brand-gold" size={22} />

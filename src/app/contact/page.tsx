@@ -8,6 +8,7 @@ import Adviser from '@/components/Adviser';
 import { advisersData } from '@/data/advisers';
 import { createAppointment } from '@/app/actions/calendar';
 import { getUnits } from '@/app/actions/units';
+import { getAssetUrl } from '@/utils/assets';
 
 const TikTokIcon = ({ size = 24, className = "" }: { size?: number, className?: string }) => (
     <svg 
@@ -411,9 +412,28 @@ const Contact = () => {
            <FullScreenToggle />
       </div>
 
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <img src="/building/contact.webp" alt="" className="w-full h-full object-cover" />
+      {/* Background Video — a blurred, scaled-up copy fills the frame (no black
+          bars) while the sharp centered copy stays object-contain so it's
+          never harshly cropped. */}
+      <div className="absolute inset-0 z-0 bg-black overflow-hidden">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover scale-125 blur-2xl opacity-60"
+        >
+          <source src={getAssetUrl('videos/walk.mp4')} type="video/mp4" />
+        </video>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="relative w-full h-full object-contain"
+        >
+          <source src={getAssetUrl('videos/walk.mp4')} type="video/mp4" />
+        </video>
       </div>
 
       {/* CENTERED/RIGHT PANEL */}
