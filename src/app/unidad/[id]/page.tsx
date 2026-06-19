@@ -384,7 +384,7 @@ const UnitPage = () => {
                 {/* Badge - Visible when details hidden */}
                 {!showDetails && (
                     <div className="px-4 py-2 bg-neutral-600/90 backdrop-blur-sm text-white rounded-md shadow-lg text-xs font-medium tracking-wide">
-                        Planta {floor.name}
+                        Planta {floor.name.replace(/Piso\s+/gi, '')}
                     </div>
                 )}
             </div>
@@ -598,7 +598,7 @@ const UnitPage = () => {
                 {viewMode === 'tour' && (
                     <TourHeader
                         title={`Unidad ${unit.identifier || unit.id}`}
-                        subtitle={`${unit.subtitle || 'Unidad'} - Piso ${floor.name}`}
+                        subtitle={`${unit.subtitle || 'Unidad'} - Piso ${floor.name.replace(/Piso\s+/gi, '')}`}
                         onBack={() => handleViewChange('furnished')}
                     />
                 )}
