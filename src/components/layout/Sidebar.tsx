@@ -191,11 +191,6 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
                         {/* Logo - Smaller, Top Left or Center */}
                         <div className="absolute top-6 left-6 z-20 flex items-center gap-3">
-                            <img
-                                src={getAssetUrl('identity/identity_logo_ISOTIPO.png')}
-                                alt="Prince Isotipo"
-                                className="h-8 w-auto object-contain"
-                            />
                             <div className="flex flex-col items-start justify-center">
                                 <h1 className="font-primary text-brand-primary dark:text-white tracking-[0.2em] font-bold text-base uppercase leading-none select-none">Venecia</h1>
                                 <span className="font-primary text-zinc-400 dark:text-zinc-500 tracking-[0.3em] font-medium text-[7px] uppercase mt-1 select-none">Pueblo Libre</span>
