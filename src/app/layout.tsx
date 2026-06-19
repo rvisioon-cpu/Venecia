@@ -6,6 +6,7 @@ import config from "@/config/config";
 import StoreInitializer from "@/components/layout/StoreInitializer";
 import FloorEntryTransition from "@/components/layout/FloorEntryTransition";
 import UseLandscape from "@/components/layout/UseLandscape";
+import ForcedLandscapeWrapper from "@/components/layout/ForcedLandscapeWrapper";
 import { getFloorsData } from "@/app/actions/units";
 import { getBuildingFacesData } from "@/app/actions/building";
 import { type Floor } from "@/data/floors";
@@ -53,9 +54,10 @@ export default async function RootLayout({
       >
         <StoreInitializer initialFloorsData={floorsData} initialBuildingFacesData={buildingFacesData} />
         <UseLandscape />
-        <FloorEntryTransition />
-
-        {children}
+        <ForcedLandscapeWrapper>
+          <FloorEntryTransition />
+          {children}
+        </ForcedLandscapeWrapper>
       </body>
     </html>
   );
