@@ -50,13 +50,13 @@ const config: ConfigProps = {
   appDescription: "Showroom Virtual Venecia",
   domainName: "venecia-showroom.com",
   resend: {
-    fromNoReply: `Venecia <noreply@venecia-showroom.com>`,
-    fromAdmin: `Admin at Venecia <admin@venecia-showroom.com>`,
-    supportEmail: "support@venecia-showroom.com",
+    fromNoReply: `Venecia <noreply@venecia.cimaprince.com>`,
+    fromAdmin: `Admin at Venecia <admin@venecia.cimaprince.com>`,
+    supportEmail: "support@venecia.cimaprince.com",
   },
   colors: {
     theme: "light",
-    main: "#F59C1D", // Brand main color
+    main: "#0c5a5b", // Brand main color
   },
   auth: {
     loginUrl: "/api/auth/signin",
@@ -64,11 +64,11 @@ const config: ConfigProps = {
   },
   company: {
     name: "Cima Prince",
-    address: "Company Address",
+    address: "Calle Pablo Olavide 151, San Isidro, Perú",
     buildingName: "Venecia",
     buildingAddress: "CALLE VIRREY MANUEL DE GUIRIOR N°705",
     email: "ventas@cimaprince.com",
-    website: "https://venecia-showroom.com/",
+    website: "https://venecia.cimaprince.com/",
     maquetaUrl: "https://rvisioon.shapespark.com/edificio_santa_fe/",
     buildingSocials: {
       facebook: "https://www.facebook.com/Cimaprince.SAC",
@@ -76,7 +76,7 @@ const config: ConfigProps = {
       tiktok: "https://www.tiktok.com/@grupo.cima.prince"
     },
     realStateName: "Cima Prince",
-    realStateSlogan: "Slogan of Prince",
+    realStateSlogan: "Profesionales en la gestión y desarrollo de proyectos",
     realStateSocials: {
       facebook: "https://www.facebook.com/Cimaprince.SAC",
       instagram: "https://www.instagram.com/cimaprince/",
