@@ -431,6 +431,7 @@ const Contact = () => {
           muted
           playsInline
           className="relative w-full h-full object-contain"
+          style={{ objectPosition: '25% center' }}
         >
           <source src={getAssetUrl('videos/walk.mp4')} type="video/mp4" />
         </video>
