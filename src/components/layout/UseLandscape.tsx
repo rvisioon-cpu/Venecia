@@ -5,6 +5,8 @@ import { usePathname } from 'next/navigation';
 import { useStore } from '../../store/useStore';
 import Logo from '@/components/UI/Logo';
 
+const SESSION_KEY = 'venecia-landscape-shown';
+
 const UseLandscape = () => {
     const pathname = usePathname();
     const [isPortrait, setIsPortrait] = useState(false);
@@ -47,12 +49,23 @@ const UseLandscape = () => {
         }
 
         if (isMobile && isPortrait) {
+            const alreadyShown = sessionStorage.getItem(SESSION_KEY) === 'true';
+
+            if (alreadyShown) {
+                // Already shown this session — skip overlay, go straight to forced landscape
+                setShowOverlay(false);
+                setForcedLandscape(true);
+                return;
+            }
+
+            // First time this session — show the overlay
             setShowOverlay(true);
             setForcedLandscape(false);
 
             const timer = setTimeout(() => {
                 setShowOverlay(false);
                 setForcedLandscape(true);
+                sessionStorage.setItem(SESSION_KEY, 'true');
             }, 3000);
 
             return () => clearTimeout(timer);

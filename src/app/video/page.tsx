@@ -28,7 +28,7 @@ export default function VideoPage() {
   }, []);
 
   return (
-    <div className="flex bg-black h-screen w-full relative overflow-hidden">
+    <div className="flex bg-black h-full w-full relative overflow-hidden">
       
       {/* Top Controls Overlay */}
       <div className="absolute top-0 left-0 w-full p-6 flex justify-between items-start z-30 pointer-events-none">

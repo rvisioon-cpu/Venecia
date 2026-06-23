@@ -18,6 +18,7 @@ const FloorPage = () => {
   const floorId = params.floorId as string;
   const router = useRouter();
   const floorsData = useStore(state => state.floorsData);
+  const isForcedLandscape = useStore(state => state.isForcedLandscape);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedUnit, setSelectedUnit] = useState<Unit | null>(null);
 
@@ -238,14 +239,20 @@ const FloorPage = () => {
             // Cover the full screen while keeping the floor plan's 16:9 aspect
             // ratio (assets are 3840x2160). Keeping the wrapper at 16:9 means the
             // image and the unit hotspot overlay (percentage based) stay aligned.
-            width: 'max(100vw, calc(100vh * 16 / 9))',
-            height: 'max(100vh, calc(100vw * 9 / 16))',
+            // In forced landscape mode, the wrapper rotates 90° so vw/vh are
+            // swapped relative to the visual layout — mirror them here.
+            width: isForcedLandscape
+              ? 'max(100vh, calc(100vw * 16 / 9))'
+              : 'max(100vw, calc(100vh * 16 / 9))',
+            height: isForcedLandscape
+              ? 'max(100vw, calc(100vh * 9 / 16))'
+              : 'max(100vh, calc(100vw * 9 / 16))',
           }}
         >
           <img
             src={getAssetUrl(floor.floorPlanImage)}
             alt={floor.name}
-            className="w-full h-full object-cover drop-shadow-2xl transition-all duration-300 contrast-[1.02] brightness-[1.02]"
+            className={`w-full h-full drop-shadow-2xl transition-all duration-300 contrast-[1.02] brightness-[1.02] ${isForcedLandscape ? 'object-contain' : 'object-cover'}`}
             draggable={false}
           />
 

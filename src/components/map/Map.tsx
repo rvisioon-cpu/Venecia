@@ -223,7 +223,7 @@ export default function MapComponent({ destination, origin, padding, onMarkerCli
     }, []);
 
     return (
-        <div className="w-full h-full relative touch-none">
+        <div className="w-full h-full relative">
             <Map
                 ref={mapRef}
                 initialViewState={INITIAL_VIEW_STATE}
@@ -236,6 +236,8 @@ export default function MapComponent({ destination, origin, padding, onMarkerCli
                 dragPan={true}
                 dragRotate={true}
                 doubleClickZoom={true}
+                touchZoomRotate={true}
+                touchPitch={true}
             >
                 <NavigationControl position="top-right" />
                 <FullscreenControl position="top-right" />
