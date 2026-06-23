@@ -5,8 +5,10 @@ import Sidebar from '@/components/layout/Sidebar';
 import { Search, MapPin, Menu, ChevronDown, ChevronUp, Car, Footprints, Bike, Navigation, X } from 'lucide-react';
 import { type LocationFeature } from '@/data/locations';
 import { getLocations, seedLocations } from '@/app/actions/locations';
+import { useStore } from '@/store/useStore';
 
 const DirectionsPage = () => {
+    const isForcedLandscape = useStore(state => state.isForcedLandscape);
     const [locations, setLocations] = useState<any[]>([]);
     const [filter, setFilter] = useState('');
     const [selectedName, setSelectedName] = useState<string | null>(null);
@@ -58,7 +60,7 @@ const DirectionsPage = () => {
     const categories = Array.from(new Set(locationsFeatures.map((f: LocationFeature) => f.properties.categoria))).filter(Boolean) as string[];
 
     const filteredLocations = locationsFeatures.filter((feature: LocationFeature) => {
-        if (feature.properties.nombre === 'Santa Fe') return false;
+        if (feature.properties.nombre === 'Venecia') return false;
 
         const matchesSearch = feature.properties.nombre.toLowerCase().includes(filter.toLowerCase());
         const matchesCategory = selectedCategory ? feature.properties.categoria === selectedCategory : true;
@@ -114,7 +116,16 @@ const DirectionsPage = () => {
     };
 
     return (
-        <div className="w-full h-full relative overflow-hidden bg-gray-200">
+        <div
+            className="w-full relative overflow-hidden bg-gray-200"
+            style={{
+                // h-full fails to cascade reliably through Fragment parents.
+                // Use explicit viewport units: in forced landscape the parent
+                // wrapper is rotated 90deg (width:100vh, height:100vw), so the
+                // visual height equals 100vw (the portrait device width).
+                height: isForcedLandscape ? '100vw' : '100svh',
+            }}
+        >
             <div className="absolute inset-0 z-0">
                 <MapComponent
                     destination={destination}
