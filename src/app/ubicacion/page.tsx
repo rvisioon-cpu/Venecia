@@ -150,9 +150,9 @@ const DirectionsPage = () => {
                 />
             </div>
 
-            {/* Top Left Controls Container */}
+            {/* Burger Menu Button (Highest priority z-index so it's always above the mobile panel) */}
             <div
-                className="fixed top-6 left-6 z-30 flex items-center gap-4 pointer-events-none"
+                className="fixed top-6 left-6 z-50 pointer-events-none"
                 style={{ top: 'calc(1.5rem + env(safe-area-inset-top))', left: 'calc(1.5rem + env(safe-area-inset-left))' }}
             >
                 <button
@@ -161,8 +161,13 @@ const DirectionsPage = () => {
                 >
                     <Menu size={24} />
                 </button>
+            </div>
 
-                {/* Page Title - Outside Panel */}
+            {/* Page Title - Lower z-index so the panel slides over it on mobile */}
+            <div
+                className="fixed top-6 left-20 z-30 pointer-events-none"
+                style={{ top: 'calc(1.5rem + env(safe-area-inset-top))', left: 'calc(5rem + env(safe-area-inset-left))' }}
+            >
                 <h1 className="text-2xl font-secondary font-bold text-gray-900 bg-white/90 backdrop-blur-sm px-6 py-2 rounded-full shadow-md pointer-events-auto">
                     Direcciones
                 </h1>
@@ -218,7 +223,7 @@ const DirectionsPage = () => {
 
             {/* Floating Bottom Panel (Console) */}
             <div
-                className={`fixed bottom-0 md:bottom-6 left-0 md:left-6 w-full md:w-[450px] bg-white md:rounded-2xl shadow-2xl z-20 flex flex-col transition-all duration-500 ease-in-out h-full md:h-auto md:max-h-[70%] pointer-events-auto ${isPanelOpen ? 'translate-y-0' : 'translate-y-full md:translate-y-[calc(100%-180px)]'}`}
+                className={`fixed bottom-0 md:bottom-6 left-0 md:left-6 w-full md:w-[450px] bg-white md:rounded-2xl shadow-2xl z-40 flex flex-col transition-all duration-500 ease-in-out h-full md:h-auto md:max-h-[70%] pointer-events-auto ${isPanelOpen ? 'translate-y-0' : 'translate-y-full md:translate-y-[calc(100%-180px)]'}`}
             >
 
                 {/* Handler / Header Area */}
