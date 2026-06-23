@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useMemo, useState, useEffect } from 'react';
+import { useStore } from '@/store/useStore';
 import Map, { Marker, NavigationControl, FullscreenControl, ScaleControl, Source, Layer, Popup } from 'react-map-gl/mapbox';
 // import 'mapbox-gl/dist/mapbox-gl.css';
 import { MapPin } from 'lucide-react';
@@ -200,6 +201,8 @@ export default function MapComponent({ destination, origin, padding, onMarkerCli
         return list;
     }, [onMarkerClick, origin, displayLocations]);
 
+    const isForcedLandscape = useStore(state => state.isForcedLandscape);
+
     // Force Resize on Mount and Window Resize (Fix for gray areas)
     useEffect(() => {
         const handleResize = () => {
@@ -221,6 +224,18 @@ export default function MapComponent({ destination, origin, padding, onMarkerCli
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+
+    // Force resize when forced landscape CSS transform is applied/removed.
+    // CSS rotate(90deg) doesn't fire a window resize event, so Mapbox
+    // would otherwise render at the wrong dimensions.
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (mapRef.current) {
+                mapRef.current.resize();
+            }
+        }, 300); // wait for CSS transform to settle
+        return () => clearTimeout(timer);
+    }, [isForcedLandscape]);
 
     return (
         <div className="w-full h-full relative">
