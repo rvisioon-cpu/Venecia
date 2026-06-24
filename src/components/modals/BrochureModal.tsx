@@ -1,20 +1,27 @@
+"use client";
 import { useEffect, useState } from 'react';
 import { X, Download, FileText, Loader2 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { getAssetUrl } from '../../utils/assets';
 import config from '../../config/config';
+import { usePathname } from 'next/navigation';
 
 const BrochureModal = ({ unitId }: { unitId?: string }) => {
     const isOpen = useStore(state => state.isBrochureOpen);
     const close = useStore(state => state.toggleBrochure);
+    const pathname = usePathname();
     
     const [brochureUrl, setBrochureUrl] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
+    // Resolve unitId from route if not explicitly passed
+    const match = pathname ? pathname.match(/\/unidad\/([^/]+)/) : null;
+    const activeUnitId = unitId || (match ? match[1] : undefined);
+
     useEffect(() => {
-        if (isOpen && !brochureUrl) {
+        if (isOpen) {
             setIsLoading(true);
-            const fetchUrl = unitId ? `/api/brochure/active?unitId=${unitId}` : '/api/brochure/active';
+            const fetchUrl = activeUnitId ? `/api/brochure/active?unitId=${activeUnitId}` : '/api/brochure/active';
             fetch(fetchUrl)
                 .then(res => res.json() as Promise<{ url?: string }>)
                 .then(data => {
@@ -29,8 +36,10 @@ const BrochureModal = ({ unitId }: { unitId?: string }) => {
                     close(false);
                 })
                 .finally(() => setIsLoading(false));
+        } else {
+            setBrochureUrl(null);
         }
-    }, [isOpen, brochureUrl, close, unitId]);
+    }, [isOpen, close, activeUnitId]);
 
     if (!isOpen) return null;
 

@@ -25,6 +25,7 @@ const FloorPage = () => {
   // Consultation Modal State
   const [isConsultationOpen, setIsConsultationOpen] = useState(false);
   const [consultationUnitId, setConsultationUnitId] = useState<string>('');
+  const [consultationUnitIdentifier, setConsultationUnitIdentifier] = useState<string>('');
 
   // Map State
   const MIN_SCALE = 1.0;
@@ -174,9 +175,10 @@ const FloorPage = () => {
     }, 150);
   };
 
-  const handleOpenConsultation = (e: React.MouseEvent, unitId: string) => {
+  const handleOpenConsultation = (e: React.MouseEvent, unitId: string, unitIdentifier?: string) => {
     e.stopPropagation();
     setConsultationUnitId(unitId);
+    setConsultationUnitIdentifier(unitIdentifier || '');
     setIsConsultationOpen(true);
   };
 
@@ -338,6 +340,7 @@ const FloorPage = () => {
         isOpen={isConsultationOpen}
         onClose={() => setIsConsultationOpen(false)}
         unitId={consultationUnitId}
+        unitIdentifier={consultationUnitIdentifier}
       />
 
 

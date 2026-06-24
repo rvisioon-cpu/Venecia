@@ -7,6 +7,7 @@ import StoreInitializer from "@/components/layout/StoreInitializer";
 import FloorEntryTransition from "@/components/layout/FloorEntryTransition";
 import UseLandscape from "@/components/layout/UseLandscape";
 import ForcedLandscapeWrapper from "@/components/layout/ForcedLandscapeWrapper";
+import BrochureModal from "@/components/modals/BrochureModal";
 import { getFloorsData } from "@/app/actions/units";
 import { getBuildingFacesData } from "@/app/actions/building";
 import { type Floor } from "@/data/floors";
@@ -33,6 +34,7 @@ export default async function RootLayout({
 }>) {
   let floorsData: Floor[] = [];
   let buildingFacesData: any[] = [];
+  let showBrochure = false;
   try {
     floorsData = (await getFloorsData()) as Floor[];
   } catch (e) {
@@ -42,6 +44,14 @@ export default async function RootLayout({
     buildingFacesData = await getBuildingFacesData();
   } catch (e) {
     console.error("Failed to load initial buildingFacesData during SSR:", e);
+  }
+  try {
+    const { getFeatures } = await import("@/app/actions/features");
+    const features = await getFeatures();
+    const brochureFeature = features.find(f => f.id === 'brochure');
+    showBrochure = brochureFeature ? brochureFeature.active : false;
+  } catch (e) {
+    console.error("Failed to load features:", e);
   }
 
   return (
@@ -56,6 +66,7 @@ export default async function RootLayout({
         <UseLandscape />
         <ForcedLandscapeWrapper>
           <FloorEntryTransition />
+          {showBrochure && <BrochureModal />}
           {children}
         </ForcedLandscapeWrapper>
       </body>

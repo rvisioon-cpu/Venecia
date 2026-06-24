@@ -699,3 +699,65 @@ export async function deleteTransfer(id: string) {
 
   revalidatePath("/dashboard/calendar");
 }
+
+export async function createProspectAction(data: {
+  name: string;
+  email: string;
+  phone?: string;
+  address?: string;
+  unitId?: string;
+}) {
+  const db = await getDb();
+  let prospectId = "";
+
+  const cleanEmail = data.email.trim().toLowerCase();
+  const existingProspects = await db
+    .select()
+    .from(prospects)
+    .where(eq(prospects.email, cleanEmail));
+
+  if (existingProspects.length > 0) {
+    prospectId = existingProspects[0].id;
+    await db
+      .update(prospects)
+      .set({
+        name: data.name,
+        phone: data.phone || existingProspects[0].phone,
+        address: data.address || existingProspects[0].address,
+        updatedAt: new Date(),
+      })
+      .where(eq(prospects.id, prospectId));
+  } else {
+    const [newProspect] = await db
+      .insert(prospects)
+      .values({
+        name: data.name,
+        email: cleanEmail,
+        phone: data.phone || null,
+        address: data.address || null,
+      })
+      .returning();
+    prospectId = newProspect.id;
+  }
+
+  if (data.unitId) {
+    // Check if the link already exists
+    const existingLinks = await db
+      .select()
+      .from(prospectUnits)
+      .where(
+        and(
+          eq(prospectUnits.prospectId, prospectId),
+          eq(prospectUnits.unitId, data.unitId)
+        )
+      );
+    if (existingLinks.length === 0) {
+      await db.insert(prospectUnits).values({
+        prospectId,
+        unitId: data.unitId,
+      });
+    }
+  }
+
+  return { success: true, prospectId };
+}

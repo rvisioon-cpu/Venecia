@@ -5,7 +5,7 @@ import { ArrowLeft, Share2, X, MoreVertical, Menu, Ruler, Bed, Bath, PanelRightO
 import { UnitStatusString, type Floor, type Unit } from '@/data/floors';
 import Sidebar from '@/components/layout/Sidebar';
 import RequestInfoModal from '@/components/modals/RequestInfoModal';
-import BrochureModal from '@/components/modals/BrochureModal';
+import config from '@/config/config';
 import InlineGallery from '@/components/gallery/InlineGallery';
 import TourHeader from '@/components/UI/TourHeader';
 import { preloadImages, preloadVideo } from '@/utils/preload';
@@ -68,6 +68,30 @@ const UnitPage = () => {
             })
             .catch(err => console.error("Error fetching brochure:", err));
     }, [unitId]);
+
+    const handleShare = async () => {
+        if (!unit) return;
+        const shareData = {
+            title: `Unidad ${unit.identifier || unit.id} - ${config.company?.buildingName || 'Showroom'}`,
+            text: `Mira la unidad ${unit.identifier || unit.id}`,
+            url: typeof window !== 'undefined' ? window.location.href : ''
+        };
+
+        if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+            try {
+                await navigator.share(shareData);
+            } catch (err) {
+                console.warn("Share failed:", err);
+            }
+        } else {
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+                alert("Enlace copiado al portapapeles");
+            } catch (err) {
+                console.error("Clipboard copy failed:", err);
+            }
+        }
+    };
 
     // --- ASSET RESOLUTION HELPERS ---
     const getTransitionUrl = (assetId: string, type: string) => {
@@ -311,7 +335,6 @@ const UnitPage = () => {
         );
     };
 
-    // Navigation State Logic
     const getNavState = () => {
         // Special case for 'Terraza' unit - No 'unfurnished' view
         if (unit.subtitle === 'Terraza') {
@@ -320,12 +343,25 @@ const UnitPage = () => {
             return { showLeft: false, showRight: false };
         }
 
-        // Allow switching freely between all three typologies (transition
-        // videos exist for every pair, including unfurnished <-> plans).
-        if (viewMode === 'unfurnished') return { showLeft: true, showRight: true, leftTarget: 'furnished' as const, rightTarget: 'plans' as const };
-        if (viewMode === 'plans') return { showLeft: true, showRight: true, leftTarget: 'unfurnished' as const, rightTarget: 'furnished' as const };
-        if (viewMode === 'furnished') return { showLeft: true, showRight: true, leftTarget: 'unfurnished' as const, rightTarget: 'plans' as const };
+        // Allow all transitions since the production DB/R2 has all the videos:
+        // Unfurnished <-> Furnished <-> Plans <-> Unfurnished
+        if (viewMode === 'unfurnished') {
+            return { showLeft: true, showRight: true, leftTarget: 'plans' as const, rightTarget: 'furnished' as const };
+        }
+        if (viewMode === 'plans') {
+            return { showLeft: true, showRight: true, leftTarget: 'furnished' as const, rightTarget: 'unfurnished' as const };
+        }
+        if (viewMode === 'furnished') {
+            return { showLeft: true, showRight: true, leftTarget: 'unfurnished' as const, rightTarget: 'plans' as const };
+        }
         return { showLeft: false, showRight: false }; // Gallery or other
+    };
+
+    const getTargetLabel = (mode: 'furnished' | 'unfurnished' | 'plans') => {
+        if (mode === 'furnished') return unit.subtitle === 'Terraza' ? 'Terraza' : 'Amoblado';
+        if (mode === 'unfurnished') return 'Sin Amoblar';
+        if (mode === 'plans') return unit.subtitle === 'Terraza' ? 'Medidas' : 'Medidas';
+        return '';
     };
 
     const navState = getNavState();
@@ -341,9 +377,9 @@ const UnitPage = () => {
                 isOpen={isRequestModalOpen}
                 onClose={() => setIsRequestModalOpen(false)}
                 unitId={unit.id}
+                unitIdentifier={unit.identifier || unit.id}
                 floorId={floor.id}
             />
-            <BrochureModal unitId={unitId} />
 
             {/* GLOBAL SIDEBAR TOGGLE */}
             {/* GLOBAL CONTROLS (Left) */}
@@ -441,9 +477,13 @@ const UnitPage = () => {
                                 </span>
                             )}
 
-                            <button className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-500">
-                                <Share2 size={20} />
-                            </button>
+                             <button
+                                onClick={handleShare}
+                                className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-500"
+                                title="Compartir"
+                             >
+                                 <Share2 size={20} />
+                             </button>
                             <button
                                 className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-500"
                                 onClick={() => setShowDetails(false)}
@@ -560,22 +600,15 @@ const UnitPage = () => {
 
                 {/* Footer Actions */}
                 <div className="p-6 border-t border-gray-100 bg-white w-full xl:min-w-[420px] flex flex-col gap-4">
-                    {/* Brochure & Disclaimer Group (Row on Mobile/Landscape, Stacked on Desktop) */}
                     {brochure && (
-                        <div className="flex flex-row items-center gap-4 lg:flex-col lg:gap-6">
-                            {/* Brochure Button */}
-                            <button
-                                onClick={() => {
-                                    useStore.getState().toggleBrochure(true);
-                                }}
-                                className="flex-1 lg:w-full py-4 bg-brand-primary text-white rounded-xl font-bold text-sm transition-colors shadow-sm border border-gray-100"
-                            >
-                                Ver Brochure
-                            </button>
-
-                            {/* Disclaimer */}
-                            <p className="flex-1 text-center text-xs text-gray-400 font-medium whitespace-nowrap lg:whitespace-normal">Disclaimer</p>
-                        </div>
+                        <button
+                            onClick={() => {
+                                useStore.getState().toggleBrochure(true);
+                            }}
+                            className="w-full py-4 bg-brand-primary text-white rounded-xl font-bold text-sm transition-colors shadow-sm border border-gray-100"
+                        >
+                            Ver Brochure
+                        </button>
                     )}
 
                     {/* Request Info Button (Row Style) */}
@@ -617,7 +650,9 @@ const UnitPage = () => {
                             title="Galería"
                         >
                             <ImageIcon size={20} />
-                            <span className="hidden xl:inline font-medium text-sm tracking-wide">Galería</span>
+                            <span className="hidden xl:inline font-medium text-sm tracking-wide">
+                                {viewMode === 'gallery' ? 'Volver' : 'Galería'}
+                            </span>
                         </button>
 
                         {/* Recorrido */}
@@ -786,12 +821,11 @@ const UnitPage = () => {
                             {navState.showLeft && navState.leftTarget && (
                                 <button
                                     onClick={() => startTransition(navState.leftTarget!)}
-                                    className="absolute left-6 top-1/2 -translate-y-1/2 z-30 flex items-center gap-3 p-3 bg-black/40 hover:bg-black/60 backdrop-blur text-white rounded-full transition-all group pr-5"
+                                    className="absolute left-6 top-1/2 -translate-y-1/2 z-30 flex items-center gap-2 px-5 py-3 bg-black/40 hover:bg-black/60 backdrop-blur text-white rounded-full transition-all border border-white/10 shadow-lg group"
                                 >
-                                    <ChevronLeft size={28} className="group-hover:-translate-x-1 transition-transform" />
+                                    <ChevronLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
                                     <span className="text-sm font-medium tracking-wide uppercase hidden sm:block">
-                                        {navState.leftTarget === 'furnished' && (unit.subtitle === 'Terraza' ? 'Terraza' : 'Amoblado')}
-                                        {navState.leftTarget === 'unfurnished' && 'Sin Amoblar'}
+                                        {getTargetLabel(navState.leftTarget)}
                                     </span>
                                 </button>
                             )}
@@ -799,13 +833,12 @@ const UnitPage = () => {
                             {navState.showRight && navState.rightTarget && (
                                 <button
                                     onClick={() => startTransition(navState.rightTarget!)}
-                                    className="absolute right-6 top-1/2 -translate-y-1/2 z-30 flex items-center gap-3 p-3 bg-black/40 hover:bg-black/60 backdrop-blur text-white rounded-full transition-all group pl-5"
+                                    className="absolute right-6 top-1/2 -translate-y-1/2 z-30 flex items-center gap-2 px-5 py-3 bg-black/40 hover:bg-black/60 backdrop-blur text-white rounded-full transition-all border border-white/10 shadow-lg group"
                                 >
                                     <span className="text-sm font-medium tracking-wide uppercase hidden sm:block">
-                                        {navState.rightTarget === 'furnished' && (unit.subtitle === 'Terraza' ? 'Terraza' : 'Amoblado')}
-                                        {navState.rightTarget === 'plans' && (unit.subtitle === 'Terraza' ? 'Medidas' : 'Medidas')}
+                                        {getTargetLabel(navState.rightTarget)}
                                     </span>
-                                    <ChevronRight size={28} className="group-hover:translate-x-1 transition-transform" />
+                                    <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
                                 </button>
                             )}
                         </>
