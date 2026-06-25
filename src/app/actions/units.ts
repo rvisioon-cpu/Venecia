@@ -89,7 +89,7 @@ export async function getFloorsData() {
         } else if (u.identifier === 'Terraza') {
           subtitle = 'Terraza';
         } else if (['801', '901', '802', '902'].includes(u.identifier)) {
-          subtitle = 'Duplex';
+          subtitle = 'Dúplex';
         }
 
         let assetId = u.identifier;

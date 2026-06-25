@@ -72,7 +72,7 @@ const ConsultationModal: React.FC<ConsultationModalProps> = ({ isOpen, onClose, 
                     Consulta
                 </span>
                 <h2 className="text-2xl font-light text-gray-900">
-                   Unidad <span className="font-semibold">{unitIdentifier || unitId.replace(/^unit_\d+_/, '').replace(/^unit_pb_/, 'PB ').toUpperCase()}</span>
+                   Unidad <span className="font-semibold">{(unitIdentifier || unitId).replace(/^unit_\d+_/, '').replace(/^unit_pb_/, 'PB ').toUpperCase()}</span>
                 </h2>
                 <p className="text-sm text-gray-500 mt-1">
                     Déjanos tus datos y un asesor te contactará a la brevedad.
