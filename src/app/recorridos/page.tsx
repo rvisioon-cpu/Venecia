@@ -18,6 +18,7 @@ interface Tour {
   type: 'unit' | 'building';
   target: string;
   floorName?: string;
+  unitIdentifier?: string;
 }
 
 const RecorridosContent = () => {
@@ -41,9 +42,17 @@ const RecorridosContent = () => {
           thumbnail: t.thumbnailUrl,
           type: t.type as 'unit' | 'building',
           target: t.targetUrl,
-          floorName: t.floorName || undefined
+          floorName: t.floorName || undefined,
+          unitIdentifier: t.unitIdentifier || undefined,
         }));
-        setTours(mapped);
+        const seen = new Set<string>();
+        const deduped = mapped.filter(t => {
+          if (!t.unitIdentifier) return true;
+          if (seen.has(t.unitIdentifier)) return false;
+          seen.add(t.unitIdentifier);
+          return true;
+        });
+        setTours(deduped);
       } catch (err) {
         console.error("Error loading tours:", err);
       } finally {
@@ -90,7 +99,7 @@ const RecorridosContent = () => {
         <div className="absolute top-0 left-0 w-full z-50">
            <TourHeader 
                 title={selectedTour.title}
-                subtitle={`${selectedTour.subtitle} ${selectedTour.floorName ? `- Piso ${selectedTour.floorName}` : ''}`}
+                subtitle={`${selectedTour.floorName ? `${selectedTour.floorName} - ` : ''}${['801', '802'].includes(selectedTour.unitIdentifier || '') ? 'Dúplex' : selectedTour.type === 'unit' ? 'Flat' : selectedTour.subtitle}`}
                 onBack={closeViewer}
             />
         </div>
@@ -98,7 +107,7 @@ const RecorridosContent = () => {
         {/* Iframe Content */}
         <div className="flex-1 w-full h-full pt-0">
             <iframe 
-                src={selectedTour.target} 
+                src={selectedTour.target}
                 className="w-full h-full border-0"
                 allowFullScreen
                 allow="xr-spatial-tracking; gyroscope; accelerometer"
@@ -174,7 +183,7 @@ const RecorridosContent = () => {
                           
                           {/* Type Badge */}
                           <div className="absolute top-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-white text-xs uppercase tracking-wider font-medium">
-                              {tour.type === 'building' ? 'Edificio' : `Piso ${tour.floorName || 'Unidad'}`}
+                              {tour.type === 'building' ? 'Edificio' : tour.floorName || 'Unidad'}
                           </div>
                       </div>
 
@@ -184,7 +193,9 @@ const RecorridosContent = () => {
                               {tour.title}
                           </h3>
                           <p className="text-gray-500 text-sm">
-                              {tour.subtitle}
+                              {tour.type === 'unit'
+                                ? (['801', '802'].includes(tour.unitIdentifier || '') ? 'Dúplex' : 'Flat')
+                                : tour.subtitle}
                           </p>
                       </div>
                   </div>
