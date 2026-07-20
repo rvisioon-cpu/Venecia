@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * patch-worker.mjs
- * 
+ *
  * Patches the OpenNext worker.js to serve static assets via env.ASSETS
  * and fall back to env.R2 when deployed on Cloudflare Pages.
  */
@@ -42,11 +42,6 @@ if (isStaticAsset) {
     try {
       const assetResponse = await env.ASSETS.fetch(request);
       if (assetResponse.status !== 404) {
-        if (!assetResponse.headers.has('cache-control')) {
-          const headers = new Headers(assetResponse.headers);
-          headers.set('cache-control', 'public, max-age=31536000, immutable');
-          return new Response(assetResponse.body, { status: assetResponse.status, headers });
-        }
         return assetResponse;
       }
     } catch (_) {
@@ -54,7 +49,7 @@ if (isStaticAsset) {
     }
   }
 
-  // 2. Try to serve from R2 bucket if not found in assets, via the edge cache
+  // 2. Try to serve from R2 bucket if not found in assets
   if (env.R2) {
     try {
       let key = pathname.startsWith('/') ? pathname.slice(1) : pathname;
@@ -62,44 +57,72 @@ if (isStaticAsset) {
         key = key.slice('api/r2/'.length);
       }
 
-      const cache = caches.default;
-      const cacheKey = new Request(url.toString(), request);
-      const rangeHeader = request.headers.get('range');
+      // Objects uploaded via wrangler carry no contentType, so infer from extension.
+      const R2_MIME = {
+        mp4: 'video/mp4', webm: 'video/webm', mov: 'video/quicktime',
+        jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png',
+        webp: 'image/webp', gif: 'image/gif', svg: 'image/svg+xml',
+        pdf: 'application/pdf'
+      };
 
-      if (!rangeHeader) {
-        const cached = await cache.match(cacheKey);
-        if (cached) return cached;
-      }
+      // HEAD first so range offsets are computed against the real object size.
+      const head = await env.R2.head(key);
+      if (head !== null) {
+        const fileSize = head.size;
+        const meta = head.httpMetadata || {};
+        const ext = (key.split('.').pop() || '').toLowerCase();
 
-      const r2Options = rangeHeader ? { range: request.headers, onlyIf: undefined } : {};
-      const object = await env.R2.get(key, r2Options);
-      if (object !== null) {
         const headers = new Headers();
-        if (object.httpMetadata) {
-          if (object.httpMetadata.contentType) headers.set("content-type", object.httpMetadata.contentType);
-          if (object.httpMetadata.contentLanguage) headers.set("content-language", object.httpMetadata.contentLanguage);
-          if (object.httpMetadata.contentDisposition) headers.set("content-disposition", object.httpMetadata.contentDisposition);
-          if (object.httpMetadata.contentEncoding) headers.set("content-encoding", object.httpMetadata.contentEncoding);
-        }
-        headers.set("cache-control", "public, max-age=31536000, immutable");
-        if (object.httpEtag) {
-          headers.set("etag", object.httpEtag);
-        }
-        headers.set("accept-ranges", "bytes");
+        headers.set('content-type', meta.contentType || R2_MIME[ext] || 'application/octet-stream');
+        headers.set('accept-ranges', 'bytes');
+        headers.set('cache-control', meta.cacheControl || 'public, max-age=31536000, immutable');
+        if (meta.contentLanguage) headers.set('content-language', meta.contentLanguage);
+        if (meta.contentDisposition) headers.set('content-disposition', meta.contentDisposition);
+        if (meta.contentEncoding) headers.set('content-encoding', meta.contentEncoding);
+        if (head.etag) headers.set('etag', head.etag);
 
-        const isRanged = 'range' in object && object.range;
-        if (isRanged) {
-          const { offset, length } = object.range;
-          const totalSize = object.size;
-          headers.set("content-range", \`bytes \${offset}-\${offset + length - 1}/\${totalSize}\`);
-          headers.set("content-length", length.toString());
-          return new Response(object.body, { status: 206, headers });
+        // Range request -> 206 Partial Content (required for video seeking)
+        const rangeHeader = request.headers.get('range');
+        const m = rangeHeader ? rangeHeader.match(/^bytes=(\\d*)-(\\d*)$/) : null;
+        if (m) {
+          // Open-ended ranges (bytes=N-) are capped to one chunk: asking R2 for
+          // the whole remainder delays the first byte by seconds on large videos,
+          // which makes the player stall. Clients just request the next chunk.
+          const MAX_CHUNK = 8 * 1024 * 1024;
+          let start;
+          let end;
+          if (m[1]) {
+            start = parseInt(m[1], 10);
+            end = m[2] ? parseInt(m[2], 10) : Math.min(start + MAX_CHUNK - 1, fileSize - 1);
+          } else if (m[2]) {
+            start = Math.max(0, fileSize - parseInt(m[2], 10));
+            end = fileSize - 1;
+          }
+
+          if (start !== undefined) {
+            end = Math.min(end, fileSize - 1);
+            if (isNaN(start) || isNaN(end) || start > end || start >= fileSize) {
+              headers.set('content-range', 'bytes */' + fileSize);
+              return new Response('Range Not Satisfiable', { status: 416, headers });
+            }
+            const length = end - start + 1;
+            const ranged = await env.R2.get(key, { range: { offset: start, length } });
+            if (ranged !== null) {
+              headers.set('content-range', 'bytes ' + start + '-' + end + '/' + fileSize);
+              headers.set('content-length', String(length));
+              // Partial responses must not be cached as "immutable" for a year:
+              // a bad/stale partial would then be pinned at the edge indefinitely.
+              headers.set('cache-control', 'public, max-age=86400');
+              return new Response(ranged.body, { status: 206, headers });
+            }
+          }
         }
 
-        headers.set("content-length", object.size.toString());
-        const response = new Response(object.body, { status: 200, headers });
-        ctx.waitUntil(cache.put(cacheKey, response.clone()));
-        return response;
+        const object = await env.R2.get(key);
+        if (object !== null) {
+          headers.set('content-length', String(fileSize));
+          return new Response(object.body, { headers });
+        }
       }
     } catch (e) {
       console.error("R2 fallback worker error:", e);
