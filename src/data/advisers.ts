@@ -10,19 +10,19 @@ export interface AdviserData {
 
 export const advisersData: AdviserData[] = [
   {
-    id: 'rocio',
-    name: "Rocio Granja",
-    role: "Sales Advisor",
-    gender: 'female',
-    phone: "+51959556125",
-    whatsappMessage: "Hello, I'm coming from the Santa Fe 190 website, I want more information"
+    id: 'asesor-1',
+    name: "Asesor 1",
+    role: "Asesor Comercial",
+    gender: 'male',
+    phone: "+51 932 916 121",
+    whatsappMessage: "Hola, vengo de la página web de Venecia, me gustaría recibir más información."
   },
   {
-    id: 'pierre',
-    name: "Pierre Gurbillon",
-    role: "Sales Advisor",
+    id: 'asesor-2',
+    name: "Asesor 2",
+    role: "Asesor Comercial",
     gender: 'male',
-    phone: "+51945656710",
-    whatsappMessage: "Hello, I'm coming from the Santa Fe 190 website, I want more information"
+    phone: "+51 937 466 028",
+    whatsappMessage: "Hola, vengo de la página web de Venecia, me gustaría recibir más información."
   }
 ];

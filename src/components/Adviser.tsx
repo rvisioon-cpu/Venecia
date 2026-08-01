@@ -50,8 +50,10 @@ const Adviser: React.FC<AdviserProps> = ({ adviser, variant = 'compact' }) => {
         
         <div className="flex flex-col text-left">
           <h3 className="text-gray-800 text-lg font-bold mb-0.5 group-hover:text-brand-primary transition-colors">{adviser.name}</h3>
+          <p className="text-xs text-gray-500 font-medium">{adviser.role}</p>
+          <p className="text-xs text-gray-400 font-medium mt-0.5">{adviser.phone}</p>
           <div className="mt-2 flex items-center gap-1.5 text-brand-primary font-bold text-[10px] uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0">
-            <span>Contactar ahora</span>
+            <span>Contactar ahora por WhatsApp</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </div>
         </div>
@@ -80,6 +82,7 @@ const Adviser: React.FC<AdviserProps> = ({ adviser, variant = 'compact' }) => {
       
       <div className="flex flex-col items-center">
         <h3 className="text-gray-800 text-[11px] font-bold group-hover:text-brand-primary transition-colors uppercase tracking-wider">{adviser.name}</h3>
+        <p className="text-[10px] text-gray-500 font-medium">{adviser.phone}</p>
       </div>
     </a>
   );

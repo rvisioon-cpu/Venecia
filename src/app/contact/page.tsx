@@ -788,23 +788,13 @@ const Contact = () => {
                     {isSubmitting ? 'Enviando...' : 'Enviar respuesta'}
                   </button>
 
-                  {/* 
-                      <button 
-                          type="button"
-                          onClick={() => setActiveSection('booking')}
-                          className="w-full bg-brand-orange hover:bg-brand-orange/90 text-white font-secondary font-bold text-xs uppercase tracking-widest py-4 rounded-full transition-all shadow-lg flex items-center justify-center gap-2"
-                      >
-                          <CalendarIcon size={14} /> Fija una cita con nosotros
-                      </button>
-
-                      <button 
-                          type="button"
-                          onClick={() => setActiveSection('advisers')}
-                          className="w-full bg-white border border-gray-100 text-gray-800 font-secondary font-bold text-xs uppercase tracking-widest py-4 rounded-full transition-all hover:bg-gray-50 shadow-sm flex items-center justify-center gap-2"
-                      >
-                          Elige tu asesor
-                      </button>
-                      */}
+                  <button 
+                    type="button"
+                    onClick={() => setActiveSection('advisers')}
+                    className="w-full bg-white border border-gray-200 text-gray-800 font-secondary font-bold text-xs uppercase tracking-widest py-4 rounded-full transition-all hover:bg-gray-50 shadow-sm flex items-center justify-center gap-2"
+                  >
+                    Elige tu asesor
+                  </button>
                 </div>
               </form>
             </div>
@@ -1044,7 +1034,7 @@ const Contact = () => {
           {activeSection === 'advisers' && (
             <div className="animate-in fade-in slide-in-from-top-4 duration-500">
               <div className="flex items-center justify-between mb-8">
-                <h2 className="text-gray-800 font-bold text-sm uppercase tracking-wider">Asesores</h2>
+                <h2 className="text-gray-800 font-bold text-sm uppercase tracking-wider">Elige tu asesor</h2>
                 <button
                   onClick={() => setActiveSection('form')}
                   className="text-gray-400 hover:text-brand-primary text-[10px] uppercase font-bold tracking-widest flex items-center gap-2 transition-colors"
