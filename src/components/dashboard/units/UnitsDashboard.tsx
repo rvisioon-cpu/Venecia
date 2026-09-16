@@ -445,7 +445,7 @@ export default function UnitsDashboard({
       case "AVAILABLE":
         return "Disponible";
       case "RESERVED":
-        return "Apartado";
+        return "Separado";
       case "SOLD":
         return "Vendido";
       case "COMMON_AREA":
@@ -1135,7 +1135,7 @@ export default function UnitsDashboard({
                     className="select select-bordered w-full"
                   >
                     <option value="AVAILABLE">Disponible</option>
-                    <option value="RESERVED">Apartado</option>
+                    <option value="RESERVED">Separado</option>
                     <option value="SOLD">Vendido</option>
                     {isSuperAdmin && <option value="COMMON_AREA">Área Común</option>}
                   </select>
@@ -1625,7 +1625,7 @@ export default function UnitsDashboard({
                   className="select select-bordered select-sm text-gray-800 dark:text-gray-100"
                 >
                   <option value="AVAILABLE">Disponible</option>
-                  <option value="RESERVED">Apartado</option>
+                  <option value="RESERVED">Separado</option>
                   <option value="SOLD">Vendido</option>
                   {isSuperAdmin && <option value="COMMON_AREA">Área Común</option>}
                 </select>

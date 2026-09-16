@@ -70,7 +70,7 @@ export const floorsData: Floor[] = [
     floorPlanImage: "plants/floor_5.webp",
     units: [
       { id: "501", floorId: "5", price: 0, dimensions: 57.84, bedrooms: 2, bathrooms: 2, status: 'available', subtitle: 'Flat', type: 'apartment', path: 'M 29.9,35.5 L 29.4,81.2 L 59.7,81.7 L 59.2,46.3 L 43.2,46.1 L 43,35.6 Z', tourUrl: 'https://kuula.co/share/collection/7TGWg?logo=-1&card=1&info=1&fs=1&vr=1&zoom=1&initload=0&thumbs=3&alpha=0.91&inst=es' },
-      { id: "502", floorId: "5", price: 0, dimensions: 70.72, bedrooms: 3, bathrooms: 2, status: 'available', subtitle: 'Flat', type: 'apartment', path: 'M 40.3,35.4 L 43,35.5 L 43.1,46.3 L 59.3,46.1 L 59.5,80.8 L 70.4,81.2 L 69.5,10 L 65.3,10 L 62.6,5.7 L 59.7,10.2 L 55,10.1 L 54,7.3 L 51.9,10.1 L 48.4,10.1 L 47.5,7.5 L 45.2,10.1 L 41.7,10.6 Z', tourUrl: 'https://kuula.co/share/collection/7TGWj?logo=-1&card=1&info=1&fs=1&vr=1&zoom=1&initload=0&thumbs=3&alpha=0.91&inst=es' }
+      { id: "502", floorId: "5", price: 0, dimensions: 70.72, bedrooms: 3, bathrooms: 2, status: 'reserved', subtitle: 'Flat', type: 'apartment', path: 'M 40.3,35.4 L 43,35.5 L 43.1,46.3 L 59.3,46.1 L 59.5,80.8 L 70.4,81.2 L 69.5,10 L 65.3,10 L 62.6,5.7 L 59.7,10.2 L 55,10.1 L 54,7.3 L 51.9,10.1 L 48.4,10.1 L 47.5,7.5 L 45.2,10.1 L 41.7,10.6 Z', tourUrl: 'https://kuula.co/share/collection/7TGWj?logo=-1&card=1&info=1&fs=1&vr=1&zoom=1&initload=0&thumbs=3&alpha=0.91&inst=es' }
     ]
   },
   {
@@ -87,7 +87,7 @@ export const floorsData: Floor[] = [
     name: "Piso 7",
     floorPlanImage: "plants/floor_7.webp",
     units: [
-      { id: "701", floorId: "7", price: 0, dimensions: 57.84, bedrooms: 2, bathrooms: 2, status: 'available', subtitle: 'Flat', type: 'apartment', path: 'M 29.9,35.5 L 29.4,81.2 L 59.7,81.7 L 59.2,46.3 L 43.2,46.1 L 43,35.6 Z', tourUrl: 'https://kuula.co/share/collection/7TGWB?logo=0&info=1&fs=1&vr=1&sd=1&thumbs=1' },
+      { id: "701", floorId: "7", price: 0, dimensions: 57.84, bedrooms: 2, bathrooms: 2, status: 'sold', subtitle: 'Flat', type: 'apartment', path: 'M 29.9,35.5 L 29.4,81.2 L 59.7,81.7 L 59.2,46.3 L 43.2,46.1 L 43,35.6 Z', tourUrl: 'https://kuula.co/share/collection/7TGWB?logo=0&info=1&fs=1&vr=1&sd=1&thumbs=1' },
       { id: "702", floorId: "7", price: 0, dimensions: 70.72, bedrooms: 3, bathrooms: 2, status: 'available', subtitle: 'Flat', type: 'apartment', path: 'M 40.3,35.4 L 43,35.5 L 43.1,46.3 L 59.3,46.1 L 59.5,80.8 L 70.4,81.2 L 69.5,10 L 65.3,10 L 62.6,5.7 L 59.7,10.2 L 55,10.1 L 54,7.3 L 51.9,10.1 L 48.4,10.1 L 47.5,7.5 L 45.2,10.1 L 41.7,10.6 Z', tourUrl: 'https://kuula.co/share/collection/7TGy4?logo=0&info=1&fs=1&vr=1&sd=1&thumbs=1' }
     ]
   },
