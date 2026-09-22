@@ -1,5 +1,6 @@
 "use client";
 import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { X, Home, Building2, Layers, Image, Rotate3D, Video, Download, MapPin, Phone, Facebook, Instagram, Mountain, Box, Construction } from 'lucide-react';
 import { getAssetUrl } from '@/utils/assets';
@@ -257,6 +258,17 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                             <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-secondary select-none">
                                 {new Date().getFullYear()}© {config.company?.developer || 'RIVISION.pe'}
                             </p>
+                            <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-secondary max-w-[240px] leading-tight text-center">
+                                Las imágenes están sujetas a{' '}
+                                <Link
+                                    href="/terminos-y-condiciones"
+                                    onClick={onClose}
+                                    className="hover:text-brand-primary dark:hover:text-white underline underline-offset-2 transition-colors"
+                                >
+                                    términos y condiciones
+                                </Link>{' '}
+                                de la inmobiliaria
+                            </p>
                         </div>
                     </div>
                 ) : (
@@ -332,6 +344,17 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                                     className="h-8 w-auto object-contain opacity-85 hover:opacity-100 transition-opacity dark:invert"
                                 />
                                 <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-secondary select-none">{new Date().getFullYear()}© {config.company?.developer || 'RIVISION.pe'}</p>
+                                <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-secondary max-w-[240px] leading-tight">
+                                    Las imágenes están sujetas a{' '}
+                                    <Link
+                                        href="/terminos-y-condiciones"
+                                        onClick={onClose}
+                                        className="hover:text-brand-primary dark:hover:text-white underline underline-offset-2 transition-colors"
+                                    >
+                                        términos y condiciones
+                                    </Link>{' '}
+                                    de la inmobiliaria
+                                </p>
                             </div>
                         </div>
                     </>
